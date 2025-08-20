@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Sequential Activity: Good vs. Bad Teaching Practice</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Questrial&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  <style>
+    :root {
+      --primary-sage: #7A8471;
+      --secondary-sage: #9CAF88;
+      --tertiary-sage: #B8C5A6;
+      --warm-cream: #F8F6F0;
+      --soft-white: #FEFCF7;
+      --clay-brown: #A0826D;
+      --forest-shadow: #5A6B52;
+      --border-sage: rgba(122, 132, 113, 0.2);
+      --hover-sage: rgba(156, 175, 136, 0.15);
+      --correct-bg: #E8F5E9;
+      --correct-border: #2E7D32;
+      --incorrect-bg: #FFEBEE;
+      --incorrect-border: #C62828;
+      --font-display: 'Questrial', sans-serif;
+      --font-body: 'Nunito', sans-serif;
+    }
+
+    /* NEW: Universal box-sizing for consistent layout calculation */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0; padding: 0; width: 100%;
+      font-family: var(--font-body); 
+      background: linear-gradient(135deg, #F8F6F0 0%, #F5F3ED 100%);
+      overflow-x: hidden;
+    }
+    
+    #app-wrapper {
+        position: relative; display: flex; justify-content: center;
+        align-items: flex-start; padding: 2rem; width: 100%;
+    }
+
+    #activity-container {
+      width: 100%; max-width: 900px; background: var(--soft-white);
+      padding: 48px; border-radius: 20px;
+      border: 1px solid rgba(122, 132, 113, 0.12);
+      box-shadow: 0 8px 32px rgba(122, 132, 113, 0.08);
+    }
+    
+    #activity-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 32px;
+      margin-bottom: 24px;
+    }
+    #activity-titles { flex-grow: 1; }
+    h1 { font-family: var(--font-display); font-size: 2.5rem; color: var(--forest-shadow); margin: 0 0 8px 0; }
+    h2.rubric { font-family: var(--font-body); font-size: 1.1rem; color: var(--secondary-sage); margin: 0; border-left: 3px solid var(--tertiary-sage); padding-left: 12px; }
+    
+    #decorative-image-container {
+      flex-shrink: 0;
+      width: 180px;
+      height: 120px;
+      background-color: var(--warm-cream);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-sage);
+    }
+    #decorative-image-container img { width: 100%; height: 100%; object-fit: cover; }
+
+    .dnd-main-container { display: flex; flex-direction: column; gap: 32px; }
+    #items-pool-container { 
+        padding: 20px; background-color: var(--warm-cream); 
+        border: 1px dashed var(--tertiary-sage); border-radius: 16px;
+        min-height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: background-color 0.3s;
+    }
+    
+    .dnd-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; min-height: 50px; align-items: center; width: 100%; }
+    
+    .dnd-item {
+        padding: 12px 24px;
+        background-color: var(--soft-white);
+        border: 1px solid var(--border-sage);
+        border-radius: 30px;
+        color: var(--forest-shadow);
+        font-weight: 600;
+        cursor: grab;
+        transition: all 0.3s ease;
+        touch-action: none; user-select: none;
+        max-width: 90%;
+        text-align: center;
+    }
+    .dnd-item:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(90, 107, 82, 0.1); }
+    .dnd-item.inactive { opacity: 0.6; cursor: default; box-shadow: none; pointer-events: none; }
+    
+    .dnd-item.sortable-ghost { background-color: var(--hover-sage); border-style: dashed; color: transparent; }
+    .dnd-item.sortable-chosen { cursor: grabbing; transform: scale(1.05); }
+    
+    #category-zones { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .dnd-category-zone { 
+        padding: 20px; 
+        border: 1px solid var(--border-sage); 
+        border-radius: 16px; 
+        background-color: #fdfdfc; 
+        display: flex; 
+        flex-direction: column; 
+        transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        cursor: pointer;
+    }
+    .dnd-category-zone h3 { margin: 0 0 16px 0; text-align: center; color: var(--clay-brown); font-family: var(--font-display); }
+    .dnd-category-zone .dnd-list { flex-grow: 1; background-color: var(--warm-cream); border-radius: 12px; border: 1px dashed transparent; transition: border-color 0.3s, background-color 0.3s; padding: 12px; }
+    .dnd-category-zone.sortable-drag .dnd-list { border-color: var(--primary-sage); background-color: #f5f3ed; }
+    
+    .dnd-item.correct { background-color: var(--correct-bg); border-color: var(--correct-border); }
+    .dnd-item.incorrect { background-color: var(--incorrect-bg); border-color: var(--incorrect-border); }
+    
+    #immediate-feedback { 
+      display: none; 
+      text-align: center; 
+      padding: 20px; 
+      width: 100%;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    #immediate-feedback.visible { display: block; opacity: 1; }
+    #immediate-feedback.is-fading-out { opacity: 0; }
+    
+    #feedback-text { font-size: 1.1rem; line-height: 1.6; margin: 0 0 16px 0; font-weight: 600; }
+    #immediate-feedback.correct #feedback-text { color: var(--correct-border); }
+    #immediate-feedback.incorrect #feedback-text { color: var(--incorrect-border); }
+
+    .activity-btn, #next-btn { 
+        padding: 12px 24px; border-radius: 12px; border: 1px solid var(--primary-sage); 
+        background-color: var(--primary-sage); color: white; font-weight: 600; 
+        cursor: pointer; transition: all 0.2s; -webkit-tap-highlight-color: transparent;
+        display: inline-flex; align-items: center; gap: 8px;
+    }
+    #next-btn { background-color: transparent; border: none; padding: 0;}
+    #next-btn:hover lord-icon { opacity: 0.8; }
+    
+    #completion-message { text-align: center; padding: 40px 20px; }
+    #completion-message h3 { font-family: var(--font-display); font-size: 2rem; color: var(--forest-shadow); }
+    #completion-message p { color: var(--primary-sage); font-size: 1.1rem; margin-bottom: 24px; }
+    
+    #progress-bar-container {
+        width: 100%; height: 24px; background-color: var(--warm-cream);
+        border: 1px solid var(--border-sage); border-radius: 12px; margin-top: 32px;
+        position: relative; overflow: hidden;
+    }
+    #progress-bar-fill {
+        height: 100%; width: 0%; background-color: var(--primary-sage);
+        border-radius: 12px 0 0 12px; transition: width 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    #progress-bar-text {
+        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        color: var(--forest-shadow); font-size: 0.8rem; font-weight: 700; text-shadow: 0 0 5px var(--warm-cream);
+    }
+    
+    @keyframes fadeOutAndScale { to { opacity: 0; transform: scale(0.9); } }
+    @keyframes fadeInAndScale { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+    .dnd-item.is-moving-out { animation: fadeOutAndScale 0.6s ease-out forwards; }
+    .dnd-item.is-moving-in { animation: fadeInAndScale 0.6s ease-in forwards; opacity: 0; }
+
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .placeholder-loader { width: 24px; height: 24px; border: 3px solid var(--hover-sage); border-top-color: var(--secondary-sage); border-radius: 50%; animation: spin 1s linear infinite; }
+    .hidden { display: none !important; }
+
+    .dnd-item.item-selected {
+        transform: scale(1.05); box-shadow: 0 6px 16px rgba(90, 107, 82, 0.2);
+        border-color: var(--primary-sage); cursor: grabbing;
+    }
+    .is-selecting .dnd-category-zone {
+        box-shadow: 0 0 0 3px var(--secondary-sage); border-color: var(--secondary-sage);
+    }
+
+    /* === REVISED & AGGRESSIVE: Mobile optimisations === */
+    @media (max-width: 767px) {
+        #app-wrapper { 
+            padding: 0.5rem; 
+        }
+        #activity-container { 
+            padding: 10px; /* Further reduced padding */
+        }
+        
+        #activity-header { 
+            flex-direction: column; align-items: center; text-align: center; 
+            gap: 10px; /* Further reduced spacing */
+            margin-bottom: 16px;
+        }
+        h1 { 
+            font-size: 1.4rem; /* Further reduced font size */
+        } 
+        h2.rubric { 
+            border-left: none; padding-left: 0; 
+            font-size: 0.85rem; /* Further reduced font size */
+            line-height: 1.3;
+        }
+
+        #decorative-image-container { 
+            width: 100%; height: 100px; 
+        }
+
+        .dnd-main-container { 
+            gap: 12px; /* Further reduced spacing */
+        }
+        
+        #category-zones { 
+            grid-template-columns: 1fr; 
+            gap: 10px; /* Further reduced spacing */
+        }
+        .dnd-category-zone {
+            padding: 10px; /* Further reduced padding to make zones more compact */
+        }
+        .dnd-category-zone h3 {
+            font-size: 1rem; /* Further reduced font size */
+            margin-bottom: 10px; /* Further reduced margin */
+        }
+        .dnd-category-zone .dnd-list {
+            padding: 8px; /* Reduced padding inside the drop zone */
+            min-height: 60px; /* Ensure drop zone has some height */
+        }
+
+        .dnd-item {
+            padding: 8px 12px; /* Smaller items */
+            font-size: 0.8rem; /* Further reduced font size */
+            border-radius: 20px;
+        }
+
+        #items-pool-container {
+            padding: 12px;
+            min-height: 80px;
+        }
+
+        #feedback-text { 
+            font-size: 0.9rem; /* Further reduced font size */
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        #next-btn lord-icon {
+            width: 50px; /* Smaller button icon */
+            height: 50px;
+        }
+
+        #progress-bar-container { 
+            margin-top: 16px;
+            height: 18px; 
+        }
+        #progress-bar-text {
+            font-size: 0.7rem;
+        }
+    }
+  </style>
+</head>
+<body>
+  
+  <div id="app-wrapper">
+    <div id="activity-container" data-query-theme="teacher helping student in classroom">
+      
+      <div id="activity-header">
+        <div id="activity-titles">
+          <h1>Classroom Practices</h1>
+          <h2 class="rubric">Is this good or bad practice? Drag or tap the item below, then select a category to see feedback.</h2>
+        </div>
+        <div id="decorative-image-container">
+          <div class="placeholder-loader"></div>
+        </div>
+      </div>
+
+      <div id="dnd-main-container" class="dnd-main-container">
+        <div id="items-pool-container">
+          <div id="items-pool" class="dnd-list"></div>
+          <div id="immediate-feedback">
+            <p id="feedback-text"></p>
+            <button id="next-btn" class="hidden">
+              <lord-icon
+                  src="https://cdn.lordicon.com/whtfgdfm.json"
+                  trigger="hover"
+                  colors="primary:#7A8471,secondary:#5A6B52"
+                  style="width:80px;height:80px">
+              </lord-icon>
+            </button>
+          </div>
+           <div id="completion-message" class="hidden">
+            <h3>Activity Complete!</h3>
+            <p>You've reviewed all the practices. Well done!</p>
+            <button id="restart-btn" class="activity-btn">Start Over</button>
+          </div>
+        </div>
+        
+        <div id="category-zones">
+          <div id="good-practice" class="dnd-category-zone">
+            <h3>Good practice</h3>
+            <div class="dnd-list"></div>
+          </div>
+          <div id="bad-practice" class="dnd-category-zone">
+            <h3>Bad practice</h3>
+            <div class="dnd-list"></div>
+          </div>
+        </div>
+
+        <div id="progress-bar-container">
+            <div id="progress-bar-fill"></div>
+            <span id="progress-bar-text"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+// --- JavaScript is unchanged as the fixes were purely CSS-based ---
+const practices = [ { text: "I give students at least two minutes to think before they answer a question.", category: "good-practice", explanation: "Waiting helps all students prepare their answers. This supports inclusive learning." },{ text: "I write in tiny letters on the board so the back row cannot read it.", category: "bad-practice", explanation: "If students cannot read the board, they miss important information. This isn't fair or effective." },{ text: "I start each lesson with a quick review of what we learned last time.", category: "good-practice", explanation: "Reviewing previous work helps students remember and connect new ideas." },{ text: "I correct every small mistake straight away, even in the middle of a conversation.", category: "bad-practice", explanation: "Constant correction can stop students from speaking freely. It's often better to note errors and address them later." },{ text: "I plan different tasks so learners can read, speak and move around.", category: "good-practice", explanation: "Variety keeps students engaged and caters to different learning styles." },{ text: "I talk for most of the lesson because I want to explain everything.", category: "bad-practice", explanation: "If the teacher talks too much, students don't get enough practice. Maximize student talk time!" },{ text: "I walk around and listen during practice, then tell common mistakes later.", category: "good-practice", explanation: "This is a great way to monitor progress without interrupting student flow." },{ text: "I use the same worksheet for every class, even if some finish quickly.", category: "bad-practice", explanation: "One-size-fits-all activities can lead to boredom or frustration. Differentiated tasks are better." },{ text: "I praise effort and not only perfect answers.", category: "good-practice", explanation: "Praising effort builds a positive and resilient learning environment." },{ text: "I read every exercise loudly while students sit and listen.", category: "bad-practice", explanation: "Students learn by doing. Passive listening is far less effective than active participation." },{ text: "I start the lesson late because I am still looking for handouts.", category: "bad-practice", explanation: "Punctuality and organization respect students' time and set a professional tone." },{ text: "I check that everyone understands the task before they start.", category: "good-practice", explanation: "Clear instructions prevent confusion and ensure students can complete the task successfully." },{ text: "I ignore quiet students and only ask the fastest ones.", category: "bad-practice", explanation: "Inclusive teaching means finding ways to involve all students, not just the most vocal ones." },{ text: "I break long activities into small steps so students do not feel lost.", category: "good-practice", explanation: "Scaffolding complex tasks makes them more manageable and less intimidating for learners." },{ text: "When a student asks 'Why?' I say 'Just copy the rule from the book.'", category: "bad-practice", explanation: "Real learning comes from understanding concepts, not just copying rules without explanation." },{ text: "I try to speak less than my students so they can practise English.", category: "good-practice", explanation: "The more students use the language, the faster they will learn and improve." },{ text: "I give shy students easier first questions to help them start speaking.", category: "good-practice", explanation: "This is an excellent strategy to build confidence and encourage participation from all students." },{ text: "I never link my lessons and each class is unconnected.", category: "bad-practice", explanation: "Students learn best when new knowledge builds upon previous lessons, creating a coherent learning journey." },{ text: "I write new words clearly on the board and check the spelling.", category: "good-practice", explanation: "Clear presentation of new vocabulary aids memory and correct usage." },{ text: "I choose topics that interest me, not my students.", category: "bad-practice", explanation: "Student motivation is highest when the topics are relevant and interesting to them." }];
+const SequentialDnD = { currentItemIndex: 0, sortableInstances: [], init() { this.cacheDOM(); this.bindEvents(); this.initSortable(); this.displayCurrentItem(); }, cacheDOM() { this.mainContainer = document.getElementById('dnd-main-container'); this.itemsPool = document.getElementById('items-pool'); this.categoryZones = document.querySelectorAll('.dnd-category-zone'); this.feedbackContainer = document.getElementById('immediate-feedback'); this.feedbackText = document.getElementById('feedback-text'); this.nextBtn = document.getElementById('next-btn'); this.completionMessage = document.getElementById('completion-message'); this.restartBtn = document.getElementById('restart-btn'); this.progressBarFill = document.getElementById('progress-bar-fill'); this.progressBarText = document.getElementById('progress-bar-text'); }, bindEvents() { this.nextBtn.addEventListener('click', () => this.loadNextItem()); this.restartBtn.addEventListener('click', () => this.restartActivity()); this.itemsPool.addEventListener('click', (e) => this.handleTapSelect(e)); this.categoryZones.forEach(zone => { zone.addEventListener('click', (e) => this.handleTapDrop(e)); }); }, initSortable() { const allLists = [this.itemsPool, ...Array.from(this.categoryZones).map(z => z.querySelector('.dnd-list'))]; allLists.forEach(list => { const instance = new Sortable(list, { group: 'shared-group', animation: 250, onEnd: (evt) => this.handleDragDrop(evt) }); this.sortableInstances.push(instance); }); }, updateProgressBar(count) { const total = practices.length; const current = (typeof count !== 'undefined') ? count : this.currentItemIndex; const percentage = total > 0 ? (current / total) * 100 : 0; this.progressBarFill.style.width = `${percentage}%`; this.progressBarText.textContent = `${current} / ${total}`; }, displayCurrentItem() { this.itemsPool.innerHTML = ''; this.feedbackContainer.classList.remove('visible', 'correct', 'incorrect', 'is-fading-out'); this.nextBtn.classList.add('hidden'); this.itemsPool.classList.remove('hidden'); this.completionMessage.classList.add('hidden'); this.setSortableState(true); this.updateProgressBar(); if (this.currentItemIndex < practices.length) { const itemData = practices[this.currentItemIndex]; const itemEl = document.createElement('div'); itemEl.className = 'dnd-item'; itemEl.textContent = itemData.text; itemEl.dataset.correctCategory = itemData.category; itemEl.dataset.explanation = itemData.explanation; this.itemsPool.appendChild(itemEl); } else { this.showCompletionScreen(); } }, handleTapSelect(e) { const tappedItem = e.target.closest('.dnd-item'); if (!tappedItem) return; setTimeout(() => { if (tappedItem.classList.contains('sortable-chosen')) return; const isAlreadySelected = tappedItem.classList.contains('item-selected'); this.deselectAll(); if (!isAlreadySelected) { tappedItem.classList.add('item-selected'); this.mainContainer.classList.add('is-selecting'); } }, 50); }, handleTapDrop(e) { const selectedItem = this.itemsPool.querySelector('.dnd-item.item-selected'); if (!selectedItem) return; const targetZone = e.currentTarget.closest('.dnd-category-zone'); if (!targetZone) return; const targetList = targetZone.querySelector('.dnd-list'); targetList.appendChild(selectedItem); this.processItemPlacement(selectedItem, targetList); this.deselectAll(); }, deselectAll() { const currentSelectedItem = this.mainContainer.querySelector('.item-selected'); if (currentSelectedItem) { currentSelectedItem.classList.remove('item-selected'); } this.mainContainer.classList.remove('is-selecting'); }, handleDragDrop(evt) { const item = evt.item; const droppedZoneContainer = evt.to.closest('.dnd-category-zone'); if (!droppedZoneContainer) return; this.processItemPlacement(item, evt.to); }, processItemPlacement(item, droppedZoneList) { const droppedZoneContainer = droppedZoneList.closest('.dnd-category-zone'); this.setSortableState(false); this.itemsPool.classList.add('hidden'); this.updateProgressBar(this.currentItemIndex + 1); const droppedZoneId = droppedZoneContainer.id; const correctCategory = item.dataset.correctCategory; const isCorrect = droppedZoneId === correctCategory; if (isCorrect) { item.classList.add('correct'); this.feedbackContainer.classList.add('correct'); this.feedbackText.textContent = `Correct! ${item.dataset.explanation}`; this.feedbackContainer.classList.add('visible'); setTimeout(() => this.nextBtn.classList.remove('hidden'), 500); } else { const correctCategoryEl = document.getElementById(correctCategory); const correctCategoryName = correctCategoryEl.querySelector('h3').textContent; const correctZoneList = correctCategoryEl.querySelector('.dnd-list'); item.classList.add('incorrect'); this.feedbackContainer.classList.add('incorrect'); this.feedbackText.textContent = `Not quite. Let's move that to '${correctCategoryName}'. Here's why: ${item.dataset.explanation}`; this.feedbackContainer.classList.add('visible'); setTimeout(() => { item.classList.add('is-moving-out'); setTimeout(() => { item.classList.remove('is-moving-out', 'incorrect'); correctZoneList.appendChild(item); item.classList.add('correct', 'is-moving-in'); setTimeout(() => { item.classList.remove('is-moving-in'); this.nextBtn.classList.remove('hidden'); }, 600); }, 600); }, 500); } }, loadNextItem() { this.nextBtn.classList.add('hidden'); this.feedbackContainer.classList.add('is-fading-out'); setTimeout(() => { const lastPlacedItem = document.querySelector('.dnd-category-zone .dnd-item:not(.inactive)'); if(lastPlacedItem) { lastPlacedItem.classList.add('inactive'); } this.currentItemIndex++; this.displayCurrentItem(); }, 500); }, showCompletionScreen() { this.itemsPool.classList.add('hidden'); this.feedbackContainer.classList.remove('visible'); this.completionMessage.classList.remove('hidden'); }, restartActivity() { this.currentItemIndex = 0; this.categoryZones.forEach(zone => zone.querySelector('.dnd-list').innerHTML = ''); this.displayCurrentItem(); }, setSortableState(enabled) { this.sortableInstances.forEach(instance => { instance.option('disabled', !enabled); }); } };
+const ImageFetcher = { API_KEY: 'xgmzSrq1PBV9ELvW4mSlyq6vAf0k6qDrrMd1zIpLrIheWepQ32zN4iJk', async init() { const container = document.getElementById('decorative-image-container'); const themeQuery = document.getElementById('activity-container').dataset.queryTheme; if (!container || !themeQuery) return; const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(themeQuery)}&per_page=1&orientation=landscape`; try { const response = await fetch(url, { headers: { Authorization: this.API_KEY } }); if (!response.ok) throw new Error(`API error`); const data = await response.json(); const photo = data.photos[0]; if (photo) { const img = document.createElement('img'); img.src = photo.src.landscape; img.alt = photo.alt || `Decorative image of ${themeQuery}`; img.onload = () => { container.innerHTML = ''; container.appendChild(img); }; } else { container.innerHTML = '?'; } } catch (error) { container.innerHTML = '!'; } } };
+document.addEventListener('DOMContentLoaded', () => { ImageFetcher.init(); SequentialDnD.init(); });
+</script>
+
+</body>
+</html>
