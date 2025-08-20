@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<title>Listening Activity: The Future of Space</title>
+<title>Listening Activity: Life in Palestine</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Questrial&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
@@ -215,11 +215,11 @@ h3.section-title {
 </head>
 <body>
   <div id="app-wrapper">
-    <div id="activity-container" data-query-theme="Artemis mission moon exploration">
+    <div id="activity-container" data-query-theme="Palestinian daily life">
       <div id="activity-header">
         <div id="activity-titles">
-          <h1 id="episode-title">NASA's Curious Universe</h1>
-          <h2 class="rubric" id="episode-rubric">Listen to this segment on the future of lunar exploration.</h2>
+          <h1 id="episode-title">Voices from Palestine</h1>
+          <h2 class="rubric" id="episode-rubric">Listen to this segment about daily life in Palestine.</h2>
         </div>
         <div id="decorative-image-container">
           <div class="placeholder-loader"></div>
@@ -326,7 +326,7 @@ h3.section-title {
       // !!! INSECURE - FOR DEMO ONLY. API KEY IS EXPOSED.
       API_KEY: "e015e88b576742a19718aebab2bc4465",
       TRANSCRIPT_ID: null,
-      KEYWORDS: ['Artemis', 'Moon', 'lunar', 'astronauts', 'habitats', 'space', 'mission', 'surface', 'explore', 'Mars'],
+      KEYWORDS: ['Palestine', 'life']
 
       init(audioUrl) {
         const container = document.getElementById('gap-fill-container');

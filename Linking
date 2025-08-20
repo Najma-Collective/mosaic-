@@ -307,18 +307,18 @@
 <body>
   
 <div id="app-wrapper">
-    <div id="activity-container" 
-         data-query-theme="synonyms antonyms vocabulary"
+    <div id="activity-container"
+         data-query-theme="Palestinian terms"
          data-answer-key='[
-            {"start": "L1", "end": "R3"},
-            {"start": "L2", "end": "R1"},
-            {"start": "L3", "end": "R2"}
+            {"start": "L1", "end": "R2"},
+            {"start": "L2", "end": "R3"},
+            {"start": "L3", "end": "R1"}
          ]'>
         
         <div id="activity-header">
             <div id="activity-titles">
-                <h1>Vocabulary Matching</h1>
-                <h2 class="rubric">Match each word to its correct synonym.</h2>
+                <h1>Palestinian Terms</h1>
+                <h2 class="rubric">Connect each word to its meaning.</h2>
             </div>
             <div id="decorative-image-container">
                 <div class="placeholder-loader"></div>
@@ -329,24 +329,24 @@
             <div class="linking-container">
                 <canvas class="linking-canvas"></canvas>
                 <div class="link-column left">
-                    <div class="linking-item" data-link-id="L1" data-explanation="'Ubiquitous' means present, appearing, or found everywhere, which is a direct synonym for 'omnipresent'.">
-                        <div class="linking-item-text">Ubiquitous</div>
-                        <div class="linking-item-connector"></div>
+                    <div class="linking-item" data-link-id="L1" data-explanation="'Al Quds' is the Arabic name widely used for the city of Jerusalem.">
+                        <div class="linking-item-text">Al Quds</div>
+                    <div class="linking-item-connector"></div>
                     </div>
-                    <div class="linking-item" data-link-id="L2" data-explanation="'Ephemeral' describes something that lasts for a very short time, which is synonymous with 'fleeting'.">
-                        <div class="linking-item-text">Ephemeral</div>
-                        <div class="linking-item-connector"></div>
+                    <div class="linking-item" data-link-id="L2" data-explanation="Kanafeh is a beloved Palestinian dessert of sweet cheese and syrup.">
+                        <div class="linking-item-text">Kanafeh</div>
+                    <div class="linking-item-connector"></div>
                     </div>
-                    <div class="linking-item" data-link-id="L3" data-explanation="'Malleable' means easily influenced or pliable, making it a synonym for 'impressionable'.">
-                        <div class="linking-item-text">Malleable</div>
-                        <div class="linking-item-connector"></div>
+                    <div class="linking-item" data-link-id="L3" data-explanation="Dabke is a traditional folk dance performed at celebrations.">
+                        <div class="linking-item-text">Dabke</div>
+                    <div class="linking-item-connector"></div>
                     </div>
                 </div>
 
                 <div class="link-column right">
-                    <div class="linking-item" data-link-id="R1"><div class="linking-item-text">Fleeting</div><div class="linking-item-connector"></div></div>
-                    <div class="linking-item" data-link-id="R2"><div class="linking-item-text">Impressionable</div><div class="linking-item-connector"></div></div>
-                    <div class="linking-item" data-link-id="R3"><div class="linking-item-text">Omnipresent</div><div class="linking-item-connector"></div></div>
+                    <div class="linking-item" data-link-id="R1"><div class="linking-item-text">Traditional dance</div><div class="linking-item-connector"></div></div>
+                    <div class="linking-item" data-link-id="R2"><div class="linking-item-text">Jerusalem</div><div class="linking-item-connector"></div></div>
+                    <div class="linking-item" data-link-id="R3"><div class="linking-item-text">Sweet cheese dessert</div><div class="linking-item-connector"></div></div>
                 </div>
                 
                 <div class="linking-controls">

@@ -299,65 +299,65 @@
         <!-- Question 1: Single Choice -->
         <div class="mc-question">
           <div class="mc-question-header">
-            <div class="mc-question-text">What is the capital of France?</div>
+            <div class="mc-question-text">Which city is home to the Dome of the Rock?</div>
           </div>
           <div class="mc-options-container">
-            <div class="mc-option-item" data-correct="false">
-              <label class="mc-option-label">
-                <input type="radio" name="q1">
-                <span class="option-control"></span>
-                <span class="mc-option-text">Berlin</span>
-              </label>
-            </div>
             <div class="mc-option-item" data-correct="true">
               <label class="mc-option-label">
                 <input type="radio" name="q1">
                 <span class="option-control"></span>
-                <span class="mc-option-text">Paris</span>
+                <span class="mc-option-text">Jerusalem</span>
               </label>
             </div>
             <div class="mc-option-item" data-correct="false">
               <label class="mc-option-label">
                 <input type="radio" name="q1">
                 <span class="option-control"></span>
-                <span class="mc-option-text">London</span>
+                <span class="mc-option-text">Bethlehem</span>
+              </label>
+            </div>
+            <div class="mc-option-item" data-correct="false">
+              <label class="mc-option-label">
+                <input type="radio" name="q1">
+                <span class="option-control"></span>
+                <span class="mc-option-text">Gaza City</span>
               </label>
             </div>
           </div>
           <div class="mc-explanation" style="display: none;">
-            Paris is the capital and most populous city of France. It has been a major center of finance, diplomacy, commerce, fashion, gastronomy, science, and the arts for centuries.
+            The Dome of the Rock is located in Jerusalem's Old City.
           </div>
         </div>
         <!-- Question 2: Multiple Choice -->
         <div class="mc-question">
           <div class="mc-question-header">
-              <div class="mc-question-text">Which of the following are primary colors?</div>
+              <div class="mc-question-text">Which of the following foods are staples of Palestinian cuisine?</div>
           </div>
           <div class="mc-options-container">
               <div class="mc-option-item" data-correct="true">
                   <label class="mc-option-label">
                       <input type="checkbox" name="q2">
                       <span class="option-control"></span>
-                      <span class="mc-option-text">Red</span>
+                      <span class="mc-option-text">Maqluba</span>
                   </label>
               </div>
               <div class="mc-option-item" data-correct="false">
                   <label class="mc-option-label">
                       <input type="checkbox" name="q2">
                       <span class="option-control"></span>
-                      <span class="mc-option-text">Green</span>
+                      <span class="mc-option-text">Sushi</span>
                   </label>
               </div>
               <div class="mc-option-item" data-correct="true">
                   <label class="mc-option-label">
                       <input type="checkbox" name="q2">
                       <span class="option-control"></span>
-                      <span class="mc-option-text">Blue</span>
+                      <span class="mc-option-text">Falafel</span>
                   </label>
               </div>
           </div>
            <div class="mc-explanation" style="display: none;">
-            In the traditional RYB color model, the primary colors are Red, Yellow, and Blue. In the RGB model used for screens, they are Red, Green, and Blue. In this context, Red and Blue are correct.
+            Maqluba and falafel are common dishes enjoyed throughout Palestine.
           </div>
         </div>
       </div>

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Standalone Activity: Listening Gap-Fill</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Questrial&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-sage: #7A8471;
+      --secondary-sage: #9CAF88;
+      --tertiary-sage: #B8C5A6;
+      --warm-cream: #F8F6F0;
+      --soft-white: #FEFCF7;
+      --clay-brown: #A0826D;
+      --forest-shadow: #5A6B52;
+      --border-sage: rgba(122, 132, 113, 0.2);
+      --hover-sage: rgba(156, 175, 136, 0.15);
+      --correct-bg: #E8F5E9;
+      --correct-border: #2E7D32;
+      --incorrect-bg: #FFEBEE;
+      --incorrect-border: #C62828;
+      --font-display: 'Questrial', sans-serif;
+      --font-body: 'Nunito', sans-serif;
+      --feedback-width-desktop: 380px;
+    }
+
+    html, body {
+      margin: 0; padding: 0; width: 100%;
+      font-family: var(--font-body);
+      background: linear-gradient(135deg, #F8F6F0 0%, #F5F3ED 100%);
+      overflow-x: hidden;
+      user-select: none; /* Prevent text selection during scrubbing */
+    }
+
+    body.feedback-open { overflow: hidden; }
+
+    #app-wrapper {
+      position: relative; display: flex; justify-content: center;
+      align-items: flex-start; padding: 2rem; box-sizing: border-box; width: 100%;
+    }
+
+    #activity-container {
+      width: 100%; max-width: 900px; background: var(--soft-white);
+      padding: 48px; border-radius: 20px;
+      border: 1px solid rgba(122, 132, 113, 0.12);
+      box-shadow: 0 8px 32px rgba(122, 132, 113, 0.08);
+      box-sizing: border-box; transition: margin-right 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    @media (min-width: 1024px) {
+      #app-wrapper.feedback-visible #activity-container { margin-right: var(--feedback-width-desktop); }
+    }
+
+    #activity-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 32px;
+      margin-bottom: 24px;
+    }
+    #activity-titles { flex-grow: 1; }
+    h1 { font-family: var(--font-display); font-size: 2.5rem; color: var(--forest-shadow); margin: 0 0 8px 0; }
+    h2.rubric { font-family: var(--font-body); font-size: 1.1rem; color: var(--secondary-sage); margin: 0; border-left: 3px solid var(--tertiary-sage); padding-left: 12px; }
+
+    #decorative-image-container {
+      flex-shrink: 0;
+      width: 180px;
+      height: 120px;
+      background-color: var(--warm-cream);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-sage);
+    }
+    #decorative-image-container img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+
+    /* --- START: MODIFIED & NEW STYLES --- */
+     #audio-player-container {
+        position: relative;
+        padding: 12px 20px;
+        background-color: var(--warm-cream);
+        border: 1px solid var(--border-sage);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+    .player-btn {
+        background: none; border: none; cursor: pointer; padding: 6px; border-radius: 50%;
+        display: inline-flex; align-items: center; justify-content: center;
+        color: var(--primary-sage); transition: background-color 0.2s, color 0.2s;
+    }
+    .player-btn:hover { background-color: var(--hover-sage); }
+    .player-btn:disabled { color: var(--tertiary-sage); cursor: not-allowed; background-color: transparent; }
+    .player-btn svg { width: 24px; height: 24px; }
+
+    .progress-bar-wrapper {
+        flex-grow: 1; height: 8px; background-color: var(--tertiary-sage);
+        border-radius: 4px; cursor: pointer;
+        position: relative;
+    }
+    #progress-bar {
+        width: 0%; height: 100%; background-color: var(--primary-sage);
+        border-radius: 4px; transition: width 0.1s linear; pointer-events: none;
+    }
+    #progress-handle {
+        position: absolute;
+        top: 50%;
+        left: 0%;
+        transform: translate(-50%, -50%);
+        width: 18px; 
+        height: 18px; 
+        border-radius: 50%;
+        background: var(--clay-brown);
+        border: 2px solid var(--soft-white); 
+        box-shadow: 0 1px 3px rgba(90, 107, 82, 0.3); 
+        cursor: pointer;
+        transition: transform 0.2s ease; 
+    }
+    .progress-bar-wrapper:active #progress-handle {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+
+
+    .control-select {
+        padding: 8px 16px; border-radius: 12px; border: 1px solid var(--tertiary-sage);
+        background-color: var(--soft-white); color: var(--forest-shadow);
+        font-family: var(--font-body); font-weight: 600; cursor: pointer; appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%237A8471' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+        background-repeat: no-repeat; background-position: right 0.5rem center;
+        background-size: 1em; padding-right: 2rem;
+    }
+
+    #settings-panel {
+        position: absolute; top: calc(100% + 8px); right: 12px;
+        background-color: var(--soft-white); border-radius: 12px;
+        border: 1px solid var(--border-sage); box-shadow: 0 4px 12px rgba(90, 107, 82, 0.1);
+        padding: 16px; z-index: 10; display: flex; flex-direction: column; gap: 8px;
+        transform-origin: top right; transform: scale(0.95); opacity: 0;
+        transition: transform 0.2s, opacity 0.2s; pointer-events: none;
+    }
+    #audio-player-container.settings-open #settings-panel {
+        transform: scale(1); opacity: 1; pointer-events: auto;
+    }
+    #settings-panel label { font-size: 0.85rem; color: var(--primary-sage); font-weight: 600; padding-left: 12px; }
+
+    #activity-setup-panel {
+        padding: 12px 20px; background-color: var(--warm-cream);
+        border: 1px dashed var(--tertiary-sage); border-radius: 16px;
+        display: flex; justify-content: center; align-items: center; gap: 16px;
+        margin-bottom: 24px;
+    }
+     .control-group { display: flex; flex-direction: column; gap: 4px; }
+     .control-group label { font-size: 0.85rem; color: var(--primary-sage); font-weight: 600; padding-left: 12px; }
+
+    #gap-fill-container {
+        padding: 24px; border: 1px solid var(--border-sage); border-radius: 16px;
+        background-color: #fdfdfc; line-height: 2.2; color: var(--forest-shadow);
+        font-size: 1.1rem; min-height: 150px;
+    }
+    .gap-input {
+        width: 120px; border: none; border-bottom: 2px solid var(--tertiary-sage);
+        background: transparent; font-family: var(--font-body); font-size: 1.05rem;
+        color: var(--clay-brown); font-weight: 600; text-align: center;
+        padding: 4px 0; margin: 0 4px; transition: all 0.2s ease-in-out;
+    }
+    .gap-input:focus { outline: none; border-bottom-color: var(--primary-sage); }
+    .gap-input.correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); border-radius: 4px; }
+    .gap-input.incorrect { background-color: var(--incorrect-bg); border-color: var(--incorrect-border); color: var--incorrect-border); border-radius: 4px; }
+
+    .clickable-word {
+        cursor: pointer;
+        padding: 2px 8px; 
+        border-radius: 14px; 
+        transition: background-color 0.2s ease, color 0.2s ease;
+        margin: 0 -4px;
+    }
+    .clickable-word:hover {
+        background-color: var(--hover-sage);
+    }
+    .clickable-word.speaking {
+        background-color: var(--tertiary-sage);
+        color: var(--forest-shadow);
+    }
+    /* --- END: MODIFIED & NEW STYLES --- */
+
+    .activity-controls { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .activity-btn { padding: 12px 24px; border-radius: 12px; border: 1px solid var(--primary-sage); background-color: var(--primary-sage); color: white; font-weight: 600; cursor: pointer; transition: all 0.2s; -webkit-tap-highlight-color: transparent; }
+    .activity-btn:hover { background-color: var(--forest-shadow); transform: translateY(-1px); }
+    .activity-btn:disabled { background-color: var(--tertiary-sage); cursor: not-allowed; border-color: var(--tertiary-sage); transform: none; }
+
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .placeholder-loader { width: 24px; height: 24px; border: 3px solid var(--hover-sage); border-top-color: var(--secondary-sage); border-radius: 50%; animation: spin 1s linear infinite; }
+
+    #feedback-sidebar { position: fixed; top: 0; right: 0; width: 100%; height: 100%; background: var(--warm-cream); border-left: 1px solid var(--border-sage); box-shadow: -8px 0 32px rgba(90, 107, 82, 0.1); z-index: 1000; transform: translateX(100%); transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1); display: flex; flex-direction: column; box-sizing: border-box; }
+    @media (min-width: 1024px) { #feedback-sidebar { width: var(--feedback-width-desktop); height: 100vh; } }
+    #app-wrapper.feedback-visible #feedback-sidebar { transform: translateX(0); }
+    .feedback-header { padding: 24px; border-bottom: 1px solid var(--border-sage); }
+    .feedback-header h3 { font-family: var(--font-display); font-size: 1.8rem; color: var(--forest-shadow); margin: 0 0 8px 0; }
+    #feedback-score { font-size: 1.1rem; font-weight: 600; color: var(--primary-sage); }
+    #feedback-details { flex-grow: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+    .feedback-item { background: var(--soft-white); border: 1px solid var(--border-sage); border-left-width: 4px; border-radius: 8px; padding: 16px; }
+    .feedback-item.correct { border-left-color: var(--correct-border); }
+    .feedback-item.incorrect { border-left-color: var(--incorrect-border); }
+    .feedback-item h4 { margin: 0 0 12px 0; font-size: 1.1rem; color: var(--forest-shadow); }
+    .feedback-item p { margin: 0 0 8px 0; font-size: 0.95rem; line-height: 1.6; color: var(--primary-sage); }
+    .feedback-item p strong { color: var(--forest-shadow); }
+    .feedback-footer { padding: 24px; border-top: 1px solid var(--border-sage); text-align: center; background: var(--warm-cream); }
+
+    @media (max-width: 767px) {
+      #app-wrapper { padding: 1rem; }
+      #activity-container { padding: 24px; }
+      #activity-header { flex-direction: column; align-items: center; text-align: center; }
+      h2.rubric { border-left: none; padding-left: 0; }
+      #decorative-image-container { width: 100%; height: 150px; }
+      .feedback-header, .feedback-footer { padding: 20px; }
+       #audio-player-container { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app-wrapper">
+    <div id="activity-container">
+
+      <div id="activity-header">
+        <div id="activity-titles">
+          <h1>Tatreez: A Stitched History</h1>
+          <h2 class="rubric">Listen, fill the gaps, and use the player to control the audio.</h2>
+        </div>
+        <div id="decorative-image-container">
+          <img src="https://64.media.tumblr.com/ffb7ebbc1db3f00d4874e9d7bfdd1c36/tumblr_no844xDVew1rpzr0io1_540.jpg" alt="Women wearing Palestinian thobes.">
+        </div>
+      </div>
+
+      <div id="audio-player-container">
+          <button id="player-play-btn" class="player-btn" title="Play/Pause" disabled>
+             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
+          </button>
+          <button id="player-stop-btn" class="player-btn" title="Stop" disabled>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h12v12H6z"></path></svg>
+          </button>
+          <div id="progress-bar-wrapper" class="progress-bar-wrapper">
+              <div id="progress-bar"></div>
+              <div id="progress-handle"></div>
+          </div>
+          <button id="settings-btn" class="player-btn" title="Settings">
+              <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61.22l2-3.46c.12-.22-.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"></path></svg>
+          </button>
+          <div id="settings-panel">
+               <label for="voice-select">Voice</label>
+               <select id="voice-select" class="control-select"><option>Loading...</option></select>
+               <label for="speed-select">Speed</label>
+               <select id="speed-select" class="control-select">
+                  <option value="0.8">Slow</option>
+                  <option value="1" selected>Normal</option>
+                  <option value="1.2">Fast</option>
+               </select>
+          </div>
+      </div>
+      
+      <div id="listening-main-container">
+        <div id="activity-setup-panel">
+            <div class="control-group">
+                <label for="gap-frequency-select">Gap Frequency</label>
+                <select id="gap-frequency-select" class="control-select">
+                    <option value="10">Easy (Every 10th)</option>
+                    <option value="7" selected>Normal (Every 7th)</option>
+                    <option value="5">Hard (Every 5th)</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="gap-fill-container">
+            <div class="placeholder-loader" style="margin: 4rem auto;"></div>
+        </div>
+      </div>
+
+      <div class="activity-controls">
+        <button id="check-answers-btn" class="activity-btn" disabled>Check Answers</button>
+      </div>
+    </div>
+
+    <div id="feedback-sidebar"></div>
+  </div>
+
+<script>
+const App = {
+    init() {
+        FeedbackPanel.init();
+        ListeningActivityManager.init();
+    }
+};
+
+const FeedbackPanel = {
+  dom: {},
+  init() {
+    document.getElementById('feedback-sidebar').innerHTML = `<div class="feedback-header"><h3>Your Results</h3><p id="feedback-score"></p></div><div id="feedback-details"></div><div class="feedback-footer"><button id="feedback-close-btn" class="activity-btn secondary">Try Again</button></div>`;
+    this.dom.appWrapper = document.getElementById('app-wrapper'); this.dom.feedbackSidebar = document.getElementById('feedback-sidebar'); this.dom.feedbackScore = document.getElementById('feedback-score'); this.dom.feedbackDetails = document.getElementById('feedback-details'); this.dom.feedbackCloseBtn = document.getElementById('feedback-close-btn'); this.bindEvents();
+  },
+  bindEvents() { this.dom.feedbackCloseBtn.addEventListener('click', () => { this.hide(); ListeningActivityManager.resetActivityState(); }); },
+  clear() { this.dom.feedbackDetails.innerHTML = ''; },
+  addDetail(data) {
+    const itemDiv = document.createElement('div');
+    itemDiv.className = `feedback-item ${data.isCorrect ? 'correct' : 'incorrect'}`;
+    itemDiv.innerHTML = `<h4>Gap #${data.gapNumber}</h4><p><strong>Your Answer:</strong> ${data.studentAnswer || "<em>(empty)</em>"}</p>${!data.isCorrect ? `<p><strong>Correct Answer:</strong> ${data.correctAnswer}</p>` : ''}`;
+    this.dom.feedbackDetails.appendChild(itemDiv);
+  },
+  show(score, total) {
+    this.dom.feedbackScore.textContent = total > 0 ? `You scored ${score} out of ${total}.` : `No answers were submitted.`;
+    this.dom.appWrapper.classList.add('feedback-visible'); document.body.classList.add('feedback-open');
+  },
+  hide() { this.dom.appWrapper.classList.remove('feedback-visible'); document.body.classList.remove('feedback-open'); }
+};
+
+const ListeningActivityManager = {
+    dom: {},
+    state: { fullText: '', voices: [], utterance: null, currentHighlightSpan: null, isScrubbing: false },
+    sourceText: "Through the cultural practice of embroidery known as tatreez, Palestinian women and girls decorated their thobe (or dress) with symbols of history, memory, and place, telling the tale of the maker’s life and her connection to the land through an illustrative medium of colorfully stitched motifs. Until the mid-twentieth century, Palestinian dress styles reflected an “individual or a place: a wife, a mother, a daughter, a family, a house, a village, a town, a field, a market.”[6] The thobe marks the owner’s life and explicitly holds a woman’s biographical details through the needlework techniques used, the threads chosen, and the harmonious balance of colors, as well as each maker’s interpretation of traditional patterns that tell her story in stitches.",
+    
+    init() {
+        this.cacheDOM();
+        this.loadVoices();
+        this.bindEvents();
+        this.generateActivity();
+    },
+
+    cacheDOM() {
+        this.dom.checkBtn = document.getElementById('check-answers-btn');
+        this.dom.voiceSelect = document.getElementById('voice-select');
+        this.dom.speedSelect = document.getElementById('speed-select');
+        this.dom.frequencySelect = document.getElementById('gap-frequency-select');
+        this.dom.gapFillContainer = document.getElementById('gap-fill-container');
+        this.dom.playerContainer = document.getElementById('audio-player-container');
+        this.dom.playBtn = document.getElementById('player-play-btn');
+        this.dom.stopBtn = document.getElementById('player-stop-btn');
+        this.dom.progressBarWrapper = document.getElementById('progress-bar-wrapper');
+        this.dom.progressBar = document.getElementById('progress-bar');
+        this.dom.progressHandle = document.getElementById('progress-handle');
+        this.dom.settingsBtn = document.getElementById('settings-btn');
+        this.dom.settingsPanel = document.getElementById('settings-panel');
+    },
+
+    bindEvents() {
+        this.dom.checkBtn.addEventListener('click', () => this.checkAnswers());
+        this.dom.frequencySelect.addEventListener('change', () => this.generateActivity());
+        
+        // Player events
+        this.dom.playBtn.addEventListener('click', () => this.togglePlayback());
+        this.dom.stopBtn.addEventListener('click', () => this.stopPlayback());
+        this.dom.settingsBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            this.dom.playerContainer.classList.toggle('settings-open');
+        });
+        
+        this.dom.voiceSelect.addEventListener('change', () => this.stopPlayback());
+        this.dom.speedSelect.addEventListener('change', () => this.stopPlayback());
+
+        // Scrubbing events
+        const startScrub = e => { this.state.isScrubbing = true; document.body.classList.add('is-scrubbing'); this.seek(e); };
+        const endScrub = () => { this.state.isScrubbing = false; document.body.classList.remove('is-scrubbing'); };
+        const doScrub = e => { if (this.state.isScrubbing) { e.preventDefault(); this.seek(e); }};
+
+        this.dom.progressBarWrapper.addEventListener('mousedown', startScrub);
+        document.addEventListener('mousemove', doScrub);
+        document.addEventListener('mouseup', endScrub);
+        
+        document.addEventListener('click', e => {
+            if (!this.dom.settingsPanel.contains(e.target) && !this.dom.settingsBtn.contains(e.target)) {
+                this.dom.playerContainer.classList.remove('settings-open');
+            }
+        });
+        
+        this.dom.gapFillContainer.addEventListener('click', e => {
+            if (e.target.classList.contains('clickable-word')) {
+                this.seekTo(parseInt(e.target.dataset.charIndex));
+            }
+        });
+
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = () => this.loadVoices();
+        }
+    },
+    
+    loadVoices() {
+        this.state.voices = speechSynthesis.getVoices();
+        if(this.state.voices.length === 0) return;
+        this.dom.voiceSelect.innerHTML = '';
+        this.state.voices.filter(v => v.lang.startsWith('en')).forEach(voice => {
+            const option = document.createElement('option');
+            option.textContent = voice.name;
+            option.setAttribute('data-voice-uri', voice.voiceURI);
+            this.dom.voiceSelect.appendChild(option);
+        });
+    },
+
+    generateActivity() {
+        this.stopPlayback();
+        this.state.fullText = this.sourceText;
+        this.dom.gapFillContainer.innerHTML = '';
+        
+        const frequency = parseInt(this.dom.frequencySelect.value);
+        const words = this.state.fullText.split(/(\s+)/);
+        let charIndex = 0; let wordCount = 0;
+
+        words.forEach(word => {
+            if (/\S/.test(word)) {
+                wordCount++;
+                if (wordCount % frequency === 0 && word.length > 3) {
+                    const cleanWord = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\[\]]/g,"");
+                    const input = document.createElement('input');
+                    input.type = 'text'; input.className = 'gap-input';
+                    input.setAttribute('data-correct', cleanWord);
+                    this.dom.gapFillContainer.appendChild(input);
+                } else {
+                    const span = document.createElement('span');
+                    span.textContent = word; span.className = 'clickable-word';
+                    span.dataset.charIndex = charIndex;
+                    this.dom.gapFillContainer.appendChild(span);
+                }
+            } else { this.dom.gapFillContainer.appendChild(document.createTextNode(word)); }
+            charIndex += word.length;
+        });
+        this.dom.playBtn.disabled = false; this.dom.stopBtn.disabled = false;
+        this.dom.checkBtn.disabled = false;
+        this.resetActivityState();
+    },
+    
+    togglePlayback() {
+        if (speechSynthesis.paused) speechSynthesis.resume();
+        else if (speechSynthesis.speaking) speechSynthesis.pause();
+        else this.startPlayback();
+    },
+
+    startPlayback(startIndex = 0) {
+        if (!this.state.fullText) return;
+        if (speechSynthesis.speaking) speechSynthesis.cancel();
+
+        const textToSpeak = this.state.fullText.substring(startIndex);
+        this.state.utterance = new SpeechSynthesisUtterance(textToSpeak);
+        
+        const selectedVoiceURI = this.dom.voiceSelect.selectedOptions[0]?.getAttribute('data-voice-uri');
+        const voice = this.state.voices.find(v => v.voiceURI === selectedVoiceURI);
+        if (voice) this.state.utterance.voice = voice;
+        this.state.utterance.rate = parseFloat(this.dom.speedSelect.value);
+
+        this.state.utterance.onstart = () => this.updatePlayButton(true);
+        this.state.utterance.onpause = () => this.updatePlayButton(false);
+        this.state.utterance.onresume = () => this.updatePlayButton(true);
+        this.state.utterance.onend = () => this.stopPlayback();
+        this.state.utterance.onboundary = e => {
+            if (this.state.isScrubbing) return;
+            const absoluteCharIndex = startIndex + e.charIndex;
+            this.updateProgress(absoluteCharIndex);
+            this.highlightWord(absoluteCharIndex);
+        };
+        speechSynthesis.speak(this.state.utterance);
+    },
+
+    stopPlayback() {
+        speechSynthesis.cancel();
+        this.updatePlayButton(false);
+        this.updateProgress(0);
+        this.clearHighlight();
+    },
+    
+    seek(event) {
+        const bounds = this.dom.progressBarWrapper.getBoundingClientRect();
+        let progress = (event.clientX - bounds.left) / bounds.width;
+        progress = Math.max(0, Math.min(1, progress));
+        
+        const charIndex = Math.floor(progress * this.state.fullText.length);
+        this.updateProgress(charIndex);
+
+        if (speechSynthesis.speaking) {
+           this.seekTo(charIndex);
+        }
+    },
+
+    seekTo(charIndex) {
+        this.startPlayback(charIndex);
+    },
+
+    updatePlayButton(isPlaying) {
+        if (isPlaying) this.dom.playBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>`; // Pause
+        else this.dom.playBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>`; // Play
+    },
+
+    updateProgress(charIndex) {
+        const progress = (charIndex / this.state.fullText.length) * 100;
+        this.dom.progressBar.style.width = `${progress}%`;
+        this.dom.progressHandle.style.left = `${progress}%`;
+    },
+
+    highlightWord(charIndex) {
+        this.clearHighlight();
+        const spans = this.dom.gapFillContainer.querySelectorAll('.clickable-word');
+        let spanToHighlight = null;
+        for (const span of spans) {
+            if (parseInt(span.dataset.charIndex) <= charIndex) spanToHighlight = span;
+            else break;
+        }
+        if (spanToHighlight) {
+            spanToHighlight.classList.add('speaking');
+            this.state.currentHighlightSpan = spanToHighlight;
+        }
+    },
+    
+    clearHighlight() {
+        if (this.state.currentHighlightSpan) {
+            this.state.currentHighlightSpan.classList.remove('speaking');
+            this.state.currentHighlightSpan = null;
+        }
+    },
+
+    checkAnswers() {
+        this.stopPlayback();
+        let score = 0;
+        const inputs = this.dom.gapFillContainer.querySelectorAll('.gap-input');
+        
+        this.clearInlineFeedback(); FeedbackPanel.clear();
+
+        inputs.forEach((input, index) => {
+            const userAnswer = input.value.trim().toLowerCase();
+            const correctAnswer = input.dataset.correct.toLowerCase();
+            const isCorrect = userAnswer === correctAnswer;
+            
+            input.classList.add(isCorrect ? 'correct' : 'incorrect');
+            if (isCorrect) score++;
+
+            FeedbackPanel.addDetail({ isCorrect, gapNumber: index + 1, studentAnswer: input.value.trim(), correctAnswer: input.dataset.correct });
+        });
+
+        FeedbackPanel.show(score, inputs.length);
+        this.dom.checkBtn.disabled = true;
+    },
+
+    clearInlineFeedback() {
+        this.dom.gapFillContainer.querySelectorAll('.gap-input').forEach(input => input.classList.remove('correct', 'incorrect'));
+    },
+
+    resetActivityState() {
+        this.clearInlineFeedback();
+        this.dom.checkBtn.disabled = false;
+        this.dom.gapFillContainer.querySelectorAll('.gap-input').forEach(input => {
+            input.value = '';
+            input.disabled = false
+        });
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => App.init());
+</script>
+
+</body>
+</html>

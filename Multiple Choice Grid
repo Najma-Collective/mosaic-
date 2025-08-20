@@ -419,12 +419,12 @@
 <body>
 
   <div id="app-wrapper">
-    <div id="activity-container" data-query-theme="science laboratory abstract">
+    <div id="activity-container" data-query-theme="Palestinian cities">
 
       <div id="activity-header">
         <div id="activity-titles">
-          <h1>States of Matter</h1>
-          <h2 class="rubric">Match each state of matter to its physical description.</h2>
+          <h1>Palestinian Cities</h1>
+          <h2 class="rubric">Match each city to its well-known feature.</h2>
         </div>
         <div id="decorative-image-container">
           <div class="placeholder-loader"></div>
@@ -436,36 +436,36 @@
           <thead>
             <tr>
               <th><!-- Empty corner --></th>
-              <th>Definite Shape & Volume</th>
-              <th>Definite Volume</th>
-              <th>Indefinite Shape & Volume</th>
-              <th>Ionized Gas</th>
+              <th>Home to Al Aqsa Mosque</th>
+              <th>On the Mediterranean coast</th>
+              <th>Famous for kanafeh</th>
+              <th>Site of the Nativity</th>
             </tr>
           </thead>
           <tbody>
-            <tr data-correct-column="col-1" data-explanation="A solid's particles are tightly packed in a fixed structure, giving it a definite shape and volume.">
-              <th scope="row">Solid</th>
+            <tr data-correct-column="col-1" data-explanation="Jerusalem is revered for the Al Aqsa Mosque within its Old City.">
+              <th scope="row">Jerusalem</th>
               <td><label><input type="radio" name="row-1" value="col-1"><span class="radio-custom"></span></label></td>
               <td><label><input type="radio" name="row-1" value="col-2"><span class="radio-custom"></span></label></td>
               <td><label><input type="radio" name="row-1" value="col-3"><span class="radio-custom"></span></label></td>
               <td><label><input type="radio" name="row-1" value="col-4"><span class="radio-custom"></span></label></td>
             </tr>
-            <tr data-correct-column="col-2" data-explanation="A liquid's particles can slide past one another, allowing it to take the shape of its container, but its volume remains constant.">
-              <th scope="row">Liquid</th>
+            <tr data-correct-column="col-2" data-explanation="Gaza City lies along the coast of the Mediterranean Sea.">
+              <th scope="row">Gaza City</th>
               <td><label><input type="radio" name="row-2" value="col-1"><span class="radio-custom"></span></label></td>
               <td><label><input type="radio" name="row-2" value="col-2"><span class="radio-custom"></span></label></td>
               <td><label><input type="radio" name="row-2" value="col-3"><span class="radio-custom"></span></label></td>
               <td><label><input type="radio" name="row-2" value="col-4"><span class="radio-custom"></span></label></td>
             </tr>
-            <tr data-correct-column="col-3" data-explanation="A gas's particles are far apart and move randomly, allowing it to expand to fill any container, giving it an indefinite shape and volume.">
-              <th scope="row">Gas</th>
+            <tr data-correct-column="col-3" data-explanation="Nablus is renowned for its sweet kanafeh dessert.">
+              <th scope="row">Nablus</th>
               <td><label><input type="radio" name="row-3" value="col-1"><span class="radio-custom"></span></label></td>
               <td><label><input type="radio" name="row-3" value="col-2"><span class="radio-custom"></span></label></td>
               <td><label><input type="radio" name="row-3" value="col-3"><span class="radio-custom"></span></label></td>
               <td><label><input type="radio" name="row-3" value="col-4"><span class="radio-custom"></span></label></td>
             </tr>
-            <tr data-correct-column="col-4" data-explanation="Plasma is a superheated state of matter where atoms are stripped of their electrons, creating an ionized gas.">
-              <th scope="row">Plasma</th>
+            <tr data-correct-column="col-4" data-explanation="Bethlehem attracts visitors to the Church of the Nativity.">
+              <th scope="row">Bethlehem</th>
               <td><label><input type="radio" name="row-4" value="col-1"><span class="radio-custom"></span></label></td>
               <td><label><input type="radio" name="row-4" value="col-2"><span class="radio-custom"></span></label></td>
               <td><label><input type="radio" name="row-4" value="col-3"><span class="radio-custom"></span></label></td>

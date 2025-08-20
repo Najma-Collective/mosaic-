@@ -170,11 +170,11 @@
 <body>
 
   <div id="app-wrapper">
-    <div id="activity-container" data-query-theme="rome colosseum senate ancient">
+    <div id="activity-container" data-query-theme="Palestinian culture daily life">
 
       <div id="activity-header">
         <div id="activity-titles">
-          <h1>The Roman Empire</h1>
+          <h1>Life in Palestine</h1>
           <h2 class="rubric">Fill in the gaps to complete the sentences.</h2>
         </div>
         <div id="decorative-image-container">
@@ -184,55 +184,58 @@
 
       <div class="gapfill-container">
         <p>
-          The famous amphitheater in the center of the city, known for its gladiator contests, is called the
+          The city in the West Bank known for its bustling markets is the
           <span class="gap-wrapper"
-                data-feedback-title="The famous amphitheater..."
-                data-correct-answer="Colosseum"
-                data-explanation="The Colosseum was the largest amphitheater ever built and was used for gladiatorial contests and public spectacles.">
+                data-feedback-title="City of lively markets"
+                data-correct-answer="Nablus"
+                data-explanation="Nablus is famed for its historic markets and sweet Kanafeh."
+          >
             <select>
               <option value="">Select...</option>
-              <option value="Colosseum">Colosseum</option>
-              <option value="Pantheon">Pantheon</option>
-              <option value="Forum">Forum</option>
+              <option value="Hebron">Hebron</option>
+              <option value="Nablus">Nablus</option>
+              <option value="Jericho">Jericho</option>
             </select>
           </span>.
-          The governing and advisory assembly of the aristocracy in the ancient Roman Republic was the
+          A traditional Palestinian scarf is the
           <span class="gap-wrapper"
-                data-feedback-title="The governing assembly..."
-                data-correct-answer="Senate"
-                data-explanation="The Senate was a permanent and powerful institution in the Roman government, composed of the most prominent men in Rome.">
+                data-feedback-title="Traditional scarf"
+                data-correct-answer="keffiyeh"
+                data-explanation="The black-and-white keffiyeh is a symbol of Palestinian heritage."
+          >
             <select>
               <option value="">Select...</option>
-              <option value="Assembly">Assembly</option>
-              <option value="Senate">Senate</option>
-              <option value="Council">Council</option>
+              <option value="keffiyeh">keffiyeh</option>
+              <option value="shemagh">shemagh</option>
+              <option value="abaya">abaya</option>
             </select>
           </span>.
-          A
+          The salty lake bordering Jordan and Palestine is the
           <span class="gap-wrapper"
-                data-feedback-title="A ... was the largest unit of the Roman army"
-                data-correct-answer="legion"
-                data-explanation="The legion was the backbone of the Roman military machine, known for its discipline and effectiveness in battle.">
+                data-feedback-title="Salty lake"
+                data-correct-answer="Dead Sea"
+                data-explanation="The Dead Sea is renowned for its hypersaline water and mineral-rich mud."
+          >
             <select>
               <option value="">Select...</option>
-              <option value="battalion">battalion</option>
-              <option value="phalanx">phalanx</option>
-              <option value="legion">legion</option>
+              <option value="Dead Sea">Dead Sea</option>
+              <option value="Red Sea">Red Sea</option>
+              <option value="Lake Tiberias">Lake Tiberias</option>
             </select>
-          </span>
-          was the largest unit of the Roman army. According to legend, the city of
+          </span>.
+          Every autumn, many Palestinian farmers harvest
           <span class="gap-wrapper"
-                data-feedback-title="The city of ... was founded by twins"
-                data-correct-answer="Rome"
-                data-explanation="The founding myth of Rome, involving twin brothers Romulus and Remus, is a cornerstone of Roman culture and history.">
+                data-feedback-title="Autumn harvest"
+                data-correct-answer="olives"
+                data-explanation="Olive picking season is a central part of Palestinian agricultural life."
+          >
             <select>
               <option value="">Select...</option>
-              <option value="Athens">Athens</option>
-              <option value="Carthage">Carthage</option>
-              <option value="Rome">Rome</option>
+              <option value="oranges">oranges</option>
+              <option value="olives">olives</option>
+              <option value="apples">apples</option>
             </select>
-          </span>
-          was founded by the twin brothers Romulus and Remus in 753 BC.
+          </span>.
         </p>
       </div>
 
