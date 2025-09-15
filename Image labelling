@@ -178,6 +178,9 @@
         transform: scale(0.95);
         box-shadow: none !important;
     }
+    .draggable-label.selected {
+        outline: 2px dashed var(--clay-brown);
+    }
     .student-controls { margin-top: 32px; display: flex; gap: 12px; }
 
     /* --- Feedback Panel Styles --- */
@@ -291,49 +294,49 @@
   
   <div id="app-wrapper">
     <div id="activity-container">
-      <h1>Mediterranean Flora</h1>
-      <h2 class="rubric">Drag the labels from the word bank to the correct plant images.</h2>
+      <h1>Scenes of Palestine</h1>
+      <h2 class="rubric">Drag the labels from the word bank to match each image.</h2>
       
       <div class="image-labelling-grid">
         <div class="image-labelling-card">
-          <img data-query="olive tree branch fruit" alt="A photo of an olive branch." src="">
-          <div class="image-labelling-dropzone" data-match="Olive"></div>
-          <div class="explanation" style="display: none;">The olive is a cornerstone of Mediterranean agriculture, prized for its fruit and the oil extracted from it. It thrives in hot, dry climates.</div>
+          <img data-query="palestinian olive harvest" alt="People harvesting olives." src="">
+          <div class="image-labelling-dropzone" data-match="Olive harvest"></div>
+          <div class="explanation" style="display: none;">Olive picking is an annual tradition that brings families together across Palestine.</div>
         </div>
         <div class="image-labelling-card">
-          <img data-query="prickly pear cactus flower fruit" alt="A photo of a prickly pear cactus." src="">
-          <div class="image-labelling-dropzone" data-match="Prickly pear cactus"></div>
-          <div class="explanation" style="display: none;">Also known as Opuntia, this cactus is recognized by its flat, fleshy pads. It produces colorful flowers and edible, spiny fruits.</div>
+          <img data-query="dabke dance" alt="A group performing dabke." src="">
+          <div class="image-labelling-dropzone" data-match="Dabke"></div>
+          <div class="explanation" style="display: none;">Dabke is a lively folk dance performed at celebrations and weddings.</div>
         </div>
         <div class="image-labelling-card">
-          <img data-query="red poppy flower field" alt="A photo of red poppies." src="">
-          <div class="image-labelling-dropzone" data-match="Poppies"></div>
-          <div class="explanation" style="display: none;">These vibrant red flowers are a common sight in Mediterranean fields and meadows, symbolizing remembrance and peace.</div>
+          <img data-query="al aqsa mosque jerusalem" alt="The Dome of the Rock." src="">
+          <div class="image-labelling-dropzone" data-match="Al Aqsa Mosque"></div>
+          <div class="explanation" style="display: none;">Located in Jerusalem, Al Aqsa Mosque is one of the holiest sites in Islam.</div>
         </div>
         <div class="image-labelling-card">
-          <img data-query="orange fruit tree branch" alt="A photo of oranges on a tree." src="">
-          <div class="image-labelling-dropzone" data-match="Oranges"></div>
-          <div class="explanation" style="display: none;">Citrus trees, especially oranges, are widely cultivated in the Mediterranean. Their sweet, juicy fruits are a major export.</div>
+          <img data-query="palestinian embroidery" alt="Traditional embroidery." src="">
+          <div class="image-labelling-dropzone" data-match="Embroidery"></div>
+          <div class="explanation" style="display: none;">Colorful stitched patterns are a proud expression of Palestinian heritage.</div>
         </div>
         <div class="image-labelling-card">
-          <img data-query="italian cypress tree landscape" alt="A photo of cypress trees." src="">
-          <div class="image-labelling-dropzone" data-match="Cypress"></div>
-          <div class="explanation" style="display: none;">The tall, slender, and dark green Italian Cypress is a classic feature of the Tuscan and broader Mediterranean landscape.</div>
+          <img data-query="falafel pita" alt="Falafel served in pita." src="">
+          <div class="image-labelling-dropzone" data-match="Falafel"></div>
+          <div class="explanation" style="display: none;">Falafel, made from chickpeas or fava beans, is a beloved street food.</div>
         </div>
         <div class="image-labelling-card">
-          <img data-query="thyme herb plant garden" alt="A photo of a thyme plant." src="">
-          <div class="image-labelling-dropzone" data-match="Thyme"></div>
-          <div class="explanation" style="display: none;">This aromatic herb is native to the Mediterranean region and is a fundamental ingredient in its cuisine, known for its earthy flavor.</div>
+          <img data-query="dead sea float" alt="Floating in the Dead Sea." src="">
+          <div class="image-labelling-dropzone" data-match="Dead Sea"></div>
+          <div class="explanation" style="display: none;">Visitors can easily float in the Dead Sea due to its high salt content.</div>
         </div>
       </div>
 
       <div class="image-labelling-label-bank">
-        <div class="draggable-label" draggable="true">Cypress</div>
-        <div class="draggable-label" draggable="true">Poppies</div>
-        <div class="draggable-label" draggable="true">Thyme</div>
-        <div class="draggable-label" draggable="true">Olive</div>
-        <div class="draggable-label" draggable="true">Oranges</div>
-        <div class="draggable-label" draggable="true">Prickly pear cactus</div>
+        <div class="draggable-label" draggable="true">Embroidery</div>
+        <div class="draggable-label" draggable="true">Falafel</div>
+        <div class="draggable-label" draggable="true">Dabke</div>
+        <div class="draggable-label" draggable="true">Olive harvest</div>
+        <div class="draggable-label" draggable="true">Dead Sea</div>
+        <div class="draggable-label" draggable="true">Al Aqsa Mosque</div>
       </div>
 
       <div class="student-controls">
@@ -430,6 +433,7 @@ const Activity = {
 
 const ImageLabellingManager = {
     draggedItem: null,
+    selectedLabel: null,
     dom: {},
 
     init(container) {
@@ -445,7 +449,27 @@ const ImageLabellingManager = {
         this.dom.container.addEventListener('drop', e => this.onDrop(e));
         this.dom.container.addEventListener('click', e => {
             if (e.target.matches('.check-answers-btn')) this.checkAnswers();
+            else this.handleClick(e);
         });
+    },
+
+    handleClick(e) {
+        const label = e.target.closest('.draggable-label');
+        if (label) {
+            if (this.selectedLabel) this.selectedLabel.classList.remove('selected');
+            this.selectedLabel = label;
+            label.classList.add('selected');
+            return;
+        }
+        const zone = e.target.closest('.image-labelling-dropzone, .image-labelling-label-bank');
+        if (zone && this.selectedLabel) {
+            if (zone.matches('.image-labelling-dropzone') && zone.children.length > 0 && !zone.contains(this.selectedLabel)) {
+                return;
+            }
+            zone.appendChild(this.selectedLabel);
+            this.selectedLabel.classList.remove('selected');
+            this.selectedLabel = null;
+        }
     },
 
     onDragStart(e) {
@@ -524,6 +548,10 @@ const ImageLabellingManager = {
         this.dom.container.querySelectorAll('.image-labelling-dropzone').forEach(dz => {
             dz.classList.remove('correct-drop', 'incorrect-drop');
         });
+        if (this.selectedLabel) {
+            this.selectedLabel.classList.remove('selected');
+            this.selectedLabel = null;
+        }
     }
 };
 

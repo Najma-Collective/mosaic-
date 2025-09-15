@@ -101,6 +101,7 @@
 
     .dnd-item.sortable-ghost { background-color: var(--hover-sage); border-style: dashed; color: transparent; }
     .dnd-item.sortable-chosen { cursor: grabbing; transform: scale(1.05); }
+    .dnd-item.selected { outline: 2px dashed var(--clay-brown); }
 
     /* --- RANKING-SPECIFIC STYLES --- */
     #ranking-zone-container {
@@ -213,14 +214,14 @@
 <body>
 
   <div id="app-wrapper">
-    <div id="activity-container" 
-         data-activity-type="single-image" 
-         data-query-theme="writing desk paper pen">
+    <div id="activity-container"
+         data-activity-type="single-image"
+         data-query-theme="Palestinian cooking">
 
       <div id="activity-header">
         <div id="activity-titles">
-          <h1>The Writing Process</h1>
-          <h2 class="rubric">Arrange the stages of the writing process in the correct order, from first to last.</h2>
+          <h1>Making Maqluba</h1>
+          <h2 class="rubric">Arrange the steps to cook maqluba in order.</h2>
         </div>
         <div id="decorative-image-container">
           <div class="placeholder-loader"></div>
@@ -230,13 +231,13 @@
       <div class="dnd-main-container">
         <!-- Pool of items to drag -->
         <div id="items-pool-container">
-          <h3>Stages</h3>
+          <h3>Steps</h3>
           <div id="items-pool" class="dnd-list">
-            <div class="dnd-item" data-correct-rank="3" data-explanation="Revising is the third stage. Here, you review the content, organization, and clarity of your draft, making significant changes to improve the overall piece.">Revising</div>
-            <div class="dnd-item" data-correct-rank="1" data-explanation="Prewriting is the first step, where you brainstorm ideas, research, and outline your topic before you begin writing.">Prewriting</div>
-            <div class="dnd-item" data-correct-rank="5" data-explanation="Publishing is the final stage, where you share your polished work with its intended audience.">Publishing</div>
-            <div class="dnd-item" data-correct-rank="2" data-explanation="Drafting is the second stage. This is where you write the first version of your text, focusing on getting your ideas down on paper.">Drafting</div>
-            <div class="dnd-item" data-correct-rank="4" data-explanation="Editing & Proofreading is the fourth stage. After revising the big picture, you focus on correcting grammar, spelling, punctuation, and formatting errors.">Editing & Proofreading</div>
+            <div class="dnd-item" data-correct-rank="3" data-explanation="Layer the rice, meat and vegetables tightly in the cooking pot for the classic upside-down effect.">Layer ingredients</div>
+            <div class="dnd-item" data-correct-rank="1" data-explanation="Marinating the meat with spices sets the foundation for flavor.">Marinate meat</div>
+            <div class="dnd-item" data-correct-rank="5" data-explanation="When done, invert the pot onto a tray and garnish with nuts and parsley.">Flip and garnish</div>
+            <div class="dnd-item" data-correct-rank="2" data-explanation="Fry the vegetables until lightly browned before adding them to the pot.">Fry vegetables</div>
+            <div class="dnd-item" data-correct-rank="4" data-explanation="Let the dish simmer so the rice absorbs all the flavours.">Simmer until cooked</div>
           </div>
         </div>
 
@@ -327,6 +328,7 @@ const FeedbackPanel = {
 
 const DragAndDropManager = {
     originalItems: [],
+    selectedItem: null,
     init() { this.cacheDOM(); this.storeOriginalState(); this.initSortable(); this.bindEvents(); },
     cacheDOM() {
         this.container = document.getElementById('activity-container');
@@ -350,7 +352,25 @@ const DragAndDropManager = {
             }); 
         });
     },
-    bindEvents() { this.checkBtn.addEventListener('click', () => this.checkAnswers()); },
+    bindEvents() {
+        this.checkBtn.addEventListener('click', () => this.checkAnswers());
+        this.container.addEventListener('click', e => this.handleClick(e));
+    },
+    handleClick(e) {
+        const item = e.target.closest('.dnd-item');
+        if (item) {
+            if (this.selectedItem) this.selectedItem.classList.remove('selected');
+            this.selectedItem = item;
+            item.classList.add('selected');
+            return;
+        }
+        const zone = e.target.closest('#ranking-list, #items-pool');
+        if (zone && this.selectedItem) {
+            zone.appendChild(this.selectedItem);
+            this.selectedItem.classList.remove('selected');
+            this.selectedItem = null;
+        }
+    },
     checkAnswers() {
         let totalCorrect = 0;
         const rankedItems = this.rankingZone.querySelectorAll('.dnd-item');
