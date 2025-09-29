@@ -358,13 +358,58 @@
             border-bottom: 1px solid rgba(122, 132, 113, 0.12);
             box-shadow: 0 10px 25px rgba(62, 74, 58, 0.12);
         }
+        .presentation-header__topline {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: var(--space-4);
+            margin-bottom: var(--space-3);
+        }
+        .presentation-header__identity {
+            flex: 1 1 auto;
+            min-width: 220px;
+        }
         .presentation-header .presentation-eyebrow {
             font-size: var(--step--1);
             font-weight: 800;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             color: var(--primary-sage);
-            margin: 0 0 var(--space-3) 0;
+            margin: 0 0 var(--space-2) 0;
+        }
+        .presentation-descriptor {
+            margin: 0;
+            font-size: var(--step--1);
+            color: var(--ink-muted);
+            max-width: 60ch;
+        }
+        .lesson-selector {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+            align-items: flex-start;
+        }
+        .lesson-selector label {
+            font-size: var(--step--1);
+            font-weight: 700;
+            color: var(--forest-shadow);
+        }
+        .lesson-selector select {
+            appearance: none;
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-sage);
+            background: rgba(255, 255, 255, 0.9);
+            font: inherit;
+            color: var(--forest-shadow);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+            min-width: clamp(200px, 24vw, 260px);
+        }
+        .lesson-selector select:focus-visible {
+            outline: none;
+            box-shadow: var(--ring);
+            border-color: var(--secondary-sage);
         }
         .presentation-menu {
             border-radius: var(--radius-lg);
@@ -629,6 +674,9 @@
             h1 { font-size: clamp(1.75rem, 5vw, 2rem); }
             h2.rubric { font-size: var(--step--1); margin-bottom: 20px; }
             .slide-map-button { padding-inline: var(--space-3); }
+            .presentation-header__topline { flex-direction: column; align-items: stretch; }
+            .lesson-selector { width: 100%; }
+            .lesson-selector select { width: 100%; min-width: 0; }
         }
 
         /* ------------------------------- Accessibility / motion / scroll ----------------------------------*/
@@ -659,6 +707,8 @@
             .presentation-menu__summary { color: var(--forest-shadow); }
             .presentation-menu__summary-icon { color: color-mix(in srgb, var(--secondary-sage) 80%, #0F120E 20%); }
             .presentation-menu__hint { color: color-mix(in srgb, var(--ink-muted) 85%, #fff 15%); }
+            .lesson-selector label { color: var(--forest-shadow); }
+            .lesson-selector select { background: rgba(28, 31, 26, 0.85); border-color: rgba(184, 197, 166, 0.28); color: var(--forest-shadow); box-shadow: none; }
             a { color: color-mix(in srgb, var(--secondary-sage) 80%, #C7D3C0 20%); }
             .mc-question { background: linear-gradient(180deg, #20241E 0%, #191D18 100%); border-color: rgba(184, 197, 166, 0.20); box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 10px 30px rgba(0,0,0,0.35); }
             .activity-btn { background: linear-gradient(180deg, color-mix(in srgb, var(--primary-sage) 80%, #0F120E 20%), var(--primary-sage)); box-shadow: 0 1px 0 rgba(255,255,255,0.08) inset, 0 8px 18px rgba(0,0,0,0.35); }
@@ -1102,7 +1152,16 @@
             <div id="activity-container">
 
             <header class="presentation-header" id="presentation-header">
-                <p class="presentation-eyebrow">Noor Community Mentoring</p>
+                <div class="presentation-header__topline">
+                    <div class="presentation-header__identity">
+                        <p class="presentation-eyebrow" id="presentation-eyebrow">Instructional Session</p>
+                        <p class="presentation-descriptor" id="presentation-descriptor">Choose a template to populate the slides.</p>
+                    </div>
+                    <div class="lesson-selector">
+                        <label for="lesson-template">Lesson template</label>
+                        <select id="lesson-template" aria-label="Select a lesson template"></select>
+                    </div>
+                </div>
                 <details class="presentation-menu" id="notes-io-controls" open>
                     <summary class="presentation-menu__summary">
                         <span class="presentation-menu__summary-label">
@@ -1133,605 +1192,7 @@
                 </details>
             </header>
 
-            <!-- Slide 1: Title Slide -->
-            <div id="slide-1" class="screen active">
-                <div class="animate-on-scroll">
-                    <img src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Diverse team collaborating in a bright, modern office">
-                    <h1 class="slide-title">Welcome to the Noor Community Mentoring Program</h1>
-                </div>
-                <div class="animate-on-scroll">
-                    <h2 class="rubric">Building a supportive future, together.</h2>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn" onclick="nextSlide()"><i class="fas fa-play"></i> Start</button>
-                </div>
-            </div>
-            
-            <!-- Slide 2: Benefits of Mentoring (Soft Skills) -->
-            <div id="slide-2" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-cogs"></i> Benefits of Mentoring (Soft Skills)</h1>
-                </div>
-                <div class="slide-content">
-                    <img src="https://images.pexels.com/photos/1595385/pexels-photo-1595385.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A group of people collaborating and brainstorming on a project">
-                    <p class="animate-on-scroll">Mentoring is a powerful tool for personal and professional growth. It can help you develop a wide range of soft skills that are essential for success in any field.</p>
-                    <ul class="slide-list">
-                        <li class="animate-on-scroll">Improved communication and interpersonal skills</li>
-                        <li class="animate-on-scroll">Enhanced leadership and decision-making abilities</li>
-                        <li class="animate-on-scroll">Increased confidence and self-awareness</li>
-                        <li class="animate-on-scroll">Greater problem-solving and critical thinking skills</li>
-                    </ul>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 3: Community Identity -->
-            <div id="slide-3" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-users"></i> Who Are We?</h1>
-                </div>
-                <div class="slide-content">
-                    <img src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A diverse group of colleagues celebrating a success together">
-                    <p class="animate-on-scroll">The Noor Community is an educational space dedicated to liberation through learning. We believe in solidarity and social justice.</p>
-                    <p class="animate-on-scroll">Our goal is to create a safe environment where everyone can express themselves, develop their skills, and connect with others. We believe that learning and teaching are universal processes that empower us all.</p>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 4: What is Mentoring? -->
-            <div id="slide-4" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-hands-helping"></i> What is Mentoring?</h1>
-                </div>
-                <div class="slide-content">
-                    <img src="https://images.pexels.com/photos/5668859/pexels-photo-5668859.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A mentor guiding a mentee at a computer">
-                    <p class="animate-on-scroll">Mentoring is a collaborative relationship where an experienced person (the mentor) guides another person (the mentee) to help them develop skills and achieve goals.</p>
-                    <p class="animate-on-scroll">This program focuses on building a trusting relationship and empowering you to succeed in your chosen project. The mentor acts as a guide and supporter throughout your journey.</p>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 5: What is Possible? -->
-            <div id="slide-5" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-lightbulb"></i> What Is Possible for You?</h1>
-                </div>
-                <div class="animate-on-scroll">
-                    <h2 class="rubric">Mentoring can help you achieve concrete, practical outcomes.</h2>
-                </div>
-                <div class="slide-content card-container">
-                    <div class="card animate-on-scroll">
-                        <div class="icon"><i class="fas fa-file-alt"></i></div>
-                        <h3>CV & LinkedIn</h3>
-                    </div>
-                    <div class="card animate-on-scroll">
-                        <div class="icon"><i class="fas fa-microphone"></i></div>
-                        <h3>Public Speaking</h3>
-                    </div>
-                    <div class="card animate-on-scroll">
-                        <div class="icon"><i class="fas fa-award"></i></div>
-                        <h3>Grant Proposals</h3>
-                    </div>
-                    <div class="card animate-on-scroll">
-                        <div class="icon"><i class="fas fa-graduation-cap"></i></div>
-                        <h3>University Applications</h3>
-                    </div>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 6 Quiz: Community & Mentoring Check -->
-            <div id="slide-6" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-question-circle"></i> Quick Check: Our Mission & Mentoring</h1>
-                </div>
-                <div class="slide-content">
-                    <div class="quiz-card animate-on-scroll">
-                        <p class="quiz-question-text">What is the Noor Community primarily committed to?</p>
-                        <div class="quiz-options">
-                            <label class="quiz-option">
-                                <input type="radio" name="intro-q1" value="solidarity">
-                                <span>Building solidarity and working toward social justice through education.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="intro-q1" value="competition">
-                                <span>Organising competitive events that reward the top performers only.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="intro-q1" value="online-only">
-                                <span>Delivering self-paced online courses without community interaction.</span>
-                            </label>
-                        </div>
-                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('intro-q1','intro-q1-feedback','solidarity','Exactly! Our community centres solidarity and social justice.','Review our vision—connection and justice are at the heart of Noor Community.')">Check Answer</button>
-                        <p class="quiz-feedback" id="intro-q1-feedback"></p>
-                    </div>
-                    <div class="quiz-card animate-on-scroll">
-                        <p class="quiz-question-text">How does the mentoring relationship operate in this program?</p>
-                        <div class="quiz-options">
-                            <label class="quiz-option">
-                                <input type="radio" name="intro-q2" value="hierarchy">
-                                <span>The mentor gives orders and the mentee follows a fixed set of tasks.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="intro-q2" value="collaboration">
-                                <span>Mentor and mentee collaborate to reach the mentee’s goals through trust and guidance.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="intro-q2" value="assessment">
-                                <span>The mentor grades the mentee each week on quizzes and exams.</span>
-                            </label>
-                        </div>
-                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('intro-q2','intro-q2-feedback','collaboration','Yes! Mentoring here is a collaborative, empowering partnership.','Remember—the mentor is a guide who supports, not a judge or taskmaster.')">Check Answer</button>
-                        <p class="quiz-feedback" id="intro-q2-feedback"></p>
-                    </div>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 7: Project Example 1: CV Development -->
-            <div id="slide-7" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-user-tie"></i> Project Example: Developing a CV</h1>
-                </div>
-                <div class="animate-on-scroll">
-                    <h2 class="rubric">"I needed a strong CV to apply for work."</h2>
-                </div>
-                <div class="slide-content">
-                    <img src="https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A person writing a CV at a desk">
-                    <div class="animate-on-scroll">
-                        <p><strong>The Process:</strong> A student named Laila wanted to create a professional CV. Her mentor guided her through identifying her key skills and experiences. They worked together to choose powerful action verbs and structure her information clearly. The mentor reviewed her drafts and offered feedback on how to make her CV stand out.</p>
-                    </div>
-                    <div class="animate-on-scroll">
-                        <p><strong>The Outcome:</strong> Laila now has a polished CV that clearly highlights her strengths. She feels confident using it to apply for new opportunities and has a better understanding of how to describe her skills to potential employers.</p>
-                    </div>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 8: Project Example 2: Grant Proposal -->
-            <div id="slide-8" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-file-signature"></i> Project Example: Writing a Proposal</h1>
-                </div>
-                <div class="animate-on-scroll">
-                    <h2 class="rubric">"I had a great idea, but I didn't know how to start."</h2>
-                </div>
-                <div class="slide-content">
-                    <img src="https://images.pexels.com/photos/1181298/pexels-photo-1181298.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A person writing a proposal on a laptop">
-                    <div class="animate-on-scroll">
-                        <p><strong>The Process:</strong> Omar wanted to write a grant proposal for a community project. His mentor helped him understand the different sections required in a proposal. They worked on breaking down his idea into specific objectives and a detailed budget. The mentor also helped him refine his writing so that the proposal was persuasive and clear.</p>
-                    </div>
-                    <div class="animate-on-scroll">
-                        <p><strong>The Outcome:</strong> Omar successfully completed a professional grant proposal. He learned how to structure complex documents and present his ideas logically. He now has a valuable asset to use for future funding applications.</p>
-                    </div>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 9: Project Example 3: Public Speaking Skills -->
-            <div id="slide-9" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-podium-star"></i> Project Example: Public Speaking</h1>
-                </div>
-                <div class="animate-on-scroll">
-                    <h2 class="rubric">"I was nervous about giving presentations."</h2>
-                </div>
-                <div class="slide-content">
-                    <img src="https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A person giving a presentation to an audience">
-                    <div class="animate-on-scroll">
-                        <p><strong>The Process:</strong> Mariam's goal was to improve her public speaking skills for university presentations. Her mentor helped her practice her delivery and organize her presentation content. The mentor provided a safe space for Mariam to practice, focusing on techniques for managing nervousness and speaking clearly. They used a recording tool to review her progress together.</p>
-                    </div>
-                    <div class="animate-on-scroll">
-                        <p><strong>The Outcome:</strong> Mariam successfully delivered her presentation to her class. She now feels significantly more confident in front of an audience and has a clear plan for preparing future talks.</p>
-                    </div>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 10 Quiz: Project Examples Review -->
-            <div id="slide-10" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-clipboard-check"></i> Quick Check: Project Stories</h1>
-                </div>
-                <div class="slide-content">
-                    <div class="quiz-card animate-on-scroll">
-                        <p class="quiz-question-text">Who worked with a mentor to turn a community idea into a grant proposal?</p>
-                        <div class="quiz-options">
-                            <label class="quiz-option">
-                                <input type="radio" name="projects-q1" value="laila">
-                                <span>Laila, who focused on crafting a compelling CV.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="projects-q1" value="omar">
-                                <span>Omar, who needed help structuring and writing a persuasive proposal.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="projects-q1" value="mariam">
-                                <span>Mariam, who practised delivering university presentations.</span>
-                            </label>
-                        </div>
-                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('projects-q1','projects-q1-feedback','omar','Correct! Omar partnered with a mentor to develop a full grant proposal.','Look back at the stories—Omar transformed his idea into a proposal.')">Check Answer</button>
-                        <p class="quiz-feedback" id="projects-q1-feedback"></p>
-                    </div>
-                    <div class="quiz-card animate-on-scroll">
-                        <p class="quiz-question-text">What tool did Mariam use with her mentor to track her public speaking progress?</p>
-                        <div class="quiz-options">
-                            <label class="quiz-option">
-                                <input type="radio" name="projects-q2" value="spreadsheet">
-                                <span>A shared spreadsheet to list weekly accomplishments.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="projects-q2" value="recording">
-                                <span>A recording tool that let them review and refine each presentation.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="projects-q2" value="survey">
-                                <span>An audience survey that classmates completed after her talks.</span>
-                            </label>
-                        </div>
-                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('projects-q2','projects-q2-feedback','recording','Yes! Reviewing recordings helped Mariam see her growth.','Revisit Mariam\'s story—she and her mentor analysed recordings together.')">Check Answer</button>
-                        <p class="quiz-feedback" id="projects-q2-feedback"></p>
-                    </div>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 11: The SMART Framework -->
-            <div id="slide-11" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-bullseye"></i> Create a Measurable Project</h1>
-                </div>
-                <div class="slide-content">
-                     <img src="https://images.pexels.com/photos/853151/pexels-photo-853151.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A group of people working together to achieve a goal">
-                    <p class="animate-on-scroll">Successful projects require clear goals. To make sure your project is effective, we use the <strong>SMART</strong> framework.</p>
-                    <p class="animate-on-scroll">This framework ensures that your project has measurable outcomes and is realistic for you to complete in three months.</p>
-                    <ul class="slide-list smart">
-                        <li data-letter="S" class="animate-on-scroll">Specific</li>
-                        <li data-letter="M" class="animate-on-scroll">Measurable</li>
-                        <li data-letter="A" class="animate-on-scroll">Achievable</li>
-                        <li data-letter="R" class="animate-on-scroll">Relevant</li>
-                        <li data-letter="T" class="animate-on-scroll">Time-bound</li>
-                    </ul>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 12: Example Project: CV Development -->
-            <div id="slide-12" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-check-circle"></i> Example: A SMART Goal</h1>
-                </div>
-                <div class="slide-content">
-                    <img src="https://images.pexels.com/photos/598917/pexels-photo-598917.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A person writing in a notebook">
-                    <p class="animate-on-scroll">Let's take a common goal: "I want to improve my CV."</p>
-                    <p class="animate-on-scroll">To make this a SMART goal, you need to add specific actions and a deadline. For example:</p>
-                    <p class="animate-on-scroll"><strong>SMART Goal:</strong> "I will update my CV to include specific descriptions of my three most important skills and experiences, and I will complete this by the end of this month."</p>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 13 Quiz: SMART Framework Check -->
-            <div id="slide-13" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-bullseye"></i> Quick Check: SMART Planning</h1>
-                </div>
-                <div class="slide-content">
-                    <div class="quiz-card animate-on-scroll">
-                        <p class="quiz-question-text">What does the “R” in the SMART framework represent for our projects?</p>
-                        <div class="quiz-options">
-                            <label class="quiz-option">
-                                <input type="radio" name="smart-q1" value="realistic">
-                                <span>Realistic – making sure your resources are available.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="smart-q1" value="relevant">
-                                <span>Relevant – aligning the goal with your broader purpose and needs.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="smart-q1" value="rewarding">
-                                <span>Rewarding – guaranteeing a prize at the end of the project.</span>
-                            </label>
-                        </div>
-                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('smart-q1','smart-q1-feedback','relevant','Right! Relevant goals connect to what matters most for you.','Hint: SMART keeps projects aligned with your purpose, not with external rewards.')">Check Answer</button>
-                        <p class="quiz-feedback" id="smart-q1-feedback"></p>
-                    </div>
-                    <div class="quiz-card animate-on-scroll">
-                        <p class="quiz-question-text">In the CV SMART goal example, what was the time-bound commitment?</p>
-                        <div class="quiz-options">
-                            <label class="quiz-option">
-                                <input type="radio" name="smart-q2" value="week">
-                                <span>Finish updating the CV within one week.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="smart-q2" value="month">
-                                <span>Complete the CV updates by the end of the current month.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="smart-q2" value="semester">
-                                <span>Wrap up the CV edits by the end of the academic year.</span>
-                            </label>
-                        </div>
-                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('smart-q2','smart-q2-feedback','month','Correct! The example committed to finishing by month’s end.','Check the example again—the deadline keeps the goal accountable within the month.')">Check Answer</button>
-                        <p class="quiz-feedback" id="smart-q2-feedback"></p>
-                    </div>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 14: The Project Journey: Step 1 (AI Tool) -->
-            <div id="slide-14" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-rocket"></i> Step 1: The AI Guide</h1>
-                </div>
-                <div class="animate-on-scroll">
-                    <h2 class="rubric">Refining your idea into a strong proposal.</h2>
-                </div>
-                <div class="slide-content">
-                    <img src="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A person interacting with an AI robot">
-                    <p class="animate-on-scroll">Once you have an initial idea, you will use our AI guide tool. This tool will help you turn your idea into a detailed project plan that follows the SMART framework.</p>
-                    <p class="animate-on-scroll">The final result will be a complete proposal ready for submission.</p>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 15: The Project Journey: Step 2 & 3 (Matching and First Meeting) -->
-            <div id="slide-15" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-user-friends"></i> Step 2 & 3: Matching & First Meeting</h1>
-                </div>
-                <div class="slide-content">
-                     <img src="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A group of colleagues having a meeting">
-                    <div class="animate-on-scroll">
-                        <h3>Step 2: Mentor Matching</h3>
-                        <p>After you submit your refined project proposal, our team will review it. We will then assign you a mentor who has specific experience and skills related to your project goal.</p>
-                    </div>
-                    <div class="animate-on-scroll">
-                        <h3>Step 3: The First Meeting</h3>
-                        <p>Your first meeting with your mentor focuses on planning and expectation setting. You will review the three-month project plan together and further segment it into weekly tasks.</p>
-                    </div>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 16 Quiz: Project Journey Check -->
-            <div id="slide-16" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-route"></i> Quick Check: Journey Steps</h1>
-                </div>
-                <div class="slide-content">
-                    <div class="quiz-card animate-on-scroll">
-                        <p class="quiz-question-text">What is the first thing that happens after you submit your project proposal?</p>
-                        <div class="quiz-options">
-                            <label class="quiz-option">
-                                <input type="radio" name="journey-q1" value="matching">
-                                <span>The team reviews it and pairs you with a mentor whose experience fits your goal.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="journey-q1" value="presentation">
-                                <span>You present your idea to the whole cohort for voting.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="journey-q1" value="feedback-form">
-                                <span>You complete a feedback form about the AI tool.</span>
-                            </label>
-                        </div>
-                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('journey-q1','journey-q1-feedback','matching','Correct! Matching you with the right mentor is the next step.','Remember: once your proposal is in, our team focuses on pairing you thoughtfully.')">Check Answer</button>
-                        <p class="quiz-feedback" id="journey-q1-feedback"></p>
-                    </div>
-                    <div class="quiz-card animate-on-scroll">
-                        <p class="quiz-question-text">What is a key focus of the very first mentor meeting?</p>
-                        <div class="quiz-options">
-                            <label class="quiz-option">
-                                <input type="radio" name="journey-q2" value="weekly-plan">
-                                <span>Breaking the three-month plan into weekly tasks and setting expectations together.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="journey-q2" value="celebration">
-                                <span>Celebrating the final results of your project.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="journey-q2" value="budget">
-                                <span>Filling out reimbursement paperwork for supplies.</span>
-                            </label>
-                        </div>
-                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('journey-q2','journey-q2-feedback','weekly-plan','Exactly! You and your mentor co-create detailed weekly steps during the first meeting.','Take another look—your first meeting is all about planning, not final celebrations yet.')">Check Answer</button>
-                        <p class="quiz-feedback" id="journey-q2-feedback"></p>
-                    </div>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 17: Ongoing Mentorship and Tracking -->
-            <div id="slide-17" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-chart-line"></i> Ongoing Mentorship and Progress</h1>
-                </div>
-                <div class="slide-content">
-                     <img src="https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A team working together on a project">
-                    <p class="animate-on-scroll">You and your mentor will continue to meet weekly throughout the project duration. These sessions are 30 minutes long and focus on reflecting on the previous week's progress.</p>
-                    <p class="animate-on-scroll">To keep track of your work, you will use a shared spreadsheet. You should log your work each week so that both you and your mentor can remain aligned and focused on celebrating your progress.</p>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 18: Time Commitment and Boundaries -->
-            <div id="slide-18" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-clock"></i> Time Commitment and Boundaries</h1>
-                </div>
-                <div class="slide-content">
-                    <img src="https://images.pexels.com/photos/4348403/pexels-photo-4348403.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A person working at a desk with a clock in the background">
-                    <ul class="slide-list">
-                        <li class="animate-on-scroll"><i class="fas fa-calendar-alt"></i> <strong>Project Duration:</strong> The project is designed to be completed in three months.</li>
-                        <li class="animate-on-scroll"><i class="fas fa-hourglass-half"></i> <strong>Mentor Time:</strong> Mentors allocate a maximum of 1 hour per week to each student.</li>
-                        <li class="animate-on-scroll"><i class="fas fa-plus-circle"></i> <strong>Contingency:</strong> If necessary, we can allow for an extra "contingency month".</li>
-                    </ul>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 19: Handling Absences -->
-            <div id="slide-19" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-user-clock"></i> Handling Absences</h1>
-                </div>
-                <div class="slide-content">
-                    <img src="https://images.pexels.com/photos/56759/pexels-photo-56759.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A person looking at a calendar">
-                    <ul class="slide-list">
-                        <li class="animate-on-scroll">If you miss a session, you can make it up at another time as arranged with your mentor.</li>
-                        <li class="animate-on-scroll">If you miss three sessions in a row without an acceptable excuse, your project will be placed on hold.</li>
-                        <li class="animate-on-scroll">When you are ready to re-engage, we can resume the project.</li>
-                    </ul>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 20 Quiz: Commitment & Boundaries Check -->
-            <div id="slide-20" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-user-shield"></i> Quick Check: Commitments & Care</h1>
-                </div>
-                <div class="slide-content">
-                    <div class="quiz-card animate-on-scroll">
-                        <p class="quiz-question-text">How long is each weekly mentoring session designed to last?</p>
-                        <div class="quiz-options">
-                            <label class="quiz-option">
-                                <input type="radio" name="care-q1" value="thirty">
-                                <span>About 30 minutes focused on reflection and planning.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="care-q1" value="sixty">
-                                <span>Exactly 60 minutes with required presentations.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="care-q1" value="drop-in">
-                                <span>No set time—mentees drop in and out at any point.</span>
-                            </label>
-                        </div>
-                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('care-q1','care-q1-feedback','thirty','Great! Weekly check-ins are focused, 30-minute conversations.','Check the time commitment slide—the program keeps meetings short and consistent.')">Check Answer</button>
-                        <p class="quiz-feedback" id="care-q1-feedback"></p>
-                    </div>
-                    <div class="quiz-card animate-on-scroll">
-                        <p class="quiz-question-text">What happens if a mentee misses three sessions in a row without an acceptable reason?</p>
-                        <div class="quiz-options">
-                            <label class="quiz-option">
-                                <input type="radio" name="care-q2" value="bonus">
-                                <span>They receive extra time with their mentor to catch up.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="care-q2" value="hold">
-                                <span>The project is placed on hold until the mentee is ready to re-engage.</span>
-                            </label>
-                            <label class="quiz-option">
-                                <input type="radio" name="care-q2" value="replacement">
-                                <span>They are automatically assigned a new mentor.</span>
-                            </label>
-                        </div>
-                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('care-q2','care-q2-feedback','hold','Correct—the project pauses so mentees can return when ready.','Check the absence guidance: consistent participation keeps the partnership active.')">Check Answer</button>
-                        <p class="quiz-feedback" id="care-q2-feedback"></p>
-                    </div>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 21: Practical Exercise and Q&A -->
-            <div id="slide-21" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-lightbulb"></i> Next Steps: Brainstorming</h1>
-                </div>
-                <div class="slide-content">
-                     <img src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A group of people brainstorming with sticky notes">
-                    <p class="animate-on-scroll">Now, let's discuss your ideas. Does anyone have a project in mind?</p>
-                    <p class="animate-on-scroll">We will spend the next 20 minutes using the AI guide tool to start developing your proposals.</p>
-                    <p class="animate-on-scroll">Please feel free to ask questions about the process or your project idea now.</p>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Slide 22: Reflection Workspace -->
-            <div id="slide-22" class="screen">
-                <div class="animate-on-scroll">
-                    <h1 class="slide-title"><i class="fas fa-pen-to-square"></i> Reflection & Planning Notes</h1>
-                </div>
-                <div class="slide-content reflection-form">
-                    <div class="reflection-field animate-on-scroll">
-                        <label for="reflection-idea">Project idea I want to explore</label>
-                        <textarea id="reflection-idea" placeholder="Capture the community challenge or opportunity you care about."></textarea>
-                    </div>
-                    <div class="reflection-field animate-on-scroll">
-                        <label for="reflection-smart">First SMART-aligned step I can take</label>
-                        <textarea id="reflection-smart" placeholder="Draft a Specific, Measurable action you can complete soon."></textarea>
-                    </div>
-                    <div class="reflection-field animate-on-scroll">
-                        <label for="reflection-questions">Questions I want to ask my mentor</label>
-                        <textarea id="reflection-questions" placeholder="List the support, resources, or feedback you hope to receive."></textarea>
-                    </div>
-                </div>
-                <div class="controls animate-on-scroll">
-                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="showSlide(0)"><i class="fas fa-check"></i> Finish &amp; Restart</button>
-                </div>
-            </div>
+                <div id="slides-root" role="presentation"></div>
 
         </div>
         <aside id="notes-dock" aria-label="Collaborative slide notes workspace">
@@ -1745,97 +1206,612 @@
     </div>
 
     <script>
-        const localStorageKey = 'mentoring-slide-textboxes';
+        const lessonLibrary = {
+            mentoringOrientation: {
+                id: "mentoring-orientation",
+                label: "Mentoring orientation",
+                meta: {
+                    eyebrow: "Noor Community Mentoring",
+                    descriptor: "An onboarding deck for project-based mentoring partnerships.",
+                    pageTitle: "Mentoring Orientation – Instructional Slides"
+                },
+                sections: [
+                    { title: "Welcome & Community", slideKeys: ["welcome", "mentoring-benefits", "community-identity", "mentoring-definition"] },
+                    { title: "Opportunities & Stories", slideKeys: ["mentoring-outcomes", "mission-quiz", "project-cv", "project-speaking"] },
+                    { title: "Planning Framework", slideKeys: ["smart-framework", "smart-example", "journey-steps", "journey-quiz"] },
+                    { title: "Commitment & Care", slideKeys: ["commitments", "commitment-quiz"] },
+                    { title: "Next Steps", slideKeys: ["brainstorm", "reflection"] }
+                ],
+                slides: [
+                    {
+                        key: "welcome",
+                        type: "hero",
+                        title: "Welcome to the Noor Community Mentoring Program",
+                        subtitle: "Building a supportive future, together.",
+                        image: {
+                            src: "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            alt: "Diverse team collaborating in a bright, modern office"
+                        },
+                        nav: { hidePrev: true, nextLabel: "Start", nextIcon: "fas fa-play" }
+                    },
+                    {
+                        key: "mentoring-benefits",
+                        type: "content",
+                        icon: "fas fa-cogs",
+                        title: "Benefits of Mentoring (Soft Skills)",
+                        image: {
+                            src: "https://images.pexels.com/photos/1595385/pexels-photo-1595385.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            alt: "A group of people collaborating and brainstorming around a table"
+                        },
+                        body: [
+                            "Mentoring is a powerful tool for personal and professional growth. It can help you develop a wide range of soft skills that support success in any field."
+                        ],
+                        list: [
+                            "Improved communication and interpersonal skills",
+                            "Enhanced leadership and decision-making abilities",
+                            "Increased confidence and self-awareness",
+                            "Greater problem-solving and critical thinking skills"
+                        ]
+                    },
+                    {
+                        key: "community-identity",
+                        type: "content",
+                        icon: "fas fa-users",
+                        title: "Who Are We?",
+                        image: {
+                            src: "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            alt: "A diverse group of colleagues celebrating a success together"
+                        },
+                        body: [
+                            "The Noor Community is an educational space dedicated to liberation through learning. We believe in solidarity and social justice.",
+                            "Our goal is to create a safe environment where everyone can express themselves, develop their skills, and connect with others. We see learning and teaching as universal processes that empower all of us."
+                        ]
+                    },
+                    {
+                        key: "mentoring-definition",
+                        type: "content",
+                        icon: "fas fa-hands-helping",
+                        title: "What Is Mentoring?",
+                        image: {
+                            src: "https://images.pexels.com/photos/5668859/pexels-photo-5668859.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            alt: "A mentor guiding a mentee at a computer"
+                        },
+                        body: [
+                            "Mentoring is a collaborative relationship where an experienced person supports another learner to develop skills and reach their goals.",
+                            "Our approach centres trust and empowerment. Mentors act as guides who celebrate wins, ask thoughtful questions, and help you stay accountable to your project vision."
+                        ]
+                    },
+                    {
+                        key: "mentoring-outcomes",
+                        type: "cards",
+                        icon: "fas fa-lightbulb",
+                        title: "What Becomes Possible?",
+                        subtitle: "Mentoring can help you achieve concrete, practical outcomes.",
+                        cards: [
+                            { icon: "fas fa-file-alt", title: "CV & LinkedIn" },
+                            { icon: "fas fa-microphone", title: "Public Speaking" },
+                            { icon: "fas fa-award", title: "Grant Proposals" },
+                            { icon: "fas fa-graduation-cap", title: "University Applications" }
+                        ]
+                    },
+                    {
+                        key: "mission-quiz",
+                        type: "quiz",
+                        icon: "fas fa-question-circle",
+                        title: "Quick Check: Our Mission & Mentoring",
+                        questions: [
+                            {
+                                id: "mission-q1",
+                                prompt: "What is the Noor Community primarily committed to?",
+                                options: [
+                                    { value: "solidarity", label: "Building solidarity and working toward social justice through education." },
+                                    { value: "competition", label: "Organising competitive events that reward the top performers only." },
+                                    { value: "online-only", label: "Delivering self-paced online courses without community interaction." }
+                                ],
+                                answer: "solidarity",
+                                correctFeedback: "Exactly! Our community centres solidarity and social justice.",
+                                incorrectFeedback: "Review our vision—connection and justice are at the heart of Noor Community."
+                            },
+                            {
+                                id: "mission-q2",
+                                prompt: "How does the mentoring relationship operate in this program?",
+                                options: [
+                                    { value: "hierarchy", label: "The mentor gives orders and the mentee follows a fixed set of tasks." },
+                                    { value: "collaboration", label: "Mentor and mentee collaborate to reach the mentee’s goals through trust and guidance." },
+                                    { value: "assessment", label: "The mentor grades the mentee each week on quizzes and exams." }
+                                ],
+                                answer: "collaboration",
+                                correctFeedback: "Yes! Mentoring here is a collaborative, empowering partnership.",
+                                incorrectFeedback: "Remember—the mentor is a guide who supports, not a judge or taskmaster."
+                            }
+                        ]
+                    },
+                    {
+                        key: "project-cv",
+                        type: "story",
+                        icon: "fas fa-user-tie",
+                        title: "Project Story: Developing a CV",
+                        quote: "\"I needed a strong CV to apply for work.\"",
+                        image: {
+                            src: "https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            alt: "A person writing a CV at a desk"
+                        },
+                        process: {
+                            label: "The Process:",
+                            text: "Laila partnered with her mentor to identify key skills, choose powerful action verbs, and organise her experience into a compelling narrative."
+                        },
+                        outcome: {
+                            label: "The Outcome:",
+                            text: "She now has a polished CV that highlights her strengths and feels confident applying for new opportunities."
+                        }
+                    },
+                    {
+                        key: "project-speaking",
+                        type: "story",
+                        icon: "fas fa-podium-star",
+                        title: "Project Story: Public Speaking",
+                        quote: "\"I was nervous about giving presentations.\"",
+                        image: {
+                            src: "https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            alt: "A person giving a presentation to an audience"
+                        },
+                        process: {
+                            label: "The Process:",
+                            text: "Mariam practised weekly with her mentor, using recordings to reflect on pacing, body language, and clarity."
+                        },
+                        outcome: {
+                            label: "The Outcome:",
+                            text: "She delivered a confident presentation and built a repeatable routine for future talks."
+                        }
+                    },
+                    {
+                        key: "smart-framework",
+                        type: "content",
+                        icon: "fas fa-bullseye",
+                        title: "Create a Measurable Project",
+                        image: {
+                            src: "https://images.pexels.com/photos/853151/pexels-photo-853151.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            alt: "A group of people working together to achieve a goal"
+                        },
+                        body: [
+                            "Successful projects require clear goals. To make sure your project is effective, we use the SMART framework.",
+                            "This approach keeps outcomes measurable and realistic for a three-month partnership."
+                        ],
+                        listStyle: "smart",
+                        list: [
+                            { letter: "S", text: "Specific" },
+                            { letter: "M", text: "Measurable" },
+                            { letter: "A", text: "Achievable" },
+                            { letter: "R", text: "Relevant" },
+                            { letter: "T", text: "Time-bound" }
+                        ]
+                    },
+                    {
+                        key: "smart-example",
+                        type: "content",
+                        icon: "fas fa-check-circle",
+                        title: "Example: A SMART Goal",
+                        image: {
+                            src: "https://images.pexels.com/photos/598917/pexels-photo-598917.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            alt: "A person writing in a notebook"
+                        },
+                        body: [
+                            "Consider the broad goal: \"I want to improve my CV.\"",
+                            "To make it SMART, add clear actions and a deadline: \"I will update my CV to describe three key skills with evidence and finish by the end of this month.\""
+                        ]
+                    },
+                    {
+                        key: "journey-steps",
+                        type: "process",
+                        icon: "fas fa-rocket",
+                        title: "Project Journey Milestones",
+                        subtitle: "Refine your idea, match with a mentor, and plan together.",
+                        image: {
+                            src: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            alt: "A person interacting with an AI assistant"
+                        },
+                        body: [
+                            "Each mentoring partnership moves through three steady stages."
+                        ],
+                        steps: [
+                            { title: "Step 1: AI Guide", description: "Use our planning tool to turn your idea into a detailed SMART proposal." },
+                            { title: "Step 2: Mentor Matching", description: "We review your project and pair you with someone whose expertise aligns with your goals." },
+                            { title: "Step 3: First Meeting", description: "You and your mentor set expectations and map out weekly tasks for the coming months." }
+                        ]
+                    },
+                    {
+                        key: "journey-quiz",
+                        type: "quiz",
+                        icon: "fas fa-route",
+                        title: "Quick Check: Journey Steps",
+                        questions: [
+                            {
+                                id: "journey-q1",
+                                prompt: "What happens right after you submit your project proposal?",
+                                options: [
+                                    { value: "matching", label: "The team reviews it and pairs you with a mentor whose experience fits your goal." },
+                                    { value: "presentation", label: "You immediately present your project to the whole community." },
+                                    { value: "budget", label: "You complete reimbursement paperwork for supplies." }
+                                ],
+                                answer: "matching",
+                                correctFeedback: "Correct—the team reviews your plan and matches you with the right mentor.",
+                                incorrectFeedback: "Not quite. Review the journey slides to see what happens post-submission."
+                            },
+                            {
+                                id: "journey-q2",
+                                prompt: "What is the focus of the first mentor meeting?",
+                                options: [
+                                    { value: "weekly-plan", label: "Co-creating detailed weekly steps and agreeing on expectations." },
+                                    { value: "celebration", label: "Celebrating the final results of your project." },
+                                    { value: "reporting", label: "Submitting monthly reports to the admin team." }
+                                ],
+                                answer: "weekly-plan",
+                                correctFeedback: "Exactly! The first meeting sets the shared weekly plan.",
+                                incorrectFeedback: "Check the milestone slide—the first session is about planning, not reporting yet."
+                            }
+                        ]
+                    },
+                    {
+                        key: "commitments",
+                        type: "content",
+                        icon: "fas fa-clock",
+                        title: "Time Commitment & Boundaries",
+                        image: {
+                            src: "https://images.pexels.com/photos/4348403/pexels-photo-4348403.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            alt: "A person working at a desk with a clock in the background"
+                        },
+                        list: [
+                            { icon: "fas fa-calendar-alt", strong: "Project Duration:", text: "The project is designed to be completed in three months." },
+                            { icon: "fas fa-hourglass-half", strong: "Mentor Time:", text: "Mentors allocate up to one hour each week for check-ins and feedback." },
+                            { icon: "fas fa-plus-circle", strong: "Contingency:", text: "If needed, you can request a one-month extension to complete final pieces." }
+                        ]
+                    },
+                    {
+                        key: "commitment-quiz",
+                        type: "quiz",
+                        icon: "fas fa-user-shield",
+                        title: "Quick Check: Commitments & Care",
+                        questions: [
+                            {
+                                id: "care-q1",
+                                prompt: "How long is each weekly mentoring session designed to last?",
+                                options: [
+                                    { value: "thirty", label: "About 30 minutes focused on reflection and planning." },
+                                    { value: "sixty", label: "Exactly 60 minutes with required presentations." },
+                                    { value: "drop-in", label: "No set time—mentees drop in and out at any point." }
+                                ],
+                                answer: "thirty",
+                                correctFeedback: "Great! Weekly check-ins are focused, 30-minute conversations.",
+                                incorrectFeedback: "Take another look—the program keeps meetings short and consistent."
+                            },
+                            {
+                                id: "care-q2",
+                                prompt: "What happens if a mentee misses three sessions in a row without an acceptable reason?",
+                                options: [
+                                    { value: "bonus", label: "They receive extra time with their mentor to catch up." },
+                                    { value: "hold", label: "The project is placed on hold until the mentee is ready to re-engage." },
+                                    { value: "replacement", label: "They are automatically assigned a new mentor." }
+                                ],
+                                answer: "hold",
+                                correctFeedback: "Correct—the project pauses so mentees can return when ready.",
+                                incorrectFeedback: "Review the boundaries slide; consistency keeps the partnership active."
+                            }
+                        ]
+                    },
+                    {
+                        key: "brainstorm",
+                        type: "content",
+                        icon: "fas fa-lightbulb",
+                        title: "Next Steps: Brainstorming",
+                        subtitle: "Let’s surface your ideas and questions.",
+                        image: {
+                            src: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            alt: "A group of people brainstorming with sticky notes"
+                        },
+                        body: [
+                            "Take a moment to share any project ideas already on your mind.",
+                            "We’ll spend the next 20 minutes using the AI guide tool to draft initial proposals.",
+                            "Bring forward any questions about the mentoring process or your concept."
+                        ]
+                    },
+                    {
+                        key: "reflection",
+                        type: "reflection",
+                        icon: "fas fa-pen-to-square",
+                        title: "Reflection & Planning Notes",
+                        fields: [
+                            { id: "mentoring-idea", label: "Project idea I want to explore", placeholder: "Capture the community challenge or opportunity you care about." },
+                            { id: "mentoring-smart", label: "First SMART-aligned step I can take", placeholder: "Draft a Specific, Measurable action you can complete soon." },
+                            { id: "mentoring-questions", label: "Questions I want to ask my mentor", placeholder: "List the support, resources, or feedback you hope to receive." }
+                        ],
+                        nav: { nextAction: "restart", nextLabel: "Finish & Restart", nextIcon: "fas fa-check" }
+                    }
+                ]
+            },
+            eltLesson: {
+                id: "elt-lesson-template",
+                label: "ELT descriptive language lesson",
+                meta: {
+                    eyebrow: "English Language Teaching",
+                    descriptor: "Reusable slide flow for communicative ELT lessons focused on descriptive language.",
+                    pageTitle: "ELT Lesson Template – Instructional Slides"
+                },
+                sections: [
+                    { title: "Welcome & Objectives", slideKeys: ["elt-hero", "elt-objectives", "elt-warmups"] },
+                    { title: "Language Focus", slideKeys: ["elt-vocabulary", "elt-vocab-quiz", "elt-modeling"] },
+                    { title: "Lesson Flow", slideKeys: ["elt-lesson-flow", "elt-assessment"] },
+                    { title: "Practice & Reflection", slideKeys: ["elt-group-work", "elt-reflection"] }
+                ],
+                slides: [
+                    {
+                        key: "elt-hero",
+                        type: "hero",
+                        title: "Exploring Descriptive Language",
+                        subtitle: "An adaptable lesson template for upper-intermediate learners.",
+                        image: {
+                            src: "https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            alt: "Students collaborating at a table with notebooks"
+                        },
+                        nav: { hidePrev: true, nextLabel: "Begin", nextIcon: "fas fa-play" }
+                    },
+                    {
+                        key: "elt-objectives",
+                        type: "content",
+                        icon: "fas fa-bullseye",
+                        title: "Lesson Objectives",
+                        image: {
+                            src: "https://images.pexels.com/photos/3184328/pexels-photo-3184328.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            alt: "Teacher leading a discussion with adult learners"
+                        },
+                        body: [
+                            "Set clear language targets before class begins so everyone understands the journey.",
+                            "Use this template to communicate goals in seconds."],
+                        list: [
+                            "Activate prior knowledge about vivid descriptions.",
+                            "Practise using sensory adjectives and strong verbs.",
+                            "Produce a short description that shows voice and detail."
+                        ]
+                    },
+                    {
+                        key: "elt-warmups",
+                        type: "cards",
+                        icon: "fas fa-sun",
+                        title: "Warm-Up Options",
+                        subtitle: "Choose a quick engagement to open class.",
+                        cards: [
+                            { icon: "fas fa-image", title: "Picture Prompt", description: "Display an image and ask learners to list adjectives." },
+                            { icon: "fas fa-comments", title: "Two Truths", description: "Learners share two descriptive sentences—one must be imaginary." },
+                            { icon: "fas fa-music", title: "Sound Walk", description: "Play ambient audio and brainstorm vocabulary for what is heard." },
+                            { icon: "fas fa-lightbulb", title: "Word Association", description: "Start with a noun and build a descriptive chain together." }
+                        ]
+                    },
+                    {
+                        key: "elt-vocabulary",
+                        type: "content",
+                        icon: "fas fa-book-open",
+                        title: "Vocabulary Focus",
+                        image: {
+                            src: "https://images.pexels.com/photos/5428832/pexels-photo-5428832.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            alt: "Close-up of hands writing vocabulary notes"
+                        },
+                        body: [
+                            "Model a short descriptive paragraph and highlight the language choices that make it vivid.",
+                            "Encourage learners to notice collocations and the rhythm created by varied sentence lengths."
+                        ],
+                        list: [
+                            "Contrast plain versus evocative adjectives.",
+                            "Collect verb-noun partnerships that add energy.",
+                            "Flag discourse markers that guide the reader." ]
+                    },
+                    {
+                        key: "elt-vocab-quiz",
+                        type: "quiz",
+                        icon: "fas fa-spell-check",
+                        title: "Quick Check: Vocabulary Moves",
+                        questions: [
+                            {
+                                id: "elt-vocab-q1",
+                                prompt: "Which sentence uses sensory detail most effectively?",
+                                options: [
+                                    { value: "plain", label: "The market was busy and people talked." },
+                                    { value: "vivid", label: "The market buzzed with voices and citrus peels perfumed the air." },
+                                    { value: "short", label: "The market was there." }
+                                ],
+                                answer: "vivid",
+                                correctFeedback: "Yes—the vivid option layers sound and smell to engage readers.",
+                                incorrectFeedback: "Try again. Look for language that appeals to multiple senses."
+                            },
+                            {
+                                id: "elt-vocab-q2",
+                                prompt: "Why is it helpful to collect verb–noun partnerships during the lesson?",
+                                options: [
+                                    { value: "variety", label: "They help learners vary phrasing and avoid repeating basic verbs." },
+                                    { value: "length", label: "They guarantee every sentence is longer." },
+                                    { value: "grammar", label: "They replace the need to review grammar structures." }
+                                ],
+                                answer: "variety",
+                                correctFeedback: "Exactly—collocations give learners ready-to-use alternatives.",
+                                incorrectFeedback: "Remember, collecting pairs supports expressive variety, not sentence length." }
+                        ]
+                    },
+                    {
+                        key: "elt-modeling",
+                        type: "story",
+                        icon: "fas fa-chalkboard-teacher",
+                        title: "Teacher Modeling",
+                        quote: "\"Let’s paint the scene together.\"",
+                        image: {
+                            src: "https://images.pexels.com/photos/3184312/pexels-photo-3184312.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            alt: "Teacher presenting vocabulary on a whiteboard"
+                        },
+                        process: {
+                            label: "Approach:",
+                            text: "The teacher thinks aloud while drafting a descriptive paragraph, highlighting word choice decisions." },
+                        outcome: {
+                            label: "Learner Impact:",
+                            text: "Students see how to revise dull phrases and feel confident trying the routine themselves." }
+                    },
+                    {
+                        key: "elt-lesson-flow",
+                        type: "process",
+                        icon: "fas fa-layer-group",
+                        title: "Lesson Flow",
+                        subtitle: "Structure the experience around gradual release.",
+                        image: {
+                            src: "https://images.pexels.com/photos/3184287/pexels-photo-3184287.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            alt: "Learners working collaboratively at a table"
+                        },
+                        steps: [
+                            { title: "Engage", description: "Activate prior knowledge with a warm-up and set the scene." },
+                            { title: "Explore Language", description: "Analyse model texts, highlight vocabulary, and notice patterns." },
+                            { title: "Guided Practice", description: "Co-construct sentences and offer quick feedback." },
+                            { title: "Independent Production", description: "Learners craft their own description and share with peers." }
+                        ]
+                    },
+                    {
+                        key: "elt-assessment",
+                        type: "content",
+                        icon: "fas fa-clipboard-list",
+                        title: "Assessment & Evidence",
+                        image: {
+                            src: "https://images.pexels.com/photos/1181370/pexels-photo-1181370.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            alt: "Teacher reviewing student work with sticky notes"
+                        },
+                        body: [
+                            "Collect lightweight evidence throughout the lesson to track growth and plan next steps."
+                        ],
+                        list: [
+                            "Use observation checklists during guided practice.",
+                            "Invite learners to submit a short exit description or voice note.",
+                            "Facilitate peer feedback focusing on descriptive language goals." ]
+                    },
+                    {
+                        key: "elt-group-work",
+                        type: "content",
+                        icon: "fas fa-users",
+                        title: "Collaborative Practice",
+                        subtitle: "Rotate roles so everyone speaks and supports.",
+                        image: {
+                            src: "https://images.pexels.com/photos/3182833/pexels-photo-3182833.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                            alt: "Small group of learners discussing around a table"
+                        },
+                        body: [
+                            "Assign trios with roles: narrator, detail detective, and tone coach.",
+                            "After each round, rotate roles and swap prompts to maximise practice." ]
+                    },
+                    {
+                        key: "elt-reflection",
+                        type: "reflection",
+                        icon: "fas fa-pen-to-square",
+                        title: "Teacher Planning Notes",
+                        fields: [
+                            { id: "elt-focus", label: "Focus language point", placeholder: "Note the adjectives, verbs, or discourse markers you want to emphasise." },
+                            { id: "elt-context", label: "Real-life scenario", placeholder: "Describe the context or text type learners will connect to." },
+                            { id: "elt-followup", label: "Follow-up idea", placeholder: "Capture homework, extension, or differentiation options." }
+                        ],
+                        nav: { nextAction: "restart", nextLabel: "Finish & Restart", nextIcon: "fas fa-check" }
+                    }
+                ]
+            }
+        };
         const textboxColorOptions = [
-            { label: 'Sunlit Sand', value: '#FDF5D6' },
-            { label: 'Mint Mist', value: '#E6F4F1' },
-            { label: 'Lavender Veil', value: '#F3E9FB' },
-            { label: 'Peach Glow', value: '#FFEDE5' },
-            { label: 'Sky Wash', value: '#E9F0FF' }
+            { label: "Sunlit Sand", value: "#FDF5D6" },
+            { label: "Mint Mist", value: "#E6F4F1" },
+            { label: "Lavender Veil", value: "#F3E9FB" },
+            { label: "Peach Glow", value: "#FFEDE5" },
+            { label: "Sky Wash", value: "#E9F0FF" }
         ];
 
+        const storageKeyBase = "instructional-slide-textboxes";
+        let activeLessonKey = null;
+        let activeLesson = null;
+        let slides = [];
         let currentSlideIndex = 0;
-        const slides = Array.from(document.querySelectorAll('.screen'));
         let slideNotes = {};
         const textboxContainers = {};
         const notesPanels = {};
         let notesPanelsHost = null;
-        const slideMapList = document.getElementById('slide-map-list');
-        const motionQuery = typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
-        let prefersReducedMotion = motionQuery ? motionQuery.matches : false;
         const slideMapButtons = [];
+        let keyboardHandlerAttached = false;
 
-        const highlightScope = document.getElementById('activity-container');
-        const highlightToolbar = document.createElement('div');
-        highlightToolbar.id = 'highlight-toolbar';
-        highlightToolbar.setAttribute('role', 'group');
-        highlightToolbar.setAttribute('aria-label', 'Text annotation tools');
-        highlightToolbar.setAttribute('aria-hidden', 'true');
+        const slidesRoot = document.getElementById("slides-root");
+        const presentationEyebrow = document.getElementById("presentation-eyebrow");
+        const presentationDescriptor = document.getElementById("presentation-descriptor");
+        const lessonSelector = document.getElementById("lesson-template");
+        const slideMapList = document.getElementById("slide-map-list");
+        const motionQuery = typeof window !== "undefined" && window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
+        let prefersReducedMotion = motionQuery ? motionQuery.matches : false;
+
+        const highlightScope = document.getElementById("activity-container");
+        const highlightToolbar = document.createElement("div");
+        highlightToolbar.id = "highlight-toolbar";
+        highlightToolbar.setAttribute("role", "group");
+        highlightToolbar.setAttribute("aria-label", "Text annotation tools");
+        highlightToolbar.setAttribute("aria-hidden", "true");
         highlightToolbar.hidden = true;
 
-        const highlightToolbarButton = document.createElement('button');
-        highlightToolbarButton.type = 'button';
-        highlightToolbarButton.className = 'highlight-toolbar__btn';
+        const highlightToolbarButton = document.createElement("button");
+        highlightToolbarButton.type = "button";
+        highlightToolbarButton.className = "highlight-toolbar__btn";
         highlightToolbarButton.innerHTML = '<i class="fas fa-highlighter" aria-hidden="true"></i><span>Highlight &amp; annotate</span>';
         highlightToolbar.appendChild(highlightToolbarButton);
         document.body.appendChild(highlightToolbar);
 
-        const annotationPopover = document.createElement('div');
-        annotationPopover.className = 'annotation-popover';
-        annotationPopover.id = 'annotation-popover';
-        annotationPopover.setAttribute('role', 'dialog');
-        annotationPopover.setAttribute('aria-modal', 'false');
-        annotationPopover.setAttribute('aria-hidden', 'true');
+        const annotationPopover = document.createElement("div");
+        annotationPopover.className = "annotation-popover";
+        annotationPopover.id = "annotation-popover";
+        annotationPopover.setAttribute("role", "dialog");
+        annotationPopover.setAttribute("aria-modal", "false");
+        annotationPopover.setAttribute("aria-hidden", "true");
         annotationPopover.hidden = true;
-        annotationPopover.setAttribute('tabindex', '-1');
+        annotationPopover.setAttribute("tabindex", "-1");
 
-        const annotationCloseButton = document.createElement('button');
-        annotationCloseButton.type = 'button';
-        annotationCloseButton.className = 'annotation-popover__close';
-        annotationCloseButton.setAttribute('aria-label', 'Close annotation');
-        annotationCloseButton.innerHTML = '<i class="fas fa-times" aria-hidden="true"></i>';
+        const annotationCloseButton = document.createElement("button");
+        annotationCloseButton.type = "button";
+        annotationCloseButton.className = "annotation-popover__close";
+        annotationCloseButton.innerHTML = '<i class="fas fa-times" aria-hidden="true"></i><span class="visually-hidden">Close annotation</span>';
 
-        const annotationBody = document.createElement('p');
-        annotationBody.className = 'annotation-popover__body';
+        const annotationBody = document.createElement("p");
+        annotationBody.className = "annotation-popover__body";
 
         annotationPopover.appendChild(annotationCloseButton);
         annotationPopover.appendChild(annotationBody);
         document.body.appendChild(annotationPopover);
 
-        const annotationComposer = document.createElement('form');
-        annotationComposer.className = 'annotation-composer';
-        annotationComposer.id = 'annotation-composer';
+        const annotationComposer = document.createElement("form");
+        annotationComposer.className = "annotation-composer";
+        annotationComposer.id = "annotation-composer";
         annotationComposer.hidden = true;
-        annotationComposer.setAttribute('aria-hidden', 'true');
-        annotationComposer.setAttribute('role', 'dialog');
-        annotationComposer.setAttribute('aria-modal', 'false');
+        annotationComposer.setAttribute("aria-hidden", "true");
+        annotationComposer.setAttribute("role", "dialog");
+        annotationComposer.setAttribute("aria-modal", "false");
         annotationComposer.noValidate = true;
 
-        const annotationComposerLabel = document.createElement('label');
-        annotationComposerLabel.className = 'annotation-composer__label';
-        annotationComposerLabel.setAttribute('for', 'annotation-composer-input');
-        annotationComposerLabel.textContent = 'Add an annotation';
-        annotationComposerLabel.id = 'annotation-composer-label';
-        annotationComposer.setAttribute('aria-labelledby', 'annotation-composer-label');
+        const annotationComposerLabel = document.createElement("label");
+        annotationComposerLabel.className = "annotation-composer__label";
+        annotationComposerLabel.setAttribute("for", "annotation-composer-input");
+        annotationComposerLabel.textContent = "Add an annotation";
+        annotationComposerLabel.id = "annotation-composer-label";
+        annotationComposer.setAttribute("aria-labelledby", "annotation-composer-label");
 
-        const annotationComposerTextarea = document.createElement('textarea');
-        annotationComposerTextarea.id = 'annotation-composer-input';
-        annotationComposerTextarea.className = 'annotation-composer__input';
+        const annotationComposerTextarea = document.createElement("textarea");
+        annotationComposerTextarea.id = "annotation-composer-input";
+        annotationComposerTextarea.className = "annotation-composer__input";
         annotationComposerTextarea.rows = 4;
-        annotationComposerTextarea.placeholder = 'Type your note here…';
+        annotationComposerTextarea.placeholder = "Type your note here…";
 
-        const annotationComposerActions = document.createElement('div');
-        annotationComposerActions.className = 'annotation-composer__actions';
+        const annotationComposerActions = document.createElement("div");
+        annotationComposerActions.className = "annotation-composer__actions";
 
-        const annotationComposerCancel = document.createElement('button');
-        annotationComposerCancel.type = 'button';
-        annotationComposerCancel.className = 'annotation-composer__btn annotation-composer__btn--secondary';
-        annotationComposerCancel.textContent = 'Cancel';
+        const annotationComposerCancel = document.createElement("button");
+        annotationComposerCancel.type = "button";
+        annotationComposerCancel.className = "annotation-composer__btn annotation-composer__btn--secondary";
+        annotationComposerCancel.textContent = "Cancel";
 
-        const annotationComposerSubmit = document.createElement('button');
-        annotationComposerSubmit.type = 'submit';
-        annotationComposerSubmit.className = 'annotation-composer__btn annotation-composer__btn--primary';
-        annotationComposerSubmit.textContent = 'Save note';
+        const annotationComposerSubmit = document.createElement("button");
+        annotationComposerSubmit.type = "submit";
+        annotationComposerSubmit.className = "annotation-composer__btn annotation-composer__btn--primary";
+        annotationComposerSubmit.textContent = "Save note";
 
         annotationComposerActions.appendChild(annotationComposerCancel);
         annotationComposerActions.appendChild(annotationComposerSubmit);
@@ -1857,13 +1833,12 @@
                     animateSlideContents(activeSlide);
                 }
             };
-            if (typeof motionQuery.addEventListener === 'function') {
-                motionQuery.addEventListener('change', updatePreference);
-            } else if (typeof motionQuery.addListener === 'function') {
+            if (typeof motionQuery.addEventListener === "function") {
+                motionQuery.addEventListener("change", updatePreference);
+            } else if (typeof motionQuery.addListener === "function") {
                 motionQuery.addListener(updatePreference);
             }
         }
-
         function isNodeWithinActiveSlide(node) {
             const activeSlide = slides[currentSlideIndex];
             if (!activeSlide || !node) {
@@ -1884,7 +1859,7 @@
                 return false;
             }
             const element = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
-            return element ? Boolean(element.closest('.highlight-annotation')) : false;
+            return element ? Boolean(element.closest(".highlight-annotation")) : false;
         }
 
         function hideHighlightToolbar(options = {}) {
@@ -1893,7 +1868,7 @@
                 return;
             }
             highlightToolbar.hidden = true;
-            highlightToolbar.setAttribute('aria-hidden', 'true');
+            highlightToolbar.setAttribute("aria-hidden", "true");
             if (clearSelection) {
                 pendingSelectionRange = null;
             }
@@ -1918,7 +1893,7 @@
                 return false;
             }
             const fragment = range.cloneContents();
-            if (fragment.querySelector && fragment.querySelector('p, li, div, section, article, ul, ol, table, tr, td, th, h1, h2, h3, h4, h5, h6, blockquote')) {
+            if (fragment.querySelector && fragment.querySelector("p, li, div, section, article, ul, ol, table, tr, td, th, h1, h2, h3, h4, h5, h6, blockquote")) {
                 return false;
             }
             return range.toString().trim().length > 0;
@@ -1928,7 +1903,7 @@
             pendingSelectionRange = range.cloneRange();
             positionHighlightToolbar(range);
             highlightToolbar.hidden = false;
-            highlightToolbar.setAttribute('aria-hidden', 'false');
+            highlightToolbar.setAttribute("aria-hidden", "false");
         }
 
         function positionAnnotationComposer(range) {
@@ -1946,8 +1921,8 @@
             composerActiveRange = range.cloneRange();
             positionAnnotationComposer(range);
             annotationComposer.hidden = false;
-            annotationComposer.setAttribute('aria-hidden', 'false');
-            annotationComposerTextarea.value = '';
+            annotationComposer.setAttribute("aria-hidden", "false");
+            annotationComposerTextarea.value = "";
             window.requestAnimationFrame(() => {
                 annotationComposerTextarea.focus({ preventScroll: true });
             });
@@ -1956,8 +1931,8 @@
         function closeAnnotationComposer({ restoreToolbar = false, clearRange = true } = {}) {
             if (!annotationComposer.hidden) {
                 annotationComposer.hidden = true;
-                annotationComposer.setAttribute('aria-hidden', 'true');
-                annotationComposerTextarea.value = '';
+                annotationComposer.setAttribute("aria-hidden", "true");
+                annotationComposerTextarea.value = "";
             }
             if (clearRange) {
                 composerActiveRange = null;
@@ -1987,9 +1962,9 @@
                 return;
             }
             annotationPopover.hidden = true;
-            annotationPopover.setAttribute('aria-hidden', 'true');
+            annotationPopover.setAttribute("aria-hidden", "true");
             if (activeAnnotationTarget) {
-                activeAnnotationTarget.setAttribute('aria-expanded', 'false');
+                activeAnnotationTarget.setAttribute("aria-expanded", "false");
                 activeAnnotationTarget = null;
             }
         }
@@ -2009,14 +1984,14 @@
                 return;
             }
             if (activeAnnotationTarget && activeAnnotationTarget !== target) {
-                activeAnnotationTarget.setAttribute('aria-expanded', 'false');
+                activeAnnotationTarget.setAttribute("aria-expanded", "false");
             }
             activeAnnotationTarget = target;
             annotationBody.textContent = annotationText;
             positionAnnotationPopover(target);
             annotationPopover.hidden = false;
-            annotationPopover.setAttribute('aria-hidden', 'false');
-            target.setAttribute('aria-expanded', 'true');
+            annotationPopover.setAttribute("aria-hidden", "false");
+            target.setAttribute("aria-expanded", "true");
         }
 
         function toggleAnnotationPopover(target) {
@@ -2036,13 +2011,13 @@
                 return;
             }
             const workingRange = range.cloneRange();
-            const highlight = document.createElement('mark');
-            highlight.className = 'highlight-annotation';
+            const highlight = document.createElement("mark");
+            highlight.className = "highlight-annotation";
             highlight.tabIndex = 0;
-            highlight.setAttribute('role', 'button');
-            highlight.setAttribute('aria-expanded', 'false');
-            highlight.setAttribute('aria-controls', 'annotation-popover');
-            highlight.setAttribute('aria-haspopup', 'dialog');
+            highlight.setAttribute("role", "button");
+            highlight.setAttribute("aria-expanded", "false");
+            highlight.setAttribute("aria-controls", "annotation-popover");
+            highlight.setAttribute("aria-haspopup", "dialog");
             highlight.dataset.annotation = trimmed;
             const contents = workingRange.extractContents();
             highlight.appendChild(contents);
@@ -2062,11 +2037,11 @@
             });
         }
 
-        highlightToolbarButton.addEventListener('mousedown', (event) => {
+        highlightToolbarButton.addEventListener("mousedown", (event) => {
             event.preventDefault();
         });
 
-        highlightToolbarButton.addEventListener('click', () => {
+        highlightToolbarButton.addEventListener("click", () => {
             if (!pendingSelectionRange) {
                 hideHighlightToolbar();
                 closeAnnotationComposer();
@@ -2077,7 +2052,7 @@
             openAnnotationComposer(rangeToAnnotate);
         });
 
-        annotationComposer.addEventListener('submit', (event) => {
+        annotationComposer.addEventListener("submit", (event) => {
             event.preventDefault();
             if (!composerActiveRange) {
                 closeAnnotationComposer();
@@ -2094,18 +2069,18 @@
             applyAnnotation(rangeToAnnotate, note);
         });
 
-        annotationComposerCancel.addEventListener('click', () => {
+        annotationComposerCancel.addEventListener("click", () => {
             closeAnnotationComposer({ restoreToolbar: true });
         });
 
-        annotationCloseButton.addEventListener('click', () => {
+        annotationCloseButton.addEventListener("click", () => {
             hideAnnotationPopover();
             if (activeAnnotationTarget) {
                 activeAnnotationTarget.focus({ preventScroll: true });
             }
         });
 
-        document.addEventListener('selectionchange', () => {
+        document.addEventListener("selectionchange", () => {
             const activeElement = document.activeElement;
             if (!annotationComposer.hidden && annotationComposer.contains(activeElement)) {
                 return;
@@ -2114,7 +2089,7 @@
             window.requestAnimationFrame(updateHighlightToolbar);
         });
 
-        document.addEventListener('mousedown', (event) => {
+        document.addEventListener("mousedown", (event) => {
             const isToolbar = highlightToolbar.contains(event.target);
             const isComposer = annotationComposer.contains(event.target);
             if (!isToolbar && !isComposer) {
@@ -2123,9 +2098,9 @@
             }
         });
 
-        document.addEventListener('click', (event) => {
+        document.addEventListener("click", (event) => {
             if (!annotationPopover.hidden) {
-                const isHighlight = event.target.closest?.('.highlight-annotation');
+                const isHighlight = event.target.closest?.(".highlight-annotation");
                 const isPopover = annotationPopover.contains(event.target);
                 if (!isHighlight && !isPopover) {
                     hideAnnotationPopover();
@@ -2140,8 +2115,8 @@
             }
         });
 
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
                 hideAnnotationPopover();
                 hideHighlightToolbar();
                 closeAnnotationComposer();
@@ -2149,8 +2124,8 @@
         });
 
         if (highlightScope) {
-            highlightScope.addEventListener('click', (event) => {
-                const highlight = event.target.closest?.('.highlight-annotation');
+            highlightScope.addEventListener("click", (event) => {
+                const highlight = event.target.closest?.(".highlight-annotation");
                 if (!highlight) {
                     return;
                 }
@@ -2159,11 +2134,11 @@
                 toggleAnnotationPopover(highlight);
             });
 
-            highlightScope.addEventListener('keydown', (event) => {
-                if (event.key !== 'Enter' && event.key !== ' ') {
+            highlightScope.addEventListener("keydown", (event) => {
+                if (event.key !== "Enter" && event.key !== " ") {
                     return;
                 }
-                const highlight = event.target.closest?.('.highlight-annotation');
+                const highlight = event.target.closest?.(".highlight-annotation");
                 if (!highlight) {
                     return;
                 }
@@ -2173,46 +2148,45 @@
             });
         }
 
-        window.addEventListener('scroll', () => {
+        window.addEventListener("scroll", () => {
             hideHighlightToolbar();
             hideAnnotationPopover();
             closeAnnotationComposer();
         }, true);
 
-        window.addEventListener('resize', () => {
+        window.addEventListener("resize", () => {
             hideHighlightToolbar();
             hideAnnotationPopover();
             closeAnnotationComposer();
         });
-
         function generateNoteId() {
             return `note-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
         }
 
         function createColorPicker(currentColor, onChange) {
-            const palette = document.createElement('div');
-            palette.className = 'textbox-color-picker';
-            palette.setAttribute('role', 'group');
-            palette.setAttribute('aria-label', 'Change text box colour');
+            const palette = document.createElement("div");
+            palette.className = "textbox-color-picker";
+            palette.setAttribute("role", "group");
+            palette.setAttribute("aria-label", "Change text box colour");
             const swatches = [];
             const updateSelection = (selectedColor) => {
-                swatches.forEach(button => {
+                swatches.forEach((button) => {
                     const isActive = button.dataset.value === selectedColor;
-                    button.classList.toggle('is-selected', isActive);
-                    button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+                    button.classList.toggle("is-selected", isActive);
+                    button.setAttribute("aria-pressed", isActive ? "true" : "false");
                 });
             };
-            textboxColorOptions.forEach(option => {
-                const swatchButton = document.createElement('button');
-                swatchButton.type = 'button';
-                swatchButton.className = 'textbox-color-picker__swatch';
+            textboxColorOptions.forEach((option) => {
+                const swatchButton = document.createElement("button");
+                swatchButton.type = "button";
+                swatchButton.className = "textbox-color-picker__swatch";
                 swatchButton.dataset.value = option.value;
-                swatchButton.style.setProperty('--swatch-color', option.value);
-                swatchButton.setAttribute('aria-label', option.label);
+                swatchButton.style.setProperty("--swatch-color", option.value);
+                swatchButton.setAttribute("aria-label", option.label);
                 swatchButton.title = option.label;
-                swatchButton.setAttribute('aria-pressed', 'false');
-                swatchButton.addEventListener('click', () => {
-                    if (typeof onChange === 'function') {
+                swatchButton.setAttribute("aria-pressed", "false");
+                swatchButton.addEventListener("click", () => {
+                    if (typeof onChange === "function") {
                         onChange(option.value);
                     }
                     updateSelection(option.value);
@@ -2225,26 +2199,31 @@
         }
 
         function getSlideLabel(slide, index) {
-            const rawTitle = slide?.querySelector('.slide-title')?.textContent?.trim() || '';
-            const label = rawTitle ? `${rawTitle}` : '';
+            const rawTitle = slide?.querySelector(".slide-title")?.textContent?.trim() || "";
+            const label = rawTitle ? `${rawTitle}` : "";
             const prefix = `Slide ${index + 1}`;
             return label ? `${prefix}: ${label}` : prefix;
         }
 
         function isValidNotesData(data) {
-            if (!data || typeof data !== 'object' || Array.isArray(data)) {
+            if (!data || typeof data !== "object" || Array.isArray(data)) {
                 return false;
             }
-            return Object.values(data).every(value => Array.isArray(value) && value.every(note => {
-                return note && typeof note === 'object' && 'id' in note && 'color' in note && ('content' in note || 'text' in note);
+            return Object.values(data).every((value) => Array.isArray(value) && value.every((note) => {
+                return note && typeof note === "object" && "id" in note && "color" in note && ("content" in note || "text" in note);
             }));
         }
 
+        function getStorageKey() {
+            const suffix = activeLesson?.id ? `:${activeLesson.id}` : "";
+            return `${storageKeyBase}${suffix}`;
+        }
+
         function loadStoredNotes() {
-            if (typeof window === 'undefined' || !window.localStorage) {
+            if (typeof window === "undefined" || !window.localStorage) {
                 return {};
             }
-            const stored = window.localStorage.getItem(localStorageKey);
+            const stored = window.localStorage.getItem(getStorageKey());
             if (!stored) {
                 return {};
             }
@@ -2252,19 +2231,19 @@
                 const parsed = JSON.parse(stored);
                 return isValidNotesData(parsed) ? parsed : {};
             } catch (error) {
-                console.warn('Unable to parse stored slide notes.', error);
+                console.warn("Unable to parse stored slide notes.", error);
                 return {};
             }
         }
 
         function persistNotes() {
-            if (typeof window === 'undefined' || !window.localStorage) {
+            if (typeof window === "undefined" || !window.localStorage) {
                 return;
             }
             try {
-                window.localStorage.setItem(localStorageKey, JSON.stringify(slideNotes));
+                window.localStorage.setItem(getStorageKey(), JSON.stringify(slideNotes));
             } catch (error) {
-                console.warn('Unable to save slide notes.', error);
+                console.warn("Unable to save slide notes.", error);
             }
         }
 
@@ -2272,50 +2251,49 @@
             if (!slideMapList) {
                 return;
             }
-            slideMapList.innerHTML = '';
+            slideMapList.innerHTML = "";
             slideMapButtons.length = 0;
-            slideMapList.setAttribute('role', 'list');
-            const slideMeta = slides.map((slide, index) => ({ slide, index, id: slide.id || `slide-${index + 1}` }));
-            const slidesById = new Map(slideMeta.map(meta => [meta.id, meta]));
-            const usedIndices = new Set();
+            slideMapList.setAttribute("role", "list");
 
-            const sectionDefinitions = [
-                { title: 'Welcome & Community', slides: ['slide-1', 'slide-2', 'slide-3', 'slide-4', 'slide-5', 'slide-6'] },
-                { title: 'Project Inspirations', slides: ['slide-7', 'slide-8', 'slide-9', 'slide-10'] },
-                { title: 'Planning Your Path', slides: ['slide-11', 'slide-12', 'slide-13'] },
-                { title: 'Mentoring Journey', slides: ['slide-14', 'slide-15', 'slide-16', 'slide-17', 'slide-18', 'slide-19', 'slide-20'] },
-                { title: 'Next Steps & Notes', slides: ['slide-21', 'slide-22'] }
-            ];
+            const slideMeta = slides.map((slide, index) => ({
+                slide,
+                index,
+                id: slide.id || `slide-${index + 1}`,
+                key: slide.dataset.slideKey || slide.id || `slide-${index + 1}`
+            }));
+            const slidesByKey = new Map(slideMeta.map((meta) => [meta.key, meta]));
+            const usedIndices = new Set();
+            const sectionDefinitions = Array.isArray(activeLesson?.sections) ? activeLesson.sections : [];
 
             const createSlideMapEntry = (slide, index) => {
-                const listItem = document.createElement('li');
-                listItem.className = 'slide-map-item';
+                const listItem = document.createElement("li");
+                listItem.className = "slide-map-item";
 
-                const button = document.createElement('button');
-                button.type = 'button';
-                button.className = 'slide-map-button';
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "slide-map-button";
                 const slideNumber = index + 1;
-                const rawTitle = slide?.querySelector('.slide-title')?.textContent?.trim() || '';
-                const cleanTitle = rawTitle.replace(/\s+/g, ' ').trim();
-                const colonIndex = cleanTitle.indexOf(':');
+                const rawTitle = slide?.querySelector(".slide-title")?.textContent?.trim() || "";
+                const cleanTitle = rawTitle.replace(/\s+/g, " ").trim();
+                const colonIndex = cleanTitle.indexOf(":");
                 const mainTitle = colonIndex > -1 ? cleanTitle.slice(0, colonIndex).trim() : cleanTitle;
-                const subtitle = colonIndex > -1 ? cleanTitle.slice(colonIndex + 1).trim() : '';
+                const subtitle = colonIndex > -1 ? cleanTitle.slice(colonIndex + 1).trim() : "";
 
-                const numberSpan = document.createElement('span');
-                numberSpan.className = 'slide-map-button__number';
-                numberSpan.textContent = slideNumber.toString().padStart(2, '0');
+                const numberSpan = document.createElement("span");
+                numberSpan.className = "slide-map-button__number";
+                numberSpan.textContent = slideNumber.toString().padStart(2, "0");
 
-                const label = document.createElement('span');
-                label.className = 'slide-map-button__label';
+                const label = document.createElement("span");
+                label.className = "slide-map-button__label";
 
-                const titleSpan = document.createElement('span');
-                titleSpan.className = 'slide-map-button__title';
+                const titleSpan = document.createElement("span");
+                titleSpan.className = "slide-map-button__title";
                 titleSpan.textContent = mainTitle || `Slide ${slideNumber}`;
                 label.appendChild(titleSpan);
 
                 if (subtitle) {
-                    const subtitleSpan = document.createElement('span');
-                    subtitleSpan.className = 'slide-map-button__subtitle';
+                    const subtitleSpan = document.createElement("span");
+                    subtitleSpan.className = "slide-map-button__subtitle";
                     subtitleSpan.textContent = subtitle;
                     label.appendChild(subtitleSpan);
                 }
@@ -2324,11 +2302,11 @@
                 if (cleanTitle) {
                     ariaLabelParts.push(cleanTitle);
                 }
-                button.setAttribute('aria-label', `Go to ${ariaLabelParts.join(': ')}`);
+                button.setAttribute("aria-label", `Go to ${ariaLabelParts.join(": ")}`);
                 button.dataset.slideIndex = index;
                 button.appendChild(numberSpan);
                 button.appendChild(label);
-                button.addEventListener('click', () => showSlide(index));
+                button.addEventListener("click", () => showSlide(index));
 
                 listItem.appendChild(button);
                 return { listItem, button };
@@ -2338,17 +2316,17 @@
                 if (!entries.length) {
                     return;
                 }
-                const sectionItem = document.createElement('li');
-                sectionItem.className = 'slide-map-group';
+                const sectionItem = document.createElement("li");
+                sectionItem.className = "slide-map-group";
 
-                const sectionTitle = document.createElement('h3');
-                sectionTitle.className = 'slide-map-group__title';
+                const sectionTitle = document.createElement("h3");
+                sectionTitle.className = "slide-map-group__title";
                 sectionTitle.textContent = title;
                 sectionItem.appendChild(sectionTitle);
 
-                const sectionList = document.createElement('ol');
-                sectionList.className = 'slide-map-group__list';
-                sectionList.setAttribute('role', 'list');
+                const sectionList = document.createElement("ol");
+                sectionList.className = "slide-map-group__list";
+                sectionList.setAttribute("role", "list");
 
                 entries.forEach(({ slide, index }) => {
                     const { listItem, button } = createSlideMapEntry(slide, index);
@@ -2361,15 +2339,22 @@
                 slideMapList.appendChild(sectionItem);
             };
 
-            sectionDefinitions.forEach(section => {
-                const entries = (section.slides || [])
-                    .map(id => slidesById.get(id))
-                    .filter(Boolean);
-                appendSection(section.title, entries);
+            sectionDefinitions.forEach((section) => {
+                let entries = [];
+                if (Array.isArray(section.slideKeys)) {
+                    entries = section.slideKeys.map((key) => slidesByKey.get(key)).filter(Boolean);
+                } else if (Array.isArray(section.slideIndices)) {
+                    entries = section.slideIndices.map((i) => slideMeta[i]).filter(Boolean);
+                } else if (section.range && Array.isArray(section.range) && section.range.length === 2) {
+                    entries = slideMeta.filter((meta) => meta.index >= section.range[0] && meta.index <= section.range[1]);
+                }
+                appendSection(section.title || "Slides", entries);
             });
 
-            const remainingEntries = slideMeta.filter(meta => !usedIndices.has(meta.index));
-            appendSection('Additional slides', remainingEntries);
+            const remainingEntries = slideMeta.filter((meta) => !usedIndices.has(meta.index));
+            if (remainingEntries.length) {
+                appendSection("Additional slides", remainingEntries);
+            }
 
             updateSlideMapIndicator(currentSlideIndex);
         }
@@ -2382,13 +2367,13 @@
                 const listItem = button.parentElement;
                 const isActive = buttonIndex === index;
                 if (listItem) {
-                    listItem.classList.toggle('is-active', isActive);
+                    listItem.classList.toggle("is-active", isActive);
                 }
                 if (isActive) {
-                    button.setAttribute('aria-current', 'step');
-                    if (listItem && typeof listItem.scrollIntoView === 'function') {
+                    button.setAttribute("aria-current", "step");
+                    if (listItem && typeof listItem.scrollIntoView === "function") {
                         try {
-                            listItem.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'nearest', inline: 'nearest' });
+                            listItem.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "nearest", inline: "nearest" });
                         } catch (error) {
                             if (!prefersReducedMotion) {
                                 listItem.scrollIntoView();
@@ -2396,25 +2381,25 @@
                         }
                     }
                 } else {
-                    button.removeAttribute('aria-current');
+                    button.removeAttribute("aria-current");
                 }
             });
         }
 
         function animateSlideContents(slide) {
-            const elementsToAnimate = slide.querySelectorAll('.animate-on-scroll');
+            const elementsToAnimate = slide.querySelectorAll(".animate-on-scroll");
             elementsToAnimate.forEach((el, index) => {
                 if (prefersReducedMotion) {
-                    el.style.opacity = '1';
-                    el.classList.remove('animate__animated', 'animate__fadeInUp');
+                    el.style.opacity = "1";
+                    el.classList.remove("animate__animated", "animate__fadeInUp");
                     return;
                 }
-                el.classList.remove('animate__animated', 'animate__fadeInUp');
-                el.style.opacity = '0';
+                el.classList.remove("animate__animated", "animate__fadeInUp");
+                el.style.opacity = "0";
                 void el.offsetWidth;
                 setTimeout(() => {
-                    el.classList.add('animate__animated', 'animate__fadeInUp');
-                    el.style.opacity = '1';
+                    el.classList.add("animate__animated", "animate__fadeInUp");
+                    el.style.opacity = "1";
                 }, index * 160);
             });
         }
@@ -2426,38 +2411,37 @@
             const target = event.target;
             const isFormField = target && (
                 target.isContentEditable ||
-                ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'].includes(target.tagName)
+                ["INPUT", "TEXTAREA", "SELECT", "BUTTON"].includes(target.tagName)
             );
             if (isFormField) {
                 return;
             }
-            if (event.key === 'ArrowRight' || event.key === 'PageDown') {
+            if (event.key === "ArrowRight" || event.key === "PageDown") {
                 event.preventDefault();
                 nextSlide();
-            } else if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
+            } else if (event.key === "ArrowLeft" || event.key === "PageUp") {
                 event.preventDefault();
                 prevSlide();
-            } else if (event.key === 'Home') {
+            } else if (event.key === "Home") {
                 event.preventDefault();
                 showSlide(0);
-            } else if (event.key === 'End') {
+            } else if (event.key === "End") {
                 event.preventDefault();
                 showSlide(slides.length - 1);
             }
         }
-
         function renderSlideTextboxes(slideId) {
             const container = textboxContainers[slideId];
             if (!container) {
                 return;
             }
-            container.innerHTML = '';
+            container.innerHTML = "";
             const notes = Array.isArray(slideNotes[slideId]) ? slideNotes[slideId] : [];
             const panel = notesPanels[slideId];
             if (panel) {
-                panel.classList.toggle('empty', notes.length === 0);
+                panel.classList.toggle("empty", notes.length === 0);
             }
-            notes.forEach(note => {
+            notes.forEach((note) => {
                 if (!note.content && note.text) {
                     note.content = note.text;
                     delete note.text;
@@ -2471,11 +2455,9 @@
                 setupNotesIoControls();
                 return;
             }
-
             if (!notesPanelsHost) {
                 return;
             }
-
             slides.forEach((slide, index) => {
                 const slideId = slide.dataset.slideId || slide.id || `slide-${index + 1}`;
                 if (!Array.isArray(slideNotes[slideId])) {
@@ -2483,7 +2465,6 @@
                 }
                 renderSlideTextboxes(slideId);
             });
-
             const activeSlide = slides[currentSlideIndex];
             if (activeSlide) {
                 activateNotesPanel(activeSlide.dataset.slideId);
@@ -2491,16 +2472,15 @@
         }
 
         function activateNotesPanel(slideId) {
-            Object.values(notesPanels).forEach(panel => {
-                panel.classList.remove('active');
-                panel.setAttribute('aria-hidden', 'true');
+            Object.values(notesPanels).forEach((panel) => {
+                panel.classList.remove("active");
+                panel.setAttribute("aria-hidden", "true");
                 panel.hidden = true;
             });
-
             const panel = notesPanels[slideId];
             if (panel) {
-                panel.classList.add('active');
-                panel.setAttribute('aria-hidden', 'false');
+                panel.classList.add("active");
+                panel.setAttribute("aria-hidden", "false");
                 panel.hidden = false;
                 if (notesPanelsHost) {
                     notesPanelsHost.scrollTop = 0;
@@ -2509,13 +2489,13 @@
         }
 
         function createTextboxElement(slideId, note) {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'custom-textbox';
+            const wrapper = document.createElement("div");
+            wrapper.className = "custom-textbox";
             wrapper.dataset.noteId = note.id;
             wrapper.style.backgroundColor = note.color;
 
-            const actions = document.createElement('div');
-            actions.className = 'textbox-actions';
+            const actions = document.createElement("div");
+            actions.className = "textbox-actions";
 
             const colorPicker = createColorPicker(note.color, (newColor) => {
                 if (!newColor || note.color === newColor) {
@@ -2526,12 +2506,12 @@
                 persistNotes();
             });
 
-            const removeButton = document.createElement('button');
-            removeButton.type = 'button';
-            removeButton.className = 'textbox-remove-btn';
+            const removeButton = document.createElement("button");
+            removeButton.type = "button";
+            removeButton.className = "textbox-remove-btn";
             removeButton.innerHTML = '<i class="fas fa-trash"></i> Remove';
-            removeButton.addEventListener('click', () => {
-                slideNotes[slideId] = (slideNotes[slideId] || []).filter(existing => existing.id !== note.id);
+            removeButton.addEventListener("click", () => {
+                slideNotes[slideId] = (slideNotes[slideId] || []).filter((existing) => existing.id !== note.id);
                 persistNotes();
                 renderSlideTextboxes(slideId);
             });
@@ -2539,12 +2519,12 @@
             actions.appendChild(colorPicker);
             actions.appendChild(removeButton);
 
-            const content = document.createElement('div');
-            content.className = 'textbox-content';
-            content.contentEditable = 'true';
-            content.dataset.placeholder = 'Type your notes here...';
-            content.innerHTML = note.content || '';
-            content.addEventListener('input', () => {
+            const content = document.createElement("div");
+            content.className = "textbox-content";
+            content.contentEditable = "true";
+            content.dataset.placeholder = "Type your notes here...";
+            content.innerHTML = note.content || "";
+            content.addEventListener("input", () => {
                 note.content = content.innerHTML;
                 persistNotes();
             });
@@ -2555,33 +2535,34 @@
         }
 
         function setupNotesIoControls() {
-            const saveButton = document.getElementById('save-notes-btn');
-            const loadButton = document.getElementById('load-notes-btn');
-            const fileInput = document.getElementById('notes-file-input');
+            const saveButton = document.getElementById("save-notes-btn");
+            const loadButton = document.getElementById("load-notes-btn");
+            const fileInput = document.getElementById("notes-file-input");
 
             if (saveButton && !saveButton.dataset.initialized) {
-                saveButton.addEventListener('click', () => {
+                saveButton.addEventListener("click", () => {
                     const data = JSON.stringify(slideNotes, null, 2);
-                    const blob = new Blob([data], { type: 'application/json' });
+                    const blob = new Blob([data], { type: "application/json" });
                     const url = URL.createObjectURL(blob);
-                    const link = document.createElement('a');
+                    const link = document.createElement("a");
                     link.href = url;
-                    link.download = 'mentoring-slide-textboxes.json';
+                    const fileId = activeLesson?.id ? activeLesson.id : "lesson";
+                    link.download = `${fileId}-slide-notes.json`;
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
                     URL.revokeObjectURL(url);
                 });
-                saveButton.dataset.initialized = 'true';
+                saveButton.dataset.initialized = "true";
             }
 
             if (loadButton && !loadButton.dataset.initialized) {
-                loadButton.addEventListener('click', () => fileInput?.click());
-                loadButton.dataset.initialized = 'true';
+                loadButton.addEventListener("click", () => fileInput?.click());
+                loadButton.dataset.initialized = "true";
             }
 
             if (fileInput && !fileInput.dataset.initialized) {
-                fileInput.addEventListener('change', event => {
+                fileInput.addEventListener("change", (event) => {
                     const file = event.target.files && event.target.files[0];
                     if (!file) {
                         return;
@@ -2601,31 +2582,30 @@
                                 persistNotes();
                                 renderAllSlides();
                             } else {
-                                alert('The selected file does not contain valid notes data.');
+                                alert("The selected file does not contain valid notes data.");
                             }
                         } catch (error) {
-                            alert('Unable to read that JSON file. Please check the format and try again.');
+                            alert("Unable to read that JSON file. Please check the format and try again.");
                         }
                     };
                     reader.onerror = () => {
-                        alert('We could not read that file. Please try again with a different JSON export.');
+                        alert("We could not read that file. Please try again with a different JSON export.");
                     };
                     reader.readAsText(file);
-                    event.target.value = '';
+                    event.target.value = "";
                 });
-                fileInput.dataset.initialized = 'true';
+                fileInput.dataset.initialized = "true";
             }
         }
 
         function initializeTextboxes() {
-            slideNotes = loadStoredNotes();
-            notesPanelsHost = document.getElementById('notes-panels');
+            notesPanelsHost = document.getElementById("notes-panels");
             if (!notesPanelsHost) {
                 setupNotesIoControls();
                 return;
             }
 
-            notesPanelsHost.innerHTML = '';
+            notesPanelsHost.innerHTML = "";
             for (const key of Object.keys(textboxContainers)) {
                 delete textboxContainers[key];
             }
@@ -2640,42 +2620,42 @@
                     slideNotes[slideId] = [];
                 }
 
-                const panel = document.createElement('section');
-                panel.className = 'notes-panel empty';
+                const panel = document.createElement("section");
+                panel.className = "notes-panel empty";
                 panel.dataset.slideId = slideId;
-                panel.setAttribute('aria-hidden', 'true');
+                panel.setAttribute("aria-hidden", "true");
                 panel.hidden = true;
 
-                const heading = document.createElement('h3');
-                heading.className = 'notes-panel-title visually-hidden';
+                const heading = document.createElement("h3");
+                heading.className = "notes-panel-title visually-hidden";
                 const headingId = `notes-panel-title-${slideId}`;
                 heading.id = headingId;
                 heading.textContent = getSlideLabel(slide, index);
-                panel.setAttribute('aria-labelledby', headingId);
+                panel.setAttribute("aria-labelledby", headingId);
 
-                const toolbar = document.createElement('div');
-                toolbar.className = 'textbox-toolbar';
+                const toolbar = document.createElement("div");
+                toolbar.className = "textbox-toolbar";
 
-                const toolbarCaption = document.createElement('p');
-                toolbarCaption.className = 'toolbar-caption visually-hidden';
-                toolbarCaption.textContent = 'Add a new text box by choosing a colour.';
+                const toolbarCaption = document.createElement("p");
+                toolbarCaption.className = "toolbar-caption visually-hidden";
+                toolbarCaption.textContent = "Add a new text box by choosing a colour.";
 
-                const swatchGroup = document.createElement('div');
-                swatchGroup.className = 'textbox-swatch-group';
+                const swatchGroup = document.createElement("div");
+                swatchGroup.className = "textbox-swatch-group";
 
-                textboxColorOptions.forEach(option => {
-                    const swatchButton = document.createElement('button');
-                    swatchButton.type = 'button';
-                    swatchButton.className = 'textbox-swatch';
-                    swatchButton.style.setProperty('--swatch-color', option.value);
-                    swatchButton.setAttribute('aria-label', `Add a ${option.label} text box`);
+                textboxColorOptions.forEach((option) => {
+                    const swatchButton = document.createElement("button");
+                    swatchButton.type = "button";
+                    swatchButton.className = "textbox-swatch";
+                    swatchButton.style.setProperty("--swatch-color", option.value);
+                    swatchButton.setAttribute("aria-label", `Add a ${option.label} text box`);
                     swatchButton.title = option.label;
-                    swatchButton.addEventListener('click', () => {
-                        const newNote = { id: generateNoteId(), color: option.value, content: '' };
+                    swatchButton.addEventListener("click", () => {
+                        const newNote = { id: generateNoteId(), color: option.value, content: "" };
                         slideNotes[slideId].push(newNote);
                         persistNotes();
                         renderSlideTextboxes(slideId);
-                        const latestTextbox = textboxContainers[slideId]?.lastElementChild?.querySelector('.textbox-content');
+                        const latestTextbox = textboxContainers[slideId]?.lastElementChild?.querySelector(".textbox-content");
                         if (latestTextbox) {
                             latestTextbox.focus();
                         }
@@ -2686,8 +2666,8 @@
                 toolbar.appendChild(toolbarCaption);
                 toolbar.appendChild(swatchGroup);
 
-                const collection = document.createElement('div');
-                collection.className = 'textbox-collection';
+                const collection = document.createElement("div");
+                collection.className = "textbox-collection";
                 textboxContainers[slideId] = collection;
 
                 panel.appendChild(heading);
@@ -2702,13 +2682,545 @@
 
             setupNotesIoControls();
         }
+        function createIconHeading(icon, text) {
+            const heading = document.createElement("h1");
+            heading.className = "slide-title";
+            if (icon) {
+                heading.innerHTML = `<i class="${icon}"></i> ${text}`;
+            } else {
+                heading.textContent = text;
+            }
+            return heading;
+        }
+
+        function createRubric(text) {
+            const rubric = document.createElement("h2");
+            rubric.className = "rubric";
+            rubric.textContent = text;
+            return rubric;
+        }
+
+        function createImageElement(image) {
+            if (!image || !image.src) {
+                return null;
+            }
+            const img = document.createElement("img");
+            img.src = image.src;
+            img.alt = image.alt || "";
+            return img;
+        }
+
+        function createParagraph(text) {
+            const paragraph = document.createElement("p");
+            paragraph.textContent = text;
+            paragraph.classList.add("animate-on-scroll");
+            return paragraph;
+        }
+
+        function createListElement(items = [], style = "bullets") {
+            if (!Array.isArray(items) || !items.length) {
+                return null;
+            }
+            const list = document.createElement("ul");
+            list.className = "slide-list";
+            if (style === "smart") {
+                list.classList.add("smart");
+            }
+            items.forEach((item) => {
+                const li = document.createElement("li");
+                li.classList.add("animate-on-scroll");
+                if (style === "smart" && item && typeof item === "object" && item.letter) {
+                    li.dataset.letter = item.letter;
+                }
+                if (typeof item === "string") {
+                    li.textContent = item;
+                } else if (item && typeof item === "object") {
+                    const fragments = [];
+                    if (item.icon) {
+                        fragments.push(`<i class="${item.icon}"></i>`);
+                    }
+                    if (item.strong) {
+                        fragments.push(`<strong>${item.strong}</strong>`);
+                    }
+                    if (item.text) {
+                        fragments.push(item.text);
+                    }
+                    li.innerHTML = fragments.join(" ");
+                }
+                list.appendChild(li);
+            });
+            return list;
+        }
+
+        function renderHeroSlide(slideElement, config) {
+            if (config.image) {
+                const wrapper = document.createElement("div");
+                wrapper.className = "animate-on-scroll";
+                const img = createImageElement(config.image);
+                if (img) {
+                    wrapper.appendChild(img);
+                    slideElement.appendChild(wrapper);
+                }
+            }
+            if (config.title) {
+                const wrapper = document.createElement("div");
+                wrapper.className = "animate-on-scroll";
+                wrapper.appendChild(createIconHeading(config.icon, config.title));
+                slideElement.appendChild(wrapper);
+            }
+            if (config.subtitle) {
+                const wrapper = document.createElement("div");
+                wrapper.className = "animate-on-scroll";
+                wrapper.appendChild(createRubric(config.subtitle));
+                slideElement.appendChild(wrapper);
+            }
+        }
+
+        function renderContentSlide(slideElement, config) {
+            if (config.title) {
+                const headingWrapper = document.createElement("div");
+                headingWrapper.className = "animate-on-scroll";
+                headingWrapper.appendChild(createIconHeading(config.icon, config.title));
+                slideElement.appendChild(headingWrapper);
+            }
+            if (config.subtitle) {
+                const rubricWrapper = document.createElement("div");
+                rubricWrapper.className = "animate-on-scroll";
+                rubricWrapper.appendChild(createRubric(config.subtitle));
+                slideElement.appendChild(rubricWrapper);
+            }
+            const content = document.createElement("div");
+            content.className = "slide-content";
+            if (config.image) {
+                const img = createImageElement(config.image);
+                if (img) {
+                    img.classList.add("animate-on-scroll");
+                    content.appendChild(img);
+                }
+            }
+            (config.body || []).forEach((paragraph) => {
+                content.appendChild(createParagraph(paragraph));
+            });
+            const list = createListElement(config.list, config.listStyle);
+            if (list) {
+                content.appendChild(list);
+            }
+            slideElement.appendChild(content);
+        }
+
+        function renderCardsSlide(slideElement, config) {
+            if (config.title) {
+                const headingWrapper = document.createElement("div");
+                headingWrapper.className = "animate-on-scroll";
+                headingWrapper.appendChild(createIconHeading(config.icon, config.title));
+                slideElement.appendChild(headingWrapper);
+            }
+            if (config.subtitle) {
+                const rubricWrapper = document.createElement("div");
+                rubricWrapper.className = "animate-on-scroll";
+                rubricWrapper.appendChild(createRubric(config.subtitle));
+                slideElement.appendChild(rubricWrapper);
+            }
+            const content = document.createElement("div");
+            content.className = "slide-content card-container";
+            (config.cards || []).forEach((cardConfig) => {
+                const card = document.createElement("div");
+                card.className = "card animate-on-scroll";
+                if (cardConfig.icon) {
+                    const icon = document.createElement("div");
+                    icon.className = "icon";
+                    icon.innerHTML = `<i class="${cardConfig.icon}"></i>`;
+                    card.appendChild(icon);
+                }
+                if (cardConfig.title) {
+                    const title = document.createElement("h3");
+                    title.textContent = cardConfig.title;
+                    card.appendChild(title);
+                }
+                if (cardConfig.description) {
+                    const description = document.createElement("p");
+                    description.textContent = cardConfig.description;
+                    card.appendChild(description);
+                }
+                content.appendChild(card);
+            });
+            slideElement.appendChild(content);
+        }
+
+        function renderStorySlide(slideElement, config) {
+            if (config.title) {
+                const headingWrapper = document.createElement("div");
+                headingWrapper.className = "animate-on-scroll";
+                headingWrapper.appendChild(createIconHeading(config.icon, config.title));
+                slideElement.appendChild(headingWrapper);
+            }
+            if (config.quote) {
+                const rubricWrapper = document.createElement("div");
+                rubricWrapper.className = "animate-on-scroll";
+                rubricWrapper.appendChild(createRubric(config.quote));
+                slideElement.appendChild(rubricWrapper);
+            }
+            const content = document.createElement("div");
+            content.className = "slide-content";
+            if (config.image) {
+                const img = createImageElement(config.image);
+                if (img) {
+                    img.classList.add("animate-on-scroll");
+                    content.appendChild(img);
+                }
+            }
+            if (config.process) {
+                const paragraph = document.createElement("p");
+                paragraph.className = "animate-on-scroll";
+                const strong = document.createElement("strong");
+                strong.textContent = config.process.label || "Process:";
+                paragraph.appendChild(strong);
+                paragraph.appendChild(document.createTextNode(` ${config.process.text || ""}`));
+                content.appendChild(paragraph);
+            }
+            if (config.outcome) {
+                const paragraph = document.createElement("p");
+                paragraph.className = "animate-on-scroll";
+                const strong = document.createElement("strong");
+                strong.textContent = config.outcome.label || "Outcome:";
+                paragraph.appendChild(strong);
+                paragraph.appendChild(document.createTextNode(` ${config.outcome.text || ""}`));
+                content.appendChild(paragraph);
+            }
+            slideElement.appendChild(content);
+        }
+
+        function renderProcessSlide(slideElement, config) {
+            if (config.title) {
+                const headingWrapper = document.createElement("div");
+                headingWrapper.className = "animate-on-scroll";
+                headingWrapper.appendChild(createIconHeading(config.icon, config.title));
+                slideElement.appendChild(headingWrapper);
+            }
+            if (config.subtitle) {
+                const rubricWrapper = document.createElement("div");
+                rubricWrapper.className = "animate-on-scroll";
+                rubricWrapper.appendChild(createRubric(config.subtitle));
+                slideElement.appendChild(rubricWrapper);
+            }
+            const content = document.createElement("div");
+            content.className = "slide-content";
+            if (config.image) {
+                const img = createImageElement(config.image);
+                if (img) {
+                    img.classList.add("animate-on-scroll");
+                    content.appendChild(img);
+                }
+            }
+            (config.body || []).forEach((paragraph) => {
+                content.appendChild(createParagraph(paragraph));
+            });
+            const flow = document.createElement("div");
+            flow.className = "process-flow";
+            (config.steps || []).forEach((step, index) => {
+                const stepElement = document.createElement("div");
+                stepElement.className = "process-step animate-on-scroll";
+
+                const number = document.createElement("div");
+                number.className = "process-step-number";
+                number.textContent = step.number ? String(step.number) : String(index + 1);
+                stepElement.appendChild(number);
+
+                const stepContent = document.createElement("div");
+                stepContent.className = "process-step-content";
+                if (step.title) {
+                    const strong = document.createElement("strong");
+                    strong.textContent = step.title;
+                    stepContent.appendChild(strong);
+                }
+                if (step.description) {
+                    const paragraph = document.createElement("p");
+                    paragraph.textContent = step.description;
+                    stepContent.appendChild(paragraph);
+                }
+                stepElement.appendChild(stepContent);
+                flow.appendChild(stepElement);
+            });
+            content.appendChild(flow);
+            slideElement.appendChild(content);
+        }
+
+        function renderQuizSlide(slideElement, config) {
+            if (config.title) {
+                const headingWrapper = document.createElement("div");
+                headingWrapper.className = "animate-on-scroll";
+                headingWrapper.appendChild(createIconHeading(config.icon, config.title));
+                slideElement.appendChild(headingWrapper);
+            }
+            const content = document.createElement("div");
+            content.className = "slide-content";
+            (config.questions || []).forEach((question) => {
+                const card = document.createElement("div");
+                card.className = "quiz-card animate-on-scroll";
+
+                const prompt = document.createElement("p");
+                prompt.className = "quiz-question-text";
+                prompt.textContent = question.prompt;
+                card.appendChild(prompt);
+
+                const optionsContainer = document.createElement("div");
+                optionsContainer.className = "quiz-options";
+                const groupName = question.id;
+                const feedbackId = question.feedbackId || `${groupName}-feedback`;
+
+                (question.options || []).forEach((option, index) => {
+                    const label = document.createElement("label");
+                    label.className = "quiz-option";
+
+                    const input = document.createElement("input");
+                    input.type = "radio";
+                    input.name = groupName;
+                    input.value = option.value;
+                    input.id = `${groupName}-option-${index}`;
+
+                    const span = document.createElement("span");
+                    span.textContent = option.label;
+
+                    label.appendChild(input);
+                    label.appendChild(span);
+                    optionsContainer.appendChild(label);
+                });
+
+                card.appendChild(optionsContainer);
+
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "activity-btn quiz-btn";
+                button.textContent = "Check Answer";
+                button.addEventListener("click", () => {
+                    checkSingleChoice(groupName, feedbackId, question.answer, question.correctFeedback, question.incorrectFeedback);
+                });
+                card.appendChild(button);
+
+                const feedback = document.createElement("p");
+                feedback.className = "quiz-feedback";
+                feedback.id = feedbackId;
+                card.appendChild(feedback);
+
+                content.appendChild(card);
+            });
+            slideElement.appendChild(content);
+        }
+
+        function renderReflectionSlide(slideElement, config) {
+            if (config.title) {
+                const headingWrapper = document.createElement("div");
+                headingWrapper.className = "animate-on-scroll";
+                headingWrapper.appendChild(createIconHeading(config.icon, config.title));
+                slideElement.appendChild(headingWrapper);
+            }
+            if (config.subtitle) {
+                const rubricWrapper = document.createElement("div");
+                rubricWrapper.className = "animate-on-scroll";
+                rubricWrapper.appendChild(createRubric(config.subtitle));
+                slideElement.appendChild(rubricWrapper);
+            }
+            const content = document.createElement("div");
+            content.className = "slide-content reflection-form";
+            (config.fields || []).forEach((field, index) => {
+                const wrapper = document.createElement("div");
+                wrapper.className = "reflection-field animate-on-scroll";
+
+                const label = document.createElement("label");
+                const fieldId = field.id || `reflection-field-${index}`;
+                label.setAttribute("for", fieldId);
+                label.textContent = field.label || "Reflection";
+
+                const textarea = document.createElement("textarea");
+                textarea.id = fieldId;
+                textarea.placeholder = field.placeholder || "";
+
+                wrapper.appendChild(label);
+                wrapper.appendChild(textarea);
+                content.appendChild(wrapper);
+            });
+            slideElement.appendChild(content);
+        }
+        function createNavigationControls(index, total, config) {
+            const navConfig = config?.nav || {};
+            const controls = document.createElement("div");
+            controls.className = "controls animate-on-scroll";
+            let buttonsAdded = 0;
+
+            const showPrev = !navConfig.hidePrev && index > 0;
+            if (showPrev) {
+                const prevButton = document.createElement("button");
+                prevButton.type = "button";
+                prevButton.className = "activity-btn secondary";
+                const prevLabel = navConfig.prevLabel || "Back";
+                const prevIcon = navConfig.prevIcon || "fas fa-arrow-left";
+                prevButton.innerHTML = `<i class="${prevIcon}"></i> ${prevLabel}`;
+                prevButton.addEventListener("click", () => {
+                    prevSlide();
+                });
+                controls.appendChild(prevButton);
+                buttonsAdded += 1;
+            }
+
+            const isLastSlide = index === total - 1;
+            const hideNext = navConfig.hideNext || false;
+            if (!hideNext) {
+                const nextButton = document.createElement("button");
+                nextButton.type = "button";
+                const nextVariant = navConfig.nextVariant === "secondary" ? "secondary" : "";
+                nextButton.className = `activity-btn ${nextVariant}`.trim();
+                const nextAction = navConfig.nextAction || (isLastSlide ? "restart" : "next");
+                const nextLabel = navConfig.nextLabel || (isLastSlide ? "Finish & Restart" : "Next");
+                const nextIcon = navConfig.nextIcon || (isLastSlide ? "fas fa-check" : "fas fa-arrow-right");
+                nextButton.innerHTML = nextVariant === "secondary"
+                    ? `${nextLabel}`
+                    : `${nextLabel} <i class="${nextIcon}"></i>`;
+                nextButton.addEventListener("click", () => {
+                    if (nextAction === "restart") {
+                        showSlide(0);
+                    } else {
+                        nextSlide();
+                    }
+                });
+                controls.appendChild(nextButton);
+                buttonsAdded += 1;
+            }
+
+            if (!buttonsAdded) {
+                return null;
+            }
+            return controls;
+        }
+
+        function buildSlideElement(config, index, total) {
+            const slideElement = document.createElement("div");
+            slideElement.className = "screen";
+            slideElement.id = `slide-${index + 1}`;
+            slideElement.dataset.slideKey = config.key || slideElement.id;
+
+            switch (config.type) {
+                case "hero":
+                    renderHeroSlide(slideElement, config);
+                    break;
+                case "cards":
+                    renderCardsSlide(slideElement, config);
+                    break;
+                case "story":
+                    renderStorySlide(slideElement, config);
+                    break;
+                case "process":
+                    renderProcessSlide(slideElement, config);
+                    break;
+                case "quiz":
+                    renderQuizSlide(slideElement, config);
+                    break;
+                case "reflection":
+                    renderReflectionSlide(slideElement, config);
+                    break;
+                case "content":
+                default:
+                    renderContentSlide(slideElement, config);
+                    break;
+            }
+
+            const controls = createNavigationControls(index, total, config);
+            if (controls) {
+                slideElement.appendChild(controls);
+            }
+            return slideElement;
+        }
+
+        function renderSlidesFromLesson(lesson) {
+            if (!slidesRoot) {
+                return;
+            }
+            slidesRoot.innerHTML = "";
+            const slideConfigs = Array.isArray(lesson?.slides) ? lesson.slides : [];
+            slideConfigs.forEach((config, index) => {
+                const slideElement = buildSlideElement(config, index, slideConfigs.length);
+                slidesRoot.appendChild(slideElement);
+            });
+            slides = Array.from(slidesRoot.querySelectorAll(".screen"));
+        }
+
+        function renderLesson(lessonKey) {
+            const availableLessons = Object.keys(lessonLibrary);
+            if (!availableLessons.length) {
+                return;
+            }
+            const resolvedKey = lessonLibrary[lessonKey] ? lessonKey : availableLessons[0];
+            const lesson = lessonLibrary[resolvedKey];
+            if (!lesson) {
+                return;
+            }
+            activeLessonKey = resolvedKey;
+            activeLesson = lesson;
+
+            if (presentationEyebrow) {
+                presentationEyebrow.textContent = lesson.meta?.eyebrow || lesson.label || "Instructional Session";
+            }
+            if (presentationDescriptor) {
+                presentationDescriptor.textContent = lesson.meta?.descriptor || "Choose a template to populate the slides.";
+            }
+            if (typeof document !== "undefined") {
+                const fallbackTitle = `${lesson.label || "Lesson"} – Instructional Slides`;
+                document.title = lesson.meta?.pageTitle || fallbackTitle;
+            }
+
+            hideHighlightToolbar();
+            hideAnnotationPopover();
+            closeAnnotationComposer();
+
+            renderSlidesFromLesson(lesson);
+            currentSlideIndex = 0;
+            slideNotes = loadStoredNotes();
+            initializeTextboxes();
+            renderAllSlides();
+            buildSlideMap();
+            showSlide(0);
+
+            if (lessonSelector && lessonSelector.value !== resolvedKey) {
+                lessonSelector.value = resolvedKey;
+            }
+        }
+
+        function populateLessonSelector() {
+            if (!lessonSelector) {
+                return;
+            }
+            if (!lessonSelector.dataset.initialized) {
+                lessonSelector.addEventListener("change", (event) => {
+                    renderLesson(event.target.value);
+                });
+                lessonSelector.dataset.initialized = "true";
+            }
+            lessonSelector.innerHTML = "";
+            Object.entries(lessonLibrary).forEach(([key, lesson]) => {
+                const option = document.createElement("option");
+                option.value = key;
+                option.textContent = lesson.label || key;
+                lessonSelector.appendChild(option);
+            });
+        }
+
+        function attachKeyboardNavigation() {
+            if (keyboardHandlerAttached) {
+                return;
+            }
+            try {
+                document.addEventListener("keydown", handleKeyboardNavigation, { passive: false });
+            } catch (error) {
+                document.addEventListener("keydown", handleKeyboardNavigation);
+            }
+            keyboardHandlerAttached = true;
+        }
 
         function showSlide(index) {
             if (!Number.isInteger(index) || index < 0 || index >= slides.length) {
                 return;
             }
             slides.forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
+                slide.classList.toggle("active", i === index);
             });
             currentSlideIndex = index;
             hideHighlightToolbar();
@@ -2735,40 +3247,36 @@
 
         function updateQuizFeedback(feedbackId, message, status) {
             const feedback = document.getElementById(feedbackId);
-            if (!feedback) return;
+            if (!feedback) {
+                return;
+            }
             feedback.textContent = message;
-            feedback.classList.remove('correct', 'incorrect', 'notice');
+            feedback.classList.remove("correct", "incorrect", "notice");
             feedback.classList.add(status);
         }
 
         function checkSingleChoice(groupName, feedbackId, correctValue, successMessage, errorMessage) {
             const selected = document.querySelector(`input[name="${groupName}"]:checked`);
             if (!selected) {
-                updateQuizFeedback(feedbackId, 'Please choose an option before checking your answer.', 'notice');
+                updateQuizFeedback(feedbackId, "Please choose an option before checking your answer.", "notice");
                 return;
             }
             if (selected.value === correctValue) {
-                updateQuizFeedback(feedbackId, successMessage, 'correct');
+                updateQuizFeedback(feedbackId, successMessage, "correct");
             } else {
-                updateQuizFeedback(feedbackId, errorMessage, 'incorrect');
+                updateQuizFeedback(feedbackId, errorMessage, "incorrect");
             }
         }
 
-        // Initialize presentation on load
-        document.addEventListener('DOMContentLoaded', () => {
-            buildSlideMap();
-            initializeTextboxes();
-            showSlide(0);
-            try {
-                document.addEventListener('keydown', handleKeyboardNavigation, { passive: false });
-            } catch (error) {
-                document.addEventListener('keydown', handleKeyboardNavigation);
-            }
-
-            const notesPanel = document.getElementById('notes-io-controls');
+        document.addEventListener("DOMContentLoaded", () => {
+            populateLessonSelector();
+            const defaultLessonKey = lessonSelector?.value || Object.keys(lessonLibrary)[0];
+            renderLesson(defaultLessonKey);
+            attachKeyboardNavigation();
+            const notesPanel = document.getElementById("notes-io-controls");
             if (notesPanel) {
-                notesPanel.classList.add('animate__animated', 'animate__fadeInDown');
-                notesPanel.style.opacity = '1';
+                notesPanel.classList.add("animate__animated", "animate__fadeInDown");
+                notesPanel.style.opacity = "1";
             }
         });
     </script>
