@@ -75,7 +75,8 @@
             --dur-3: 320ms;
 
             --target-min: 44px;
-            --container-max: 900px;
+            --container-max: clamp(720px, 64vw, 1080px);
+            --workspace-max: 1500px;
         }
 
         /* ------------------------------- Global reset / mobile stability ----------------------------------*/
@@ -99,11 +100,17 @@
 
         /* ------------------------------- App shell ----------------------------------*/
         #app-wrapper {
-            display: flex; justify-content: center; align-items: flex-start;
+            display: flex; justify-content: center; align-items: stretch;
             padding: max(var(--space-7), env(safe-area-inset-top)) var(--space-4) var(--space-7);
             width: 100%; min-height: 100dvh;
             background: radial-gradient(800px 600px at 20% 0%, rgba(156,175,136,0.08) 0%, transparent 70%),
                         radial-gradient(700px 500px at 80% 100%, rgba(90,107,82,0.06) 0%, transparent 65%);
+        }
+        #activity-shell {
+            width: min(100%, var(--workspace-max));
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-6);
         }
         #activity-container {
             width: 100%; max-width: var(--container-max);
@@ -126,11 +133,6 @@
         }
         .screen { display: none; } /* Hide screens initially */
         .screen.active { display: block; } /* Show active screen */
-        .screen.active.has-notes-rail {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-6);
-        }
 
         /* ------------------------------- Headings / text ----------------------------------*/
         h1 {
@@ -424,8 +426,20 @@
             resize: vertical;
         }
         /* ------------------------------- Collaborative text boxes ----------------------------------*/
+        #notes-dock {
+            width: 100%;
+            background: color-mix(in srgb, var(--soft-white) 90%, white 10%);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(122, 132, 113, 0.14);
+            box-shadow: var(--shadow-1);
+            padding: clamp(20px, 2.8vw, 32px);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-5);
+            min-height: 0;
+        }
         #notes-io-controls {
-            margin-bottom: var(--space-6);
+            margin: 0;
             padding: var(--space-4);
             border-radius: var(--radius);
             border: 1px solid rgba(122, 132, 113, 0.16);
@@ -448,8 +462,15 @@
             font-size: var(--step--1);
             color: var(--ink-muted);
         }
-        .slide-notes-rail {
+        #notes-panels {
             display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+            flex: 1 1 auto;
+            min-height: 0;
+        }
+        .notes-panel {
+            display: none;
             flex-direction: column;
             gap: var(--space-4);
             background: color-mix(in srgb, var(--soft-white) 96%, white 4%);
@@ -457,6 +478,25 @@
             border-radius: var(--radius-lg);
             padding: var(--space-4);
             box-shadow: var(--shadow-1);
+        }
+        .notes-panel.active {
+            display: flex;
+        }
+        .notes-panel-title {
+            margin: 0;
+            font-family: var(--font-display);
+            font-size: var(--step-1);
+            color: var(--forest-shadow);
+        }
+        .notes-panel.empty .textbox-collection::before {
+            content: 'Add a text box to capture notes for this slide.';
+            font-size: var(--step--1);
+            color: var(--ink-muted);
+            display: block;
+            padding: var(--space-3);
+            border-radius: var(--radius-sm);
+            border: 1px dashed rgba(122, 132, 113, 0.2);
+            text-align: center;
         }
         .textbox-toolbar {
             margin-top: var(--space-6);
@@ -482,7 +522,7 @@
             background: #fff;
             font-family: var(--font-body);
         }
-        .slide-notes-rail .textbox-toolbar {
+        .notes-panel .textbox-toolbar {
             margin-top: 0;
             margin-bottom: 0;
         }
@@ -490,7 +530,7 @@
             display: grid;
             gap: var(--space-3);
         }
-        .slide-notes-rail .textbox-collection {
+        .notes-panel .textbox-collection {
             min-width: 0;
         }
         .custom-textbox {
@@ -557,26 +597,30 @@
             }
         }
         @media (min-width: 992px) {
-            .screen.active.has-notes-rail {
-                display: grid;
-                grid-template-columns: clamp(220px, 24vw, 320px) minmax(0, 1fr);
+            #activity-shell {
+                flex-direction: row;
                 align-items: flex-start;
                 gap: var(--space-7);
             }
-            .screen.active.has-notes-rail > .slide-notes-rail {
-                grid-column: 1;
-                grid-row: 1 / -1;
+            #activity-container {
+                flex: 1 1 auto;
+                max-width: none;
+            }
+            #notes-dock {
+                flex: 0 0 clamp(280px, 30vw, 360px);
                 position: sticky;
-                top: clamp(2rem, 4vw, 3.5rem);
-                max-height: calc(100vh - clamp(2rem, 4vw, 3.5rem));
+                top: clamp(1.5rem, 4vw, 3rem);
+                max-height: calc(100vh - clamp(1.5rem, 4vw, 3rem));
+                overflow: hidden;
+            }
+            #notes-panels {
                 overflow: auto;
-                padding-right: var(--space-2);
+                padding-right: var(--space-1);
             }
-            .screen.active.has-notes-rail > :not(.slide-notes-rail):not(.controls) {
-                grid-column: 2;
-            }
-            .screen.active.has-notes-rail > .controls {
-                grid-column: 1 / -1;
+            #notes-io-controls {
+                position: sticky;
+                top: 0;
+                z-index: 1;
             }
         }
         .animate-on-scroll {
@@ -587,17 +631,8 @@
 <body>
 
     <div id="app-wrapper">
-        <div id="activity-container">
-
-            <div id="notes-io-controls">
-                <h2><i class="fas fa-note-sticky"></i> Slide Text Boxes</h2>
-                <div class="notes-io-actions">
-                    <button type="button" class="activity-btn secondary" id="save-notes-btn"><i class="fas fa-file-arrow-down"></i> Save Notes (JSON)</button>
-                    <button type="button" class="activity-btn secondary" id="load-notes-btn"><i class="fas fa-file-arrow-up"></i> Load Notes (JSON)</button>
-                    <input type="file" id="notes-file-input" accept="application/json" hidden>
-                </div>
-                <p class="notes-io-hint">Manage collaborative notes for each slide here, and save or reload your work when you're finished.</p>
-            </div>
+        <div id="activity-shell">
+            <div id="activity-container">
 
             <!-- Slide 1: Title Slide -->
             <div id="slide-1" class="screen active">
@@ -1200,7 +1235,20 @@
             </div>
 
         </div>
+        <aside id="notes-dock" aria-label="Collaborative slide notes workspace">
+            <div id="notes-io-controls">
+                <h2><i class="fas fa-note-sticky"></i> Slide Text Boxes</h2>
+                <div class="notes-io-actions">
+                    <button type="button" class="activity-btn secondary" id="save-notes-btn"><i class="fas fa-file-arrow-down"></i> Save Notes (JSON)</button>
+                    <button type="button" class="activity-btn secondary" id="load-notes-btn"><i class="fas fa-file-arrow-up"></i> Load Notes (JSON)</button>
+                    <input type="file" id="notes-file-input" accept="application/json" hidden>
+                </div>
+                <p class="notes-io-hint">Manage collaborative notes for each slide here, and save or reload your work when you're finished.</p>
+            </div>
+            <div id="notes-panels" aria-live="polite"></div>
+        </aside>
     </div>
+</div>
 
     <script>
         const localStorageKey = 'mentoring-slide-textboxes';
@@ -1216,6 +1264,8 @@
         const slides = Array.from(document.querySelectorAll('.screen'));
         let slideNotes = {};
         const textboxContainers = {};
+        const notesPanels = {};
+        let notesPanelsHost = null;
 
         function generateNoteId() {
             return `note-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -1236,6 +1286,13 @@
                 select.appendChild(opt);
             });
             return select;
+        }
+
+        function getSlideLabel(slide, index) {
+            const rawTitle = slide?.querySelector('.slide-title')?.textContent?.trim() || '';
+            const label = rawTitle ? `${rawTitle}` : '';
+            const prefix = `Slide ${index + 1}`;
+            return label ? `${prefix}: ${label}` : prefix;
         }
 
         function isValidNotesData(data) {
@@ -1282,6 +1339,10 @@
             }
             container.innerHTML = '';
             const notes = Array.isArray(slideNotes[slideId]) ? slideNotes[slideId] : [];
+            const panel = notesPanels[slideId];
+            if (panel) {
+                panel.classList.toggle('empty', notes.length === 0);
+            }
             notes.forEach(note => {
                 if (!note.content && note.text) {
                     note.content = note.text;
@@ -1297,6 +1358,10 @@
                 return;
             }
 
+            if (!notesPanelsHost) {
+                return;
+            }
+
             slides.forEach((slide, index) => {
                 const slideId = slide.dataset.slideId || slide.id || `slide-${index + 1}`;
                 if (!Array.isArray(slideNotes[slideId])) {
@@ -1304,6 +1369,29 @@
                 }
                 renderSlideTextboxes(slideId);
             });
+
+            const activeSlide = slides[currentSlideIndex];
+            if (activeSlide) {
+                activateNotesPanel(activeSlide.dataset.slideId);
+            }
+        }
+
+        function activateNotesPanel(slideId) {
+            Object.values(notesPanels).forEach(panel => {
+                panel.classList.remove('active');
+                panel.setAttribute('aria-hidden', 'true');
+                panel.hidden = true;
+            });
+
+            const panel = notesPanels[slideId];
+            if (panel) {
+                panel.classList.add('active');
+                panel.setAttribute('aria-hidden', 'false');
+                panel.hidden = false;
+                if (notesPanelsHost) {
+                    notesPanelsHost.scrollTop = 0;
+                }
+            }
         }
 
         function createTextboxElement(slideId, note) {
@@ -1356,7 +1444,7 @@
             const loadButton = document.getElementById('load-notes-btn');
             const fileInput = document.getElementById('notes-file-input');
 
-            if (saveButton) {
+            if (saveButton && !saveButton.dataset.initialized) {
                 saveButton.addEventListener('click', () => {
                     const data = JSON.stringify(slideNotes, null, 2);
                     const blob = new Blob([data], { type: 'application/json' });
@@ -1369,10 +1457,15 @@
                     document.body.removeChild(link);
                     URL.revokeObjectURL(url);
                 });
+                saveButton.dataset.initialized = 'true';
             }
 
-            if (loadButton && fileInput) {
-                loadButton.addEventListener('click', () => fileInput.click());
+            if (loadButton && !loadButton.dataset.initialized) {
+                loadButton.addEventListener('click', () => fileInput?.click());
+                loadButton.dataset.initialized = 'true';
+            }
+
+            if (fileInput && !fileInput.dataset.initialized) {
                 fileInput.addEventListener('change', event => {
                     const file = event.target.files && event.target.files[0];
                     if (!file) {
@@ -1405,11 +1498,26 @@
                     reader.readAsText(file);
                     event.target.value = '';
                 });
+                fileInput.dataset.initialized = 'true';
             }
         }
 
         function initializeTextboxes() {
             slideNotes = loadStoredNotes();
+            notesPanelsHost = document.getElementById('notes-panels');
+            if (!notesPanelsHost) {
+                setupNotesIoControls();
+                return;
+            }
+
+            notesPanelsHost.innerHTML = '';
+            for (const key of Object.keys(textboxContainers)) {
+                delete textboxContainers[key];
+            }
+            for (const key of Object.keys(notesPanels)) {
+                delete notesPanels[key];
+            }
+
             slides.forEach((slide, index) => {
                 const slideId = slide.id || `slide-${index + 1}`;
                 slide.dataset.slideId = slideId;
@@ -1417,7 +1525,18 @@
                     slideNotes[slideId] = [];
                 }
 
-                const controlsAnchor = slide.querySelector('.controls');
+                const panel = document.createElement('section');
+                panel.className = 'notes-panel empty';
+                panel.dataset.slideId = slideId;
+                panel.setAttribute('aria-hidden', 'true');
+                panel.hidden = true;
+
+                const heading = document.createElement('h3');
+                heading.className = 'notes-panel-title';
+                const headingId = `notes-panel-title-${slideId}`;
+                heading.id = headingId;
+                heading.textContent = getSlideLabel(slide, index);
+                panel.setAttribute('aria-labelledby', headingId);
 
                 const toolbar = document.createElement('div');
                 toolbar.className = 'textbox-toolbar';
@@ -1438,6 +1557,10 @@
                     slideNotes[slideId].push(newNote);
                     persistNotes();
                     renderSlideTextboxes(slideId);
+                    const latestTextbox = textboxContainers[slideId]?.lastElementChild?.querySelector('.textbox-content');
+                    if (latestTextbox) {
+                        latestTextbox.focus();
+                    }
                 });
 
                 toolbar.appendChild(label);
@@ -1448,19 +1571,12 @@
                 collection.className = 'textbox-collection';
                 textboxContainers[slideId] = collection;
 
-                const notesRail = document.createElement('aside');
-                notesRail.className = 'slide-notes-rail';
-                notesRail.setAttribute('aria-label', 'Slide text boxes');
-                notesRail.appendChild(toolbar);
-                notesRail.appendChild(collection);
+                panel.appendChild(heading);
+                panel.appendChild(toolbar);
+                panel.appendChild(collection);
 
-                slide.classList.add('has-notes-rail');
-
-                if (controlsAnchor) {
-                    slide.insertBefore(notesRail, controlsAnchor);
-                } else {
-                    slide.appendChild(notesRail);
-                }
+                notesPanelsHost.appendChild(panel);
+                notesPanels[slideId] = panel;
 
                 renderSlideTextboxes(slideId);
             });
@@ -1487,6 +1603,10 @@
                 }
             });
             currentSlideIndex = index;
+            const activeSlide = slides[index];
+            if (activeSlide) {
+                activateNotesPanel(activeSlide.dataset.slideId);
+            }
         }
 
         function nextSlide() {
