@@ -327,6 +327,90 @@
             font-size: var(--step-1);
             margin: 0;
         }
+        .quiz-card {
+            background: var(--warm-cream);
+            border: 1px solid var(--border-sage);
+            border-radius: var(--radius);
+            padding: var(--space-5);
+            margin-bottom: var(--space-5);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+        .quiz-question-text {
+            font-weight: 700;
+            font-size: var(--step-1);
+            color: var(--forest-shadow);
+            margin: 0;
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+        .quiz-option {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-3);
+            padding: var(--space-3);
+            border: 1px solid rgba(122, 132, 113, 0.18);
+            border-radius: var(--radius-sm);
+            background: color-mix(in srgb, var(--soft-white) 92%, white 8%);
+            transition: background var(--dur-2) var(--ease-ambient), transform var(--dur-1) var(--ease-ambient);
+        }
+        .quiz-option:hover {
+            background: var(--hover-sage);
+            transform: translateY(-1px);
+        }
+        .quiz-option input[type="radio"] {
+            margin-top: 4px;
+        }
+        .quiz-option span {
+            flex: 1;
+        }
+        .activity-btn.quiz-btn {
+            align-self: flex-start;
+            background: linear-gradient(180deg, color-mix(in srgb, var(--secondary-sage) 92%, white 8%), var(--secondary-sage));
+            border-color: var(--secondary-sage);
+            color: var(--soft-white);
+        }
+        .activity-btn.quiz-btn:hover {
+            background: linear-gradient(180deg, color-mix(in srgb, var(--forest-shadow) 88%, white 12%), var(--forest-shadow));
+        }
+        .quiz-feedback {
+            margin: 0;
+            font-weight: 600;
+        }
+        .quiz-feedback.correct {
+            color: var(--secondary-sage);
+        }
+        .quiz-feedback.incorrect {
+            color: #C4665A;
+        }
+        .quiz-feedback.notice {
+            color: var(--forest-shadow);
+        }
+        .reflection-form {
+            display: grid;
+            gap: var(--space-5);
+        }
+        .reflection-field label {
+            display: block;
+            font-weight: 700;
+            color: var(--forest-shadow);
+            margin-bottom: var(--space-2);
+        }
+        .reflection-field textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: var(--space-4);
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(122, 132, 113, 0.28);
+            background: color-mix(in srgb, var(--soft-white) 92%, white 8%);
+            font-family: var(--font-body);
+            font-size: var(--step-0);
+            resize: vertical;
+        }
         .animate-on-scroll {
             opacity: 0;
         }
@@ -412,6 +496,57 @@
                 </div>
             </div>
 
+            <!-- Slide 4 Quiz: Community & Mentoring Check -->
+            <div id="slide-4-quiz" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-question-circle"></i> Quick Check: Our Mission & Mentoring</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="quiz-card animate-on-scroll">
+                        <p class="quiz-question-text">What is the Noor Community primarily committed to?</p>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="intro-q1" value="solidarity">
+                                <span>Building solidarity and working toward social justice through education.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="intro-q1" value="competition">
+                                <span>Organising competitive events that reward the top performers only.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="intro-q1" value="online-only">
+                                <span>Delivering self-paced online courses without community interaction.</span>
+                            </label>
+                        </div>
+                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('intro-q1','intro-q1-feedback','solidarity','Exactly! Our community centres solidarity and social justice.','Review our vision—connection and justice are at the heart of Noor Community.')">Check Answer</button>
+                        <p class="quiz-feedback" id="intro-q1-feedback"></p>
+                    </div>
+                    <div class="quiz-card animate-on-scroll">
+                        <p class="quiz-question-text">How does the mentoring relationship operate in this program?</p>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="intro-q2" value="hierarchy">
+                                <span>The mentor gives orders and the mentee follows a fixed set of tasks.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="intro-q2" value="collaboration">
+                                <span>Mentor and mentee collaborate to reach the mentee’s goals through trust and guidance.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="intro-q2" value="assessment">
+                                <span>The mentor grades the mentee each week on quizzes and exams.</span>
+                            </label>
+                        </div>
+                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('intro-q2','intro-q2-feedback','collaboration','Yes! Mentoring here is a collaborative, empowering partnership.','Remember—the mentor is a guide who supports, not a judge or taskmaster.')">Check Answer</button>
+                        <p class="quiz-feedback" id="intro-q2-feedback"></p>
+                    </div>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
             <!-- Slide 5: Project Example 1: CV Development -->
             <div id="slide-5" class="screen">
                 <div class="animate-on-scroll">
@@ -478,6 +613,57 @@
                 </div>
             </div>
 
+            <!-- Slide 7 Quiz: Project Examples Review -->
+            <div id="slide-7-quiz" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-clipboard-check"></i> Quick Check: Project Stories</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="quiz-card animate-on-scroll">
+                        <p class="quiz-question-text">Who worked with a mentor to turn a community idea into a grant proposal?</p>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="projects-q1" value="laila">
+                                <span>Laila, who focused on crafting a compelling CV.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="projects-q1" value="omar">
+                                <span>Omar, who needed help structuring and writing a persuasive proposal.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="projects-q1" value="mariam">
+                                <span>Mariam, who practised delivering university presentations.</span>
+                            </label>
+                        </div>
+                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('projects-q1','projects-q1-feedback','omar','Correct! Omar partnered with a mentor to develop a full grant proposal.','Look back at the stories—Omar transformed his idea into a proposal.')">Check Answer</button>
+                        <p class="quiz-feedback" id="projects-q1-feedback"></p>
+                    </div>
+                    <div class="quiz-card animate-on-scroll">
+                        <p class="quiz-question-text">What tool did Mariam use with her mentor to track her public speaking progress?</p>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="projects-q2" value="spreadsheet">
+                                <span>A shared spreadsheet to list weekly accomplishments.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="projects-q2" value="recording">
+                                <span>A recording tool that let them review and refine each presentation.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="projects-q2" value="survey">
+                                <span>An audience survey that classmates completed after her talks.</span>
+                            </label>
+                        </div>
+                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('projects-q2','projects-q2-feedback','recording','Yes! Reviewing recordings helped Mariam see her growth.','Revisit Mariam\'s story—she and her mentor analysed recordings together.')">Check Answer</button>
+                        <p class="quiz-feedback" id="projects-q2-feedback"></p>
+                    </div>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
             <!-- Slide 8: The SMART Framework -->
             <div id="slide-8" class="screen">
                 <div class="animate-on-scroll">
@@ -516,6 +702,57 @@
                 </div>
             </div>
 
+            <!-- Slide 9 Quiz: SMART Framework Check -->
+            <div id="slide-9-quiz" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-bullseye"></i> Quick Check: SMART Planning</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="quiz-card animate-on-scroll">
+                        <p class="quiz-question-text">What does the “R” in the SMART framework represent for our projects?</p>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="smart-q1" value="realistic">
+                                <span>Realistic – making sure your resources are available.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="smart-q1" value="relevant">
+                                <span>Relevant – aligning the goal with your broader purpose and needs.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="smart-q1" value="rewarding">
+                                <span>Rewarding – guaranteeing a prize at the end of the project.</span>
+                            </label>
+                        </div>
+                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('smart-q1','smart-q1-feedback','relevant','Right! Relevant goals connect to what matters most for you.','Hint: SMART keeps projects aligned with your purpose, not with external rewards.')">Check Answer</button>
+                        <p class="quiz-feedback" id="smart-q1-feedback"></p>
+                    </div>
+                    <div class="quiz-card animate-on-scroll">
+                        <p class="quiz-question-text">In the CV SMART goal example, what was the time-bound commitment?</p>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="smart-q2" value="week">
+                                <span>Finish updating the CV within one week.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="smart-q2" value="month">
+                                <span>Complete the CV updates by the end of the current month.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="smart-q2" value="semester">
+                                <span>Wrap up the CV edits by the end of the academic year.</span>
+                            </label>
+                        </div>
+                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('smart-q2','smart-q2-feedback','month','Correct! The example committed to finishing by month’s end.','Check the example again—the deadline keeps the goal accountable within the month.')">Check Answer</button>
+                        <p class="quiz-feedback" id="smart-q2-feedback"></p>
+                    </div>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
             <!-- Slide 10: The Project Journey: Step 1 (AI Tool) -->
             <div id="slide-10" class="screen">
                 <div class="animate-on-scroll">
@@ -547,6 +784,57 @@
                     <div class="animate-on-scroll">
                         <h3>Step 3: The First Meeting</h3>
                         <p>Your first meeting with your mentor focuses on planning and expectation setting. You will review the three-month project plan together and further segment it into weekly tasks.</p>
+                    </div>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Slide 11 Quiz: Project Journey Check -->
+            <div id="slide-11-quiz" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-route"></i> Quick Check: Journey Steps</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="quiz-card animate-on-scroll">
+                        <p class="quiz-question-text">What is the first thing that happens after you submit your project proposal?</p>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="journey-q1" value="matching">
+                                <span>The team reviews it and pairs you with a mentor whose experience fits your goal.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="journey-q1" value="presentation">
+                                <span>You present your idea to the whole cohort for voting.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="journey-q1" value="feedback-form">
+                                <span>You complete a feedback form about the AI tool.</span>
+                            </label>
+                        </div>
+                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('journey-q1','journey-q1-feedback','matching','Correct! Matching you with the right mentor is the next step.','Remember: once your proposal is in, our team focuses on pairing you thoughtfully.')">Check Answer</button>
+                        <p class="quiz-feedback" id="journey-q1-feedback"></p>
+                    </div>
+                    <div class="quiz-card animate-on-scroll">
+                        <p class="quiz-question-text">What is a key focus of the very first mentor meeting?</p>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="journey-q2" value="weekly-plan">
+                                <span>Breaking the three-month plan into weekly tasks and setting expectations together.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="journey-q2" value="celebration">
+                                <span>Celebrating the final results of your project.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="journey-q2" value="budget">
+                                <span>Filling out reimbursement paperwork for supplies.</span>
+                            </label>
+                        </div>
+                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('journey-q2','journey-q2-feedback','weekly-plan','Exactly! You and your mentor co-create detailed weekly steps during the first meeting.','Take another look—your first meeting is all about planning, not final celebrations yet.')">Check Answer</button>
+                        <p class="quiz-feedback" id="journey-q2-feedback"></p>
                     </div>
                 </div>
                 <div class="controls animate-on-scroll">
@@ -606,6 +894,57 @@
                 </div>
             </div>
 
+            <!-- Slide 14 Quiz: Commitment & Boundaries Check -->
+            <div id="slide-14-quiz" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-user-shield"></i> Quick Check: Commitments & Care</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="quiz-card animate-on-scroll">
+                        <p class="quiz-question-text">How long is each weekly mentoring session designed to last?</p>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="care-q1" value="thirty">
+                                <span>About 30 minutes focused on reflection and planning.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="care-q1" value="sixty">
+                                <span>Exactly 60 minutes with required presentations.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="care-q1" value="drop-in">
+                                <span>No set time—mentees drop in and out at any point.</span>
+                            </label>
+                        </div>
+                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('care-q1','care-q1-feedback','thirty','Great! Weekly check-ins are focused, 30-minute conversations.','Check the time commitment slide—the program keeps meetings short and consistent.')">Check Answer</button>
+                        <p class="quiz-feedback" id="care-q1-feedback"></p>
+                    </div>
+                    <div class="quiz-card animate-on-scroll">
+                        <p class="quiz-question-text">What happens if a mentee misses three sessions in a row without an acceptable reason?</p>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="care-q2" value="bonus">
+                                <span>They receive extra time with their mentor to catch up.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="care-q2" value="hold">
+                                <span>The project is placed on hold until the mentee is ready to re-engage.</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="care-q2" value="replacement">
+                                <span>They are automatically assigned a new mentor.</span>
+                            </label>
+                        </div>
+                        <button class="activity-btn quiz-btn" type="button" onclick="checkSingleChoice('care-q2','care-q2-feedback','hold','Correct—the project pauses so mentees can return when ready.','Check the absence guidance: consistent participation keeps the partnership active.')">Check Answer</button>
+                        <p class="quiz-feedback" id="care-q2-feedback"></p>
+                    </div>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
             <!-- Slide 15: Practical Exercise and Q&A -->
             <div id="slide-15" class="screen">
                 <div class="animate-on-scroll">
@@ -618,7 +957,32 @@
                 </div>
                 <div class="controls animate-on-scroll">
                     <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="activity-btn" onclick="nextSlide()"><i class="fas fa-check"></i> Finish</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Slide 16: Reflection Workspace -->
+            <div id="slide-reflection" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-pen-to-square"></i> Reflection & Planning Notes</h1>
+                </div>
+                <div class="slide-content reflection-form">
+                    <div class="reflection-field animate-on-scroll">
+                        <label for="reflection-idea">Project idea I want to explore</label>
+                        <textarea id="reflection-idea" placeholder="Capture the community challenge or opportunity you care about."></textarea>
+                    </div>
+                    <div class="reflection-field animate-on-scroll">
+                        <label for="reflection-smart">First SMART-aligned step I can take</label>
+                        <textarea id="reflection-smart" placeholder="Draft a Specific, Measurable action you can complete soon."></textarea>
+                    </div>
+                    <div class="reflection-field animate-on-scroll">
+                        <label for="reflection-questions">Questions I want to ask my mentor</label>
+                        <textarea id="reflection-questions" placeholder="List the support, resources, or feedback you hope to receive."></textarea>
+                    </div>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="showSlide(0)"><i class="fas fa-check"></i> Finish &amp; Restart</button>
                 </div>
             </div>
 
@@ -656,6 +1020,27 @@
         function prevSlide() {
             if (currentSlideIndex > 0) {
                 showSlide(currentSlideIndex - 1);
+            }
+        }
+
+        function updateQuizFeedback(feedbackId, message, status) {
+            const feedback = document.getElementById(feedbackId);
+            if (!feedback) return;
+            feedback.textContent = message;
+            feedback.classList.remove('correct', 'incorrect', 'notice');
+            feedback.classList.add(status);
+        }
+
+        function checkSingleChoice(groupName, feedbackId, correctValue, successMessage, errorMessage) {
+            const selected = document.querySelector(`input[name="${groupName}"]:checked`);
+            if (!selected) {
+                updateQuizFeedback(feedbackId, 'Please choose an option before checking your answer.', 'notice');
+                return;
+            }
+            if (selected.value === correctValue) {
+                updateQuizFeedback(feedbackId, successMessage, 'correct');
+            } else {
+                updateQuizFeedback(feedbackId, errorMessage, 'incorrect');
             }
         }
 
