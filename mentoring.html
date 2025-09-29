@@ -418,6 +418,122 @@
             font-size: var(--step-0);
             resize: vertical;
         }
+        /* ------------------------------- Collaborative text boxes ----------------------------------*/
+        #notes-io-controls {
+            margin-bottom: var(--space-6);
+            padding: var(--space-4);
+            border-radius: var(--radius);
+            border: 1px solid rgba(122, 132, 113, 0.16);
+            background: color-mix(in srgb, var(--soft-white) 92%, white 8%);
+            box-shadow: var(--shadow-1);
+        }
+        #notes-io-controls h2 {
+            margin-top: 0;
+            font-family: var(--font-display);
+            font-size: var(--step-1);
+        }
+        .notes-io-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-3);
+            margin-bottom: var(--space-3);
+        }
+        .notes-io-hint {
+            margin: 0;
+            font-size: var(--step--1);
+            color: var(--ink-muted);
+        }
+        .textbox-toolbar {
+            margin-top: var(--space-6);
+            margin-bottom: var(--space-3);
+            padding: var(--space-3);
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(122, 132, 113, 0.18);
+            background: color-mix(in srgb, var(--soft-white) 94%, white 6%);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        .textbox-toolbar label {
+            font-weight: 600;
+            color: var(--forest-shadow);
+        }
+        .textbox-toolbar select {
+            min-height: var(--target-min);
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(122, 132, 113, 0.28);
+            background: #fff;
+            font-family: var(--font-body);
+        }
+        .textbox-collection {
+            display: grid;
+            gap: var(--space-3);
+        }
+        .custom-textbox {
+            position: relative;
+            border-radius: var(--radius);
+            padding: var(--space-4);
+            box-shadow: var(--shadow-1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            color: #1F2B1B;
+        }
+        .custom-textbox .textbox-content {
+            min-height: 80px;
+            outline: none;
+            font-family: var(--font-body);
+            font-size: var(--step-0);
+            line-height: 1.5;
+        }
+        .custom-textbox .textbox-content:empty::before {
+            content: attr(data-placeholder);
+            color: rgba(47, 58, 43, 0.5);
+        }
+        .textbox-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-3);
+            gap: var(--space-3);
+            flex-wrap: wrap;
+        }
+        .textbox-actions select {
+            padding: 6px 10px;
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(122, 132, 113, 0.28);
+            background: rgba(255,255,255,0.7);
+            font-family: var(--font-body);
+        }
+        .textbox-remove-btn {
+            border: none;
+            background: transparent;
+            color: var(--forest-shadow);
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .textbox-remove-btn:hover {
+            color: #C4665A;
+        }
+        @media (max-width: 767px) {
+            .textbox-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .textbox-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .textbox-actions select, .textbox-toolbar select {
+                width: 100%;
+            }
+            .textbox-remove-btn {
+                justify-content: center;
+            }
+        }
         .animate-on-scroll {
             opacity: 0;
         }
@@ -427,6 +543,16 @@
 
     <div id="app-wrapper">
         <div id="activity-container">
+
+            <div id="notes-io-controls" class="animate-on-scroll">
+                <h2><i class="fas fa-note-sticky"></i> Slide Text Boxes</h2>
+                <div class="notes-io-actions">
+                    <button type="button" class="activity-btn secondary" id="save-notes-btn"><i class="fas fa-file-arrow-down"></i> Save Notes (JSON)</button>
+                    <button type="button" class="activity-btn secondary" id="load-notes-btn"><i class="fas fa-file-arrow-up"></i> Load Notes (JSON)</button>
+                    <input type="file" id="notes-file-input" accept="application/json" hidden>
+                </div>
+                <p class="notes-io-hint">Add rounded notes to each slide, choose a light background, and save or reload your work when you're finished.</p>
+            </div>
 
             <!-- Slide 1: Title Slide -->
             <div id="slide-1" class="screen active">
@@ -1032,8 +1158,256 @@
     </div>
 
     <script>
+        const localStorageKey = 'mentoring-slide-textboxes';
+        const textboxColorOptions = [
+            { label: 'Sunlit Sand', value: '#FDF5D6' },
+            { label: 'Mint Mist', value: '#E6F4F1' },
+            { label: 'Lavender Veil', value: '#F3E9FB' },
+            { label: 'Peach Glow', value: '#FFEDE5' },
+            { label: 'Sky Wash', value: '#E9F0FF' }
+        ];
+
         let currentSlideIndex = 0;
         const slides = document.querySelectorAll('.screen');
+        let slideNotes = {};
+        const textboxContainers = {};
+
+        function generateNoteId() {
+            return `note-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+        }
+
+        function createColorSelect(id, ariaLabel) {
+            const select = document.createElement('select');
+            if (id) {
+                select.id = id;
+            }
+            if (ariaLabel) {
+                select.setAttribute('aria-label', ariaLabel);
+            }
+            textboxColorOptions.forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option.value;
+                opt.textContent = option.label;
+                select.appendChild(opt);
+            });
+            return select;
+        }
+
+        function isValidNotesData(data) {
+            if (!data || typeof data !== 'object' || Array.isArray(data)) {
+                return false;
+            }
+            return Object.values(data).every(value => Array.isArray(value) && value.every(note => {
+                return note && typeof note === 'object' && 'id' in note && 'color' in note && ('content' in note || 'text' in note);
+            }));
+        }
+
+        function loadStoredNotes() {
+            if (typeof window === 'undefined' || !window.localStorage) {
+                return {};
+            }
+            const stored = window.localStorage.getItem(localStorageKey);
+            if (!stored) {
+                return {};
+            }
+            try {
+                const parsed = JSON.parse(stored);
+                return isValidNotesData(parsed) ? parsed : {};
+            } catch (error) {
+                console.warn('Unable to parse stored slide notes.', error);
+                return {};
+            }
+        }
+
+        function persistNotes() {
+            if (typeof window === 'undefined' || !window.localStorage) {
+                return;
+            }
+            try {
+                window.localStorage.setItem(localStorageKey, JSON.stringify(slideNotes));
+            } catch (error) {
+                console.warn('Unable to save slide notes.', error);
+            }
+        }
+
+        function renderSlideTextboxes(slideId) {
+            const container = textboxContainers[slideId];
+            if (!container) {
+                return;
+            }
+            container.innerHTML = '';
+            const notes = Array.isArray(slideNotes[slideId]) ? slideNotes[slideId] : [];
+            notes.forEach(note => {
+                if (!note.content && note.text) {
+                    note.content = note.text;
+                    delete note.text;
+                }
+                container.appendChild(createTextboxElement(slideId, note));
+            });
+        }
+
+        function renderAllSlides() {
+            slides.forEach((slide, index) => {
+                const slideId = slide.dataset.slideId || slide.id || `slide-${index + 1}`;
+                if (!Array.isArray(slideNotes[slideId])) {
+                    slideNotes[slideId] = [];
+                }
+                renderSlideTextboxes(slideId);
+            });
+        }
+
+        function createTextboxElement(slideId, note) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'custom-textbox';
+            wrapper.dataset.noteId = note.id;
+            wrapper.style.backgroundColor = note.color;
+
+            const actions = document.createElement('div');
+            actions.className = 'textbox-actions';
+
+            const colorSelect = createColorSelect(null, 'Update text box colour');
+            colorSelect.value = note.color;
+            colorSelect.addEventListener('change', () => {
+                note.color = colorSelect.value;
+                wrapper.style.backgroundColor = note.color;
+                persistNotes();
+            });
+
+            const removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.className = 'textbox-remove-btn';
+            removeButton.innerHTML = '<i class="fas fa-trash"></i> Remove';
+            removeButton.addEventListener('click', () => {
+                slideNotes[slideId] = (slideNotes[slideId] || []).filter(existing => existing.id !== note.id);
+                persistNotes();
+                renderSlideTextboxes(slideId);
+            });
+
+            actions.appendChild(colorSelect);
+            actions.appendChild(removeButton);
+
+            const content = document.createElement('div');
+            content.className = 'textbox-content';
+            content.contentEditable = 'true';
+            content.dataset.placeholder = 'Type your notes here...';
+            content.innerHTML = note.content || '';
+            content.addEventListener('input', () => {
+                note.content = content.innerHTML;
+                persistNotes();
+            });
+
+            wrapper.appendChild(actions);
+            wrapper.appendChild(content);
+            return wrapper;
+        }
+
+        function setupNotesIoControls() {
+            const saveButton = document.getElementById('save-notes-btn');
+            const loadButton = document.getElementById('load-notes-btn');
+            const fileInput = document.getElementById('notes-file-input');
+
+            if (saveButton) {
+                saveButton.addEventListener('click', () => {
+                    const data = JSON.stringify(slideNotes, null, 2);
+                    const blob = new Blob([data], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'mentoring-slide-textboxes.json';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                });
+            }
+
+            if (loadButton && fileInput) {
+                loadButton.addEventListener('click', () => fileInput.click());
+                fileInput.addEventListener('change', event => {
+                    const file = event.target.files && event.target.files[0];
+                    if (!file) {
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = (loadEvent) => {
+                        try {
+                            const parsed = JSON.parse(loadEvent.target.result);
+                            if (isValidNotesData(parsed)) {
+                                slideNotes = parsed;
+                                slides.forEach((slide, index) => {
+                                    const slideId = slide.dataset.slideId || slide.id || `slide-${index + 1}`;
+                                    if (!Array.isArray(slideNotes[slideId])) {
+                                        slideNotes[slideId] = [];
+                                    }
+                                });
+                                persistNotes();
+                                renderAllSlides();
+                            } else {
+                                alert('The selected file does not contain valid notes data.');
+                            }
+                        } catch (error) {
+                            alert('Unable to read that JSON file. Please check the format and try again.');
+                        }
+                    };
+                    reader.readAsText(file);
+                    event.target.value = '';
+                });
+            }
+        }
+
+        function initializeTextboxes() {
+            slideNotes = loadStoredNotes();
+            slides.forEach((slide, index) => {
+                const slideId = slide.id || `slide-${index + 1}`;
+                slide.dataset.slideId = slideId;
+                if (!Array.isArray(slideNotes[slideId])) {
+                    slideNotes[slideId] = [];
+                }
+
+                const controlsAnchor = slide.querySelector('.controls');
+
+                const toolbar = document.createElement('div');
+                toolbar.className = 'textbox-toolbar';
+
+                const label = document.createElement('label');
+                const selectId = `toolbar-color-${slideId}`;
+                label.setAttribute('for', selectId);
+                label.textContent = 'New text box colour';
+
+                const colorSelect = createColorSelect(selectId, 'Colour for new text boxes');
+
+                const addButton = document.createElement('button');
+                addButton.type = 'button';
+                addButton.className = 'activity-btn secondary';
+                addButton.innerHTML = '<i class="fas fa-plus"></i> Add Text Box';
+                addButton.addEventListener('click', () => {
+                    const newNote = { id: generateNoteId(), color: colorSelect.value, content: '' };
+                    slideNotes[slideId].push(newNote);
+                    persistNotes();
+                    renderSlideTextboxes(slideId);
+                });
+
+                toolbar.appendChild(label);
+                toolbar.appendChild(colorSelect);
+                toolbar.appendChild(addButton);
+
+                const collection = document.createElement('div');
+                collection.className = 'textbox-collection';
+                textboxContainers[slideId] = collection;
+
+                if (controlsAnchor) {
+                    slide.insertBefore(toolbar, controlsAnchor);
+                    slide.insertBefore(collection, controlsAnchor);
+                } else {
+                    slide.appendChild(toolbar);
+                    slide.appendChild(collection);
+                }
+
+                renderSlideTextboxes(slideId);
+            });
+
+            setupNotesIoControls();
+        }
 
         function showSlide(index) {
             slides.forEach((slide, i) => {
@@ -1088,6 +1462,7 @@
 
         // Initialize presentation on load
         document.addEventListener('DOMContentLoaded', () => {
+            initializeTextboxes();
             showSlide(0);
         });
     </script>
