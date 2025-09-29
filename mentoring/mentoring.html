@@ -150,6 +150,109 @@
         .screen { display: none; scroll-margin-top: clamp(90px, 12vh, 140px); } /* Hide screens initially */
         .screen.active { display: block; } /* Show active screen */
 
+        /* ------------------------------- Interactive annotations ----------------------------------*/
+        .highlight-annotation {
+            background: color-mix(in srgb, var(--secondary-sage) 35%, white 65%);
+            border-radius: var(--radius-sm);
+            padding: 0 0.15em;
+            cursor: pointer;
+            transition: box-shadow var(--dur-1) var(--ease-ambient), background-color var(--dur-1) var(--ease-ambient);
+            box-shadow: inset 0 -0.35em 0 rgba(198, 170, 119, 0.35);
+            outline: none;
+        }
+        .highlight-annotation:focus-visible,
+        .highlight-annotation:hover {
+            box-shadow: inset 0 -0.35em 0 rgba(122, 132, 113, 0.4);
+            background: color-mix(in srgb, var(--secondary-sage) 45%, white 55%);
+        }
+        .highlight-annotation[aria-expanded="true"] {
+            box-shadow: inset 0 -0.35em 0 rgba(90, 107, 82, 0.45);
+        }
+
+        #highlight-toolbar {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-3);
+            background: var(--soft-white);
+            border: 1px solid var(--border-sage);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-1);
+            transform: translate(-50%, -120%);
+            z-index: 2000;
+            min-width: max-content;
+        }
+        #highlight-toolbar[hidden] {
+            display: none;
+        }
+        .highlight-toolbar__btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            font: inherit;
+            background: var(--secondary-sage);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: var(--space-2) var(--space-4);
+            cursor: pointer;
+            transition: background-color var(--dur-1) var(--ease-ambient), transform var(--dur-1) var(--ease-ambient);
+        }
+        .highlight-toolbar__btn:hover,
+        .highlight-toolbar__btn:focus-visible {
+            background: var(--forest-shadow);
+        }
+        .highlight-toolbar__btn:active {
+            transform: scale(0.97);
+        }
+
+        .annotation-popover {
+            position: absolute;
+            max-width: min(320px, 80vw);
+            padding: var(--space-4);
+            background: var(--soft-white);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-sage);
+            box-shadow: var(--shadow-2);
+            z-index: 2100;
+            transform: translate(-50%, 0);
+        }
+        .annotation-popover[hidden] {
+            display: none;
+        }
+        .annotation-popover::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 0 10px 10px 10px;
+            border-style: solid;
+            border-color: transparent transparent var(--soft-white) transparent;
+        }
+        .annotation-popover__close {
+            background: none;
+            border: none;
+            color: var(--forest-shadow);
+            position: absolute;
+            top: var(--space-2);
+            right: var(--space-2);
+            cursor: pointer;
+            padding: var(--space-1);
+            border-radius: var(--radius-sm);
+        }
+        .annotation-popover__close:hover,
+        .annotation-popover__close:focus-visible {
+            background: var(--hover-sage);
+        }
+        .annotation-popover__body {
+            margin: 0;
+            font-size: var(--step-0);
+            color: var(--forest-shadow);
+        }
+
         /* ------------------------------- Headings / text ----------------------------------*/
         h1 {
             font-family: var(--font-display); font-size: var(--step-4); letter-spacing: 0.2px;
@@ -229,9 +332,22 @@
             display: grid;
             gap: var(--space-5);
         }
+        .presentation-menu__card,
         .presentation-menu__section {
             display: grid;
             gap: var(--space-3);
+        }
+        .presentation-menu__card {
+            padding: var(--space-4);
+            background: color-mix(in srgb, var(--soft-white) 92%, #fff 8%);
+            border: 1px solid var(--border-sage);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-1);
+            grid-column: 1 / -1;
+        }
+        .presentation-menu__card-text {
+            display: grid;
+            gap: var(--space-2);
         }
         .presentation-menu__heading {
             margin: 0;
@@ -246,10 +362,19 @@
             flex-wrap: wrap;
             gap: var(--space-3);
         }
+        .presentation-menu__actions .activity-btn {
+            min-height: 40px;
+            padding: 8px 14px;
+            font-size: 0.9rem;
+            border-radius: 10px;
+        }
         .presentation-menu__hint {
             margin: 0;
             font-size: var(--step--1);
             color: var(--ink-muted);
+        }
+        .presentation-menu__card .presentation-menu__hint {
+            line-height: 1.5;
         }
         #slide-map {
             margin: 0;
@@ -826,20 +951,22 @@
                         <span class="presentation-menu__summary-hint">Slide map &amp; notes backup</span>
                     </summary>
                     <div class="presentation-menu__content">
+                        <section class="presentation-menu__card" aria-labelledby="presentation-notes-io-heading">
+                            <div class="presentation-menu__card-text">
+                                <h2 class="presentation-menu__heading" id="presentation-notes-io-heading">Save or load notes</h2>
+                                <p class="presentation-menu__hint">Download your current slide text boxes or import a saved copy.</p>
+                            </div>
+                            <div class="presentation-menu__actions">
+                                <button type="button" class="activity-btn secondary" id="save-notes-btn"><i class="fas fa-file-arrow-down"></i> Save Notes (JSON)</button>
+                                <button type="button" class="activity-btn secondary" id="load-notes-btn"><i class="fas fa-file-arrow-up"></i> Load Notes (JSON)</button>
+                            </div>
+                            <input type="file" id="notes-file-input" accept="application/json" hidden>
+                        </section>
                         <section class="presentation-menu__section" aria-labelledby="presentation-slide-map-heading">
                             <h2 class="presentation-menu__heading" id="presentation-slide-map-heading">Slide map</h2>
                             <nav id="slide-map" aria-label="Slide overview">
                                 <ul id="slide-map-list"></ul>
                             </nav>
-                        </section>
-                        <section class="presentation-menu__section" aria-labelledby="presentation-notes-io-heading">
-                            <h2 class="presentation-menu__heading" id="presentation-notes-io-heading">Save or load notes</h2>
-                            <div class="presentation-menu__actions">
-                                <button type="button" class="activity-btn secondary" id="save-notes-btn"><i class="fas fa-file-arrow-down"></i> Save Notes (JSON)</button>
-                                <button type="button" class="activity-btn secondary" id="load-notes-btn"><i class="fas fa-file-arrow-up"></i> Load Notes (JSON)</button>
-                                <input type="file" id="notes-file-input" accept="application/json" hidden>
-                            </div>
-                            <p class="presentation-menu__hint">Download your current slide text boxes or import a saved copy.</p>
                         </section>
                     </div>
                 </details>
@@ -1477,6 +1604,46 @@
         let prefersReducedMotion = motionQuery ? motionQuery.matches : false;
         const slideMapButtons = [];
 
+        const highlightScope = document.getElementById('activity-container');
+        const highlightToolbar = document.createElement('div');
+        highlightToolbar.id = 'highlight-toolbar';
+        highlightToolbar.setAttribute('role', 'group');
+        highlightToolbar.setAttribute('aria-label', 'Text annotation tools');
+        highlightToolbar.setAttribute('aria-hidden', 'true');
+        highlightToolbar.hidden = true;
+
+        const highlightToolbarButton = document.createElement('button');
+        highlightToolbarButton.type = 'button';
+        highlightToolbarButton.className = 'highlight-toolbar__btn';
+        highlightToolbarButton.innerHTML = '<i class="fas fa-highlighter" aria-hidden="true"></i><span>Highlight &amp; annotate</span>';
+        highlightToolbar.appendChild(highlightToolbarButton);
+        document.body.appendChild(highlightToolbar);
+
+        const annotationPopover = document.createElement('div');
+        annotationPopover.className = 'annotation-popover';
+        annotationPopover.id = 'annotation-popover';
+        annotationPopover.setAttribute('role', 'dialog');
+        annotationPopover.setAttribute('aria-modal', 'false');
+        annotationPopover.setAttribute('aria-hidden', 'true');
+        annotationPopover.hidden = true;
+        annotationPopover.setAttribute('tabindex', '-1');
+
+        const annotationCloseButton = document.createElement('button');
+        annotationCloseButton.type = 'button';
+        annotationCloseButton.className = 'annotation-popover__close';
+        annotationCloseButton.setAttribute('aria-label', 'Close annotation');
+        annotationCloseButton.innerHTML = '<i class="fas fa-times" aria-hidden="true"></i>';
+
+        const annotationBody = document.createElement('p');
+        annotationBody.className = 'annotation-popover__body';
+
+        annotationPopover.appendChild(annotationCloseButton);
+        annotationPopover.appendChild(annotationBody);
+        document.body.appendChild(annotationPopover);
+
+        let pendingSelectionRange = null;
+        let activeAnnotationTarget = null;
+
         if (motionQuery) {
             const updatePreference = (event) => {
                 prefersReducedMotion = event.matches;
@@ -1491,6 +1658,251 @@
                 motionQuery.addListener(updatePreference);
             }
         }
+
+        function isNodeWithinActiveSlide(node) {
+            const activeSlide = slides[currentSlideIndex];
+            if (!activeSlide || !node) {
+                return false;
+            }
+            let current = node.nodeType === Node.ELEMENT_NODE ? node : node.parentNode;
+            while (current) {
+                if (current === activeSlide) {
+                    return true;
+                }
+                current = current.parentNode;
+            }
+            return false;
+        }
+
+        function isInsideExistingHighlight(node) {
+            if (!node) {
+                return false;
+            }
+            const element = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
+            return element ? Boolean(element.closest('.highlight-annotation')) : false;
+        }
+
+        function hideHighlightToolbar() {
+            if (highlightToolbar.hidden) {
+                return;
+            }
+            highlightToolbar.hidden = true;
+            highlightToolbar.setAttribute('aria-hidden', 'true');
+            pendingSelectionRange = null;
+        }
+
+        function positionHighlightToolbar(range) {
+            const rect = range.getBoundingClientRect();
+            const top = window.scrollY + rect.top;
+            const left = window.scrollX + rect.left + rect.width / 2;
+            highlightToolbar.style.top = `${Math.max(top, 0)}px`;
+            highlightToolbar.style.left = `${left}px`;
+        }
+
+        function isRangeAnnotatable(range) {
+            if (!range || range.collapsed) {
+                return false;
+            }
+            if (!isNodeWithinActiveSlide(range.startContainer) || !isNodeWithinActiveSlide(range.endContainer)) {
+                return false;
+            }
+            if (isInsideExistingHighlight(range.startContainer) || isInsideExistingHighlight(range.endContainer)) {
+                return false;
+            }
+            const fragment = range.cloneContents();
+            if (fragment.querySelector && fragment.querySelector('p, li, div, section, article, ul, ol, table, tr, td, th, h1, h2, h3, h4, h5, h6, blockquote')) {
+                return false;
+            }
+            return range.toString().trim().length > 0;
+        }
+
+        function showHighlightToolbar(range) {
+            pendingSelectionRange = range.cloneRange();
+            positionHighlightToolbar(range);
+            highlightToolbar.hidden = false;
+            highlightToolbar.setAttribute('aria-hidden', 'false');
+        }
+
+        function updateHighlightToolbar() {
+            const selection = window.getSelection();
+            if (!selection || selection.rangeCount === 0) {
+                hideHighlightToolbar();
+                return;
+            }
+            const range = selection.getRangeAt(0);
+            if (!isRangeAnnotatable(range)) {
+                hideHighlightToolbar();
+                return;
+            }
+            hideAnnotationPopover();
+            showHighlightToolbar(range);
+        }
+
+        function hideAnnotationPopover() {
+            if (annotationPopover.hidden) {
+                return;
+            }
+            annotationPopover.hidden = true;
+            annotationPopover.setAttribute('aria-hidden', 'true');
+            if (activeAnnotationTarget) {
+                activeAnnotationTarget.setAttribute('aria-expanded', 'false');
+                activeAnnotationTarget = null;
+            }
+        }
+
+        function positionAnnotationPopover(target) {
+            const rect = target.getBoundingClientRect();
+            const top = window.scrollY + rect.bottom + 12;
+            const left = window.scrollX + rect.left + rect.width / 2;
+            annotationPopover.style.top = `${top}px`;
+            annotationPopover.style.left = `${left}px`;
+        }
+
+        function showAnnotationPopover(target) {
+            const annotationText = target?.dataset?.annotation;
+            if (!annotationText) {
+                hideAnnotationPopover();
+                return;
+            }
+            if (activeAnnotationTarget && activeAnnotationTarget !== target) {
+                activeAnnotationTarget.setAttribute('aria-expanded', 'false');
+            }
+            activeAnnotationTarget = target;
+            annotationBody.textContent = annotationText;
+            positionAnnotationPopover(target);
+            annotationPopover.hidden = false;
+            annotationPopover.setAttribute('aria-hidden', 'false');
+            target.setAttribute('aria-expanded', 'true');
+        }
+
+        function toggleAnnotationPopover(target) {
+            if (annotationPopover.hidden || target !== activeAnnotationTarget) {
+                showAnnotationPopover(target);
+            } else {
+                hideAnnotationPopover();
+            }
+        }
+
+        function applyAnnotation(range, annotationText) {
+            if (!range) {
+                return;
+            }
+            const trimmed = annotationText.trim();
+            if (!trimmed) {
+                return;
+            }
+            const workingRange = range.cloneRange();
+            const highlight = document.createElement('mark');
+            highlight.className = 'highlight-annotation';
+            highlight.tabIndex = 0;
+            highlight.setAttribute('role', 'button');
+            highlight.setAttribute('aria-expanded', 'false');
+            highlight.setAttribute('aria-controls', 'annotation-popover');
+            highlight.setAttribute('aria-haspopup', 'dialog');
+            highlight.dataset.annotation = trimmed;
+            const contents = workingRange.extractContents();
+            highlight.appendChild(contents);
+            workingRange.insertNode(highlight);
+            highlight.normalize();
+            if (highlight.parentNode) {
+                highlight.parentNode.normalize();
+            }
+            const selection = window.getSelection();
+            if (selection) {
+                selection.removeAllRanges();
+            }
+            hideHighlightToolbar();
+            window.requestAnimationFrame(() => {
+                showAnnotationPopover(highlight);
+                highlight.focus({ preventScroll: true });
+            });
+        }
+
+        highlightToolbarButton.addEventListener('mousedown', (event) => {
+            event.preventDefault();
+        });
+
+        highlightToolbarButton.addEventListener('click', () => {
+            if (!pendingSelectionRange) {
+                hideHighlightToolbar();
+                return;
+            }
+            const userAnnotation = window.prompt('Add an annotation for the highlighted text:');
+            if (!userAnnotation || !userAnnotation.trim()) {
+                hideHighlightToolbar();
+                return;
+            }
+            applyAnnotation(pendingSelectionRange, userAnnotation);
+        });
+
+        annotationCloseButton.addEventListener('click', () => {
+            hideAnnotationPopover();
+            if (activeAnnotationTarget) {
+                activeAnnotationTarget.focus({ preventScroll: true });
+            }
+        });
+
+        document.addEventListener('selectionchange', () => {
+            window.requestAnimationFrame(updateHighlightToolbar);
+        });
+
+        document.addEventListener('mousedown', (event) => {
+            if (!highlightToolbar.contains(event.target)) {
+                hideHighlightToolbar();
+            }
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!annotationPopover.hidden) {
+                const isHighlight = event.target.closest?.('.highlight-annotation');
+                const isPopover = annotationPopover.contains(event.target);
+                if (!isHighlight && !isPopover) {
+                    hideAnnotationPopover();
+                }
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                hideAnnotationPopover();
+                hideHighlightToolbar();
+            }
+        });
+
+        if (highlightScope) {
+            highlightScope.addEventListener('click', (event) => {
+                const highlight = event.target.closest?.('.highlight-annotation');
+                if (!highlight) {
+                    return;
+                }
+                event.preventDefault();
+                hideHighlightToolbar();
+                toggleAnnotationPopover(highlight);
+            });
+
+            highlightScope.addEventListener('keydown', (event) => {
+                if (event.key !== 'Enter' && event.key !== ' ') {
+                    return;
+                }
+                const highlight = event.target.closest?.('.highlight-annotation');
+                if (!highlight) {
+                    return;
+                }
+                event.preventDefault();
+                hideHighlightToolbar();
+                toggleAnnotationPopover(highlight);
+            });
+        }
+
+        window.addEventListener('scroll', () => {
+            hideHighlightToolbar();
+            hideAnnotationPopover();
+        }, true);
+
+        window.addEventListener('resize', () => {
+            hideHighlightToolbar();
+            hideAnnotationPopover();
+        });
 
         function generateNoteId() {
             return `note-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -1919,6 +2331,8 @@
                 slide.classList.toggle('active', i === index);
             });
             currentSlideIndex = index;
+            hideHighlightToolbar();
+            hideAnnotationPopover();
             const activeSlide = slides[index];
             if (activeSlide) {
                 animateSlideContents(activeSlide);
