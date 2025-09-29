@@ -126,6 +126,11 @@
         }
         .screen { display: none; } /* Hide screens initially */
         .screen.active { display: block; } /* Show active screen */
+        .screen.active.has-notes-rail {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-6);
+        }
 
         /* ------------------------------- Headings / text ----------------------------------*/
         h1 {
@@ -443,6 +448,16 @@
             font-size: var(--step--1);
             color: var(--ink-muted);
         }
+        .slide-notes-rail {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+            background: color-mix(in srgb, var(--soft-white) 96%, white 4%);
+            border: 1px solid rgba(122, 132, 113, 0.14);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            box-shadow: var(--shadow-1);
+        }
         .textbox-toolbar {
             margin-top: var(--space-6);
             margin-bottom: var(--space-3);
@@ -467,9 +482,16 @@
             background: #fff;
             font-family: var(--font-body);
         }
+        .slide-notes-rail .textbox-toolbar {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
         .textbox-collection {
             display: grid;
             gap: var(--space-3);
+        }
+        .slide-notes-rail .textbox-collection {
+            min-width: 0;
         }
         .custom-textbox {
             position: relative;
@@ -534,6 +556,29 @@
                 justify-content: center;
             }
         }
+        @media (min-width: 992px) {
+            .screen.active.has-notes-rail {
+                display: grid;
+                grid-template-columns: clamp(220px, 24vw, 320px) minmax(0, 1fr);
+                align-items: flex-start;
+                gap: var(--space-7);
+            }
+            .screen.active.has-notes-rail > .slide-notes-rail {
+                grid-column: 1;
+                grid-row: 1 / -1;
+                position: sticky;
+                top: clamp(2rem, 4vw, 3.5rem);
+                max-height: calc(100vh - clamp(2rem, 4vw, 3.5rem));
+                overflow: auto;
+                padding-right: var(--space-2);
+            }
+            .screen.active.has-notes-rail > :not(.slide-notes-rail):not(.controls) {
+                grid-column: 2;
+            }
+            .screen.active.has-notes-rail > .controls {
+                grid-column: 1 / -1;
+            }
+        }
         .animate-on-scroll {
             opacity: 0;
         }
@@ -544,14 +589,14 @@
     <div id="app-wrapper">
         <div id="activity-container">
 
-            <div id="notes-io-controls" class="animate-on-scroll">
+            <div id="notes-io-controls">
                 <h2><i class="fas fa-note-sticky"></i> Slide Text Boxes</h2>
                 <div class="notes-io-actions">
                     <button type="button" class="activity-btn secondary" id="save-notes-btn"><i class="fas fa-file-arrow-down"></i> Save Notes (JSON)</button>
                     <button type="button" class="activity-btn secondary" id="load-notes-btn"><i class="fas fa-file-arrow-up"></i> Load Notes (JSON)</button>
                     <input type="file" id="notes-file-input" accept="application/json" hidden>
                 </div>
-                <p class="notes-io-hint">Add rounded notes to each slide, choose a light background, and save or reload your work when you're finished.</p>
+                <p class="notes-io-hint">Manage collaborative notes for each slide here, and save or reload your work when you're finished.</p>
             </div>
 
             <!-- Slide 1: Title Slide -->
@@ -1168,7 +1213,7 @@
         ];
 
         let currentSlideIndex = 0;
-        const slides = document.querySelectorAll('.screen');
+        const slides = Array.from(document.querySelectorAll('.screen'));
         let slideNotes = {};
         const textboxContainers = {};
 
@@ -1247,6 +1292,11 @@
         }
 
         function renderAllSlides() {
+            if (!slides.length) {
+                setupNotesIoControls();
+                return;
+            }
+
             slides.forEach((slide, index) => {
                 const slideId = slide.dataset.slideId || slide.id || `slide-${index + 1}`;
                 if (!Array.isArray(slideNotes[slideId])) {
@@ -1349,6 +1399,9 @@
                             alert('Unable to read that JSON file. Please check the format and try again.');
                         }
                     };
+                    reader.onerror = () => {
+                        alert('We could not read that file. Please try again with a different JSON export.');
+                    };
                     reader.readAsText(file);
                     event.target.value = '';
                 });
@@ -1395,12 +1448,18 @@
                 collection.className = 'textbox-collection';
                 textboxContainers[slideId] = collection;
 
+                const notesRail = document.createElement('aside');
+                notesRail.className = 'slide-notes-rail';
+                notesRail.setAttribute('aria-label', 'Slide text boxes');
+                notesRail.appendChild(toolbar);
+                notesRail.appendChild(collection);
+
+                slide.classList.add('has-notes-rail');
+
                 if (controlsAnchor) {
-                    slide.insertBefore(toolbar, controlsAnchor);
-                    slide.insertBefore(collection, controlsAnchor);
+                    slide.insertBefore(notesRail, controlsAnchor);
                 } else {
-                    slide.appendChild(toolbar);
-                    slide.appendChild(collection);
+                    slide.appendChild(notesRail);
                 }
 
                 renderSlideTextboxes(slideId);
@@ -1410,6 +1469,9 @@
         }
 
         function showSlide(index) {
+            if (!Number.isInteger(index) || index < 0 || index >= slides.length) {
+                return;
+            }
             slides.forEach((slide, i) => {
                 slide.classList.remove('active');
                 if (i === index) {
@@ -1464,6 +1526,12 @@
         document.addEventListener('DOMContentLoaded', () => {
             initializeTextboxes();
             showSlide(0);
+
+            const notesPanel = document.getElementById('notes-io-controls');
+            if (notesPanel) {
+                notesPanel.classList.add('animate__animated', 'animate__fadeInDown');
+                notesPanel.style.opacity = '1';
+            }
         });
     </script>
 
