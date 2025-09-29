@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noor Community Mentoring Program</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Questrial&display=swap" rel="stylesheet">
+    
+    <!-- Animate.css for animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>[[1](https://www.google.com/url?sa=E&q=https%3A%2F%2Fvertexaisearch.cloud.google.com%2Fgrounding-api-redirect%2FAUZIYQEr_d5u8ylq3ASsufFeT1Jm9vOhE3nz3K6jpZFBpgfxyeRYbZT4qEVVPAYuKq5THkg-Eg7KGAm17p5em8YjI_OOZA-C1sRKEMf170aNr5ZbRyPmF40Be2W6Fqrq17xszVLqTfyotkGPAjBTzvdt-_lO3p3tWhUQYRAT)]
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        /* =====================================================================
+           Organic Sage UI — Mobile-first, stable, and soothing
+           Palette preserved; accessibility + mobile ergonomics improved.
+           (Strictly adhering to provided CSS)
+           ===================================================================== */
+
+        /* ------------------------------- Design tokens ----------------------------------*/
+        :root {
+            --primary-sage: #7A8471;
+            --secondary-sage: #9CAF88;
+            --tertiary-sage: #B8C5A6;
+            --warm-cream: #F8F6F0;
+            --soft-white: #FEFCF7;
+            --forest-shadow: #5A6B52;
+            --border-sage: rgba(122, 132, 113, 0.20);
+            --hover-sage: rgba(156, 175, 136, 0.15);
+
+            --deep-forest: #3E4A3A;
+            --moss: #6E7A67;
+            --fern: #8FA081;
+            --dried-clay: #D9CDB4;
+            --amber: #C6AA77;
+            --ink: #2F3A2B;
+            --ink-muted: #5A6B52;
+
+            --font-display: 'Questrial', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-body: 'Nunito', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+            --step--1: clamp(0.875rem, 0.84rem + 0.15vw, 0.95rem);
+            --step-0: clamp(1rem, 0.96rem + 0.22vw, 1.1rem);
+            --step-1: clamp(1.125rem, 1.07rem + 0.35vw, 1.3rem);
+            --step-2: clamp(1.375rem, 1.28rem + 0.55vw, 1.6rem);
+            --step-3: clamp(1.75rem, 1.58rem + 0.95vw, 2.1rem);
+            --step-4: clamp(2.25rem, 1.98rem + 1.35vw, 2.7rem);
+
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-7: 2rem;
+            --space-8: 2.5rem;
+            --space-9: 3rem;
+
+            --radius-sm: 10px;
+            --radius: 16px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+
+            --shadow-1: 0 1px 2px rgba(34, 41, 32, 0.05), 0 2px 8px rgba(34, 41, 32, 0.06);
+            --shadow-2: 0 4px 18px rgba(34, 41, 32, 0.08), 0 12px 28px rgba(34, 41, 32, 0.06);
+            --shadow-3: 0 10px 40px rgba(34, 41, 32, 0.10), 0 20px 60px rgba(34, 41, 32, 0.08);
+
+            --ring: 0 0 0 3px color-mix(in oklab, var(--soft-white) 60%, transparent), 0 0 0 5px color-mix(in srgb, var(--secondary-sage), #2F3A2B 15%);
+
+            --ease-ambient: cubic-bezier(.2,.8,.2,1);
+            --dur-1: 120ms;
+            --dur-2: 200ms;
+            --dur-3: 320ms;
+
+            --target-min: 44px;
+            --container-max: 900px;
+        }
+
+        /* ------------------------------- Global reset / mobile stability ----------------------------------*/
+        *, *::before, *::after { box-sizing: border-box; }
+        html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; hanging-punctuation: first last; }
+        html, body {
+            margin: 0; padding: 0; width: 100%; min-height: 100dvh;
+            font-family: var(--font-body); font-size: var(--step-0); line-height: 1.6;
+            color: var(--forest-shadow);
+            background: radial-gradient(1200px 1200px at -10% -10%, #FFFFFF 0%, transparent 50%),
+                        radial-gradient(1200px 1000px at 110% 10%, #FFF8F0 0%, transparent 50%),
+                        linear-gradient(135deg, #F8F6F0 0%, #F5F3ED 100%);
+            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; overflow-x: hidden;
+        }
+        @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+        :where(p, h1, h2, h3, h4, h5, h6) { text-wrap: pretty; overflow-wrap: anywhere; }
+        img, svg, video, canvas, audio, iframe { display: block; max-width: 100%; height: auto; }
+        a { color: var(--primary-sage); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+        a:hover { color: var(--deep-forest); }
+        .visually-hidden { position: absolute !important; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); white-space: nowrap; }
+
+        /* ------------------------------- App shell ----------------------------------*/
+        #app-wrapper {
+            display: flex; justify-content: center; align-items: flex-start;
+            padding: max(var(--space-7), env(safe-area-inset-top)) var(--space-4) var(--space-7);
+            width: 100%; min-height: 100dvh;
+            background: radial-gradient(800px 600px at 20% 0%, rgba(156,175,136,0.08) 0%, transparent 70%),
+                        radial-gradient(700px 500px at 80% 100%, rgba(90,107,82,0.06) 0%, transparent 65%);
+        }
+        #activity-container {
+            width: 100%; max-width: var(--container-max);
+            background: color-mix(in srgb, var(--soft-white) 88%, white 12%);
+            padding: clamp(24px, 3.2vw, 48px); border-radius: var(--radius-lg);
+            border: 1px solid rgba(122, 132, 113, 0.12); box-shadow: var(--shadow-2);
+            position: relative; isolation: isolate; container-type: inline-size;
+        }
+        @supports (backdrop-filter: blur(6px)) {
+            #activity-container {
+                background: color-mix(in srgb, var(--soft-white) 76%, white 24%);
+                backdrop-filter: blur(6px) saturate(1.02);
+            }
+        }
+        #activity-container::before {
+            content: ""; position: absolute; inset: -1px; border-radius: inherit;
+            background: radial-gradient(1200px 200px at 50% -5%, rgba(156,175,136,0.12), transparent 60%),
+                        radial-gradient(800px 1000px at 50% 110%, rgba(122,132,113,0.08), transparent 70%);
+            z-index: -1; pointer-events: none;
+        }
+        .screen { display: none; } /* Hide screens initially */
+        .screen.active { display: block; } /* Show active screen */
+
+        /* ------------------------------- Headings / text ----------------------------------*/
+        h1 {
+            font-family: var(--font-display); font-size: var(--step-4); letter-spacing: 0.2px;
+            color: var(--forest-shadow); margin: 0 0 var(--space-2) 0; text-align: center;
+        }
+        h2.rubric {
+            font-family: var(--font-body); font-size: var(--step-0); font-weight: 500;
+            color: var(--secondary-sage); margin: 0 0 var(--space-6) 0; text-align: center; line-height: 1.5;
+        }
+        h3 {
+            font-family: var(--font-display); font-size: var(--step-2); color: var(--forest-shadow);
+            margin: var(--space-6) 0 var(--space-3) 0;
+        }
+
+        /* ------------------------------- Buttons ----------------------------------*/
+        .activity-btn {
+            min-height: var(--target-min); padding: 12px 20px; border-radius: 12px;
+            border: 1px solid var(--primary-sage);
+            background: linear-gradient(180deg, color-mix(in srgb, var(--primary-sage) 92%, white 8%), var(--primary-sage));
+            color: #fff; font-weight: 700; font-size: 1rem; letter-spacing: 0.2px; cursor: pointer;
+            text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none;
+            transition: transform var(--dur-1) var(--ease-ambient), box-shadow var(--dur-2) var(--ease-ambient), background var(--dur-2) var(--ease-ambient), border-color var(--dur-2) var(--ease-ambient), opacity var(--dur-1) var(--ease-ambient);
+            box-shadow: 0 1px 0 rgba(255,255,255,0.25) inset, 0 8px 16px rgba(90, 107, 82, 0.20);
+        }
+        .activity-btn:hover {
+            background: linear-gradient(180deg, color-mix(in srgb, var(--forest-shadow) 92%, white 8%), var(--forest-shadow));
+            transform: translateY(-1px); box-shadow: 0 1px 0 rgba(255,255,255,0.25) inset, 0 10px 20px rgba(90, 107, 82, 0.22);
+        }
+        .activity-btn:active {
+            transform: translateY(0); box-shadow: 0 1px 0 rgba(255,255,255,0.2) inset, 0 4px 10px rgba(90, 107, 82, 0.20);
+        }
+        .activity-btn:focus-visible { outline: none; box-shadow: var(--ring), 0 8px 16px rgba(90, 107, 82, 0.20); }
+        .activity-btn:disabled, .activity-btn[disabled] {
+            background: var(--tertiary-sage); border-color: var(--tertiary-sage);
+            color: color-mix(in srgb, #fff 70%, var(--soft-white) 30%); cursor: not-allowed; opacity: 0.8; transform: none; box-shadow: none;
+        }
+        .activity-btn.secondary {
+            background: transparent; color: var(--primary-sage); border-color: color-mix(in srgb, var(--tertiary-sage) 70%, var(--primary-sage) 30%); box-shadow: none;
+        }
+        .activity-btn.secondary:hover { background-color: var(--hover-sage); }
+        .activity-btn.secondary:focus-visible { outline: none; box-shadow: var(--ring); }
+        .controls { margin-top: var(--space-7); text-align: center; display: grid; gap: var(--space-3); grid-auto-flow: row; }
+
+        /* ------------------------------- Forms / inputs ----------------------------------*/
+        .input-group { margin: var(--space-6) 0; }
+        .input-group label { display: block; font-weight: 700; margin-bottom: var(--space-2); color: var(--primary-sage); letter-spacing: 0.2px; }
+        input[type="text"], input[type="date"], textarea, select {
+            width: 100%; min-height: var(--target-min); padding: 12px 14px; border-radius: 10px;
+            border: 1px solid var(--tertiary-sage); background: #fff; font-size: 1rem; font-family: var(--font-body);
+            color: var(--ink); box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset; appearance: none; -webkit-appearance: none;
+            transition: border-color var(--dur-2) var(--ease-ambient), box-shadow var(--dur-2) var(--ease-ambient), background var(--dur-2) var(--ease-ambient);
+        }
+        input::placeholder, textarea::placeholder { color: color-mix(in srgb, var(--ink-muted) 60%, #fff 40%); opacity: 0.9; }
+        input:focus-visible, textarea:focus-visible, select:focus-visible {
+            outline: none; border-color: var(--secondary-sage); box-shadow: var(--ring);
+            background: color-mix(in srgb, #fff 92%, var(--warm-cream) 8%);
+        }
+        input:disabled, textarea:disabled, select:disabled {
+            background: color-mix(in srgb, #fff 85%, var(--warm-cream) 15%); color: var(--ink-muted); cursor: not-allowed;
+        }
+        input[type="date"] { -webkit-tap-highlight-color: transparent; }
+        textarea { resize: vertical; }
+        :root { accent-color: var(--primary-sage); }
+
+        /* ------------------------------- Responsive / container queries ----------------------------------*/
+        @media (min-width: 768px) { #app-wrapper { padding-inline: var(--space-7); } .controls { grid-auto-flow: column; justify-content: center; } }
+        @media (min-width: 1024px) { #activity-container { box-shadow: var(--shadow-3); } h1 { letter-spacing: 0.3px; } }
+        @media (max-width: 767px) { #app-wrapper { padding: var(--space-4); } #activity-container { padding: 24px; } h1 { font-size: clamp(1.75rem, 5vw, 2rem); } h2.rubric { font-size: var(--step--1); margin-bottom: 20px; } }
+
+        /* ------------------------------- Accessibility / motion / scroll ----------------------------------*/
+        :focus-visible { outline: none; box-shadow: var(--ring); }
+        @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+        ::selection { background: color-mix(in srgb, var(--secondary-sage) 30%, #fff 70%); color: var(--deep-forest); }
+        html, body { overscroll-behavior-y: none; }
+
+        /* ------------------------------- Scrollbars (subtle, optional) ----------------------------------*/
+        *::-webkit-scrollbar { width: 10px; height: 10px; }
+        *::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--primary-sage) 50%, var(--tertiary-sage) 50%); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+        *::-webkit-scrollbar-track { background: transparent; }
+
+        /* ------------------------------- Dark mode (gentle, earthy) ----------------------------------*/
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --soft-white: #1E211C; --warm-cream: #23261F; --forest-shadow: #DDE6D4;
+                --ink: #E9EFE5; --ink-muted: #AEB9AA; --border-sage: rgba(184, 197, 166, 0.25);
+            }
+            html, body {
+                background: radial-gradient(1100px 900px at 15% 10%, rgba(156,175,136,0.06), transparent 60%),
+                            radial-gradient(900px 900px at 85% 90%, rgba(122,132,113,0.08), transparent 65%),
+                            linear-gradient(135deg, #191D18 0%, #1B1E19 100%);
+            }
+            #activity-container { background: color-mix(in srgb, #23261F 92%, #1B1E19 8%); border-color: rgba(184, 197, 166, 0.18); box-shadow: 0 12px 36px rgba(0,0,0,0.35); }
+            a { color: color-mix(in srgb, var(--secondary-sage) 80%, #C7D3C0 20%); }
+            .mc-question { background: linear-gradient(180deg, #20241E 0%, #191D18 100%); border-color: rgba(184, 197, 166, 0.20); box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 10px 30px rgba(0,0,0,0.35); }
+            .activity-btn { background: linear-gradient(180deg, color-mix(in srgb, var(--primary-sage) 80%, #0F120E 20%), var(--primary-sage)); box-shadow: 0 1px 0 rgba(255,255,255,0.08) inset, 0 8px 18px rgba(0,0,0,0.35); }
+            .activity-btn:hover { background: linear-gradient(180deg, color-mix(in srgb, var(--forest-shadow) 80%, #0F120E 20%), var(--forest-shadow)); }
+            input, textarea, select { background: #141713; border-color: rgba(184, 197, 166, 0.25); color: var(--ink); }
+        }
+
+        /* ------------------------------- Slide-specific styles ----------------------------------*/
+        /* Custom styles for the presentation content */
+        .slide-content { margin-top: var(--space-6); }
+        .slide-list {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: var(--space-6);
+        }
+        .slide-list li {
+            position: relative;
+            padding-left: var(--space-7);
+            margin-bottom: var(--space-4);
+            font-size: var(--step-1);
+            line-height: 1.5;
+        }
+        .slide-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: var(--space-1);
+            width: var(--space-3);
+            height: var(--space-3);
+            background-color: var(--primary-sage);
+            border-radius: 50%;
+        }
+        .slide-list.smart li::before {
+            content: attr(data-letter);
+            background-color: var(--secondary-sage);
+            color: var(--soft-white);
+            font-weight: 700;
+            font-size: var(--step--1);
+            text-align: center;
+            line-height: var(--space-7);
+        }
+        .process-flow {
+            display: grid;
+            gap: var(--space-4);
+        }
+        .process-step {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            padding: var(--space-4);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-sage);
+            background: #fff;
+        }
+        .process-step-number {
+            font-family: var(--font-display);
+            font-size: var(--step-3);
+            color: var(--primary-sage);
+            font-weight: 700;
+            flex-shrink: 0;
+            width: 50px;
+            text-align: center;
+        }
+        .process-step-content {
+            font-size: var(--step-0);
+        }
+        .process-step-content strong { color: var(--forest-shadow); }
+
+        /* Navigation controls styling */
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: var(--space-7);
+        }
+        .navigation button {
+            width: 150px;
+        }
+        .navigation button:first-child { justify-content: flex-start; }
+        .navigation button:last-child { justify-content: flex-end; }
+
+        .slide-content p { margin-bottom: var(--space-4); }
+        .slide-content ul { padding-left: var(--space-6); }
+        .slide-content ul li { margin-bottom: var(--space-2); }
+        
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-4);
+            margin-top: var(--space-6);
+        }
+        .card {
+            background: #fff;
+            border: 1px solid var(--border-sage);
+            border-radius: var(--radius);
+            padding: var(--space-5);
+            box-shadow: var(--shadow-1);
+            text-align: center;
+        }
+        .card .icon {
+            font-size: var(--step-3);
+            color: var(--primary-sage);
+            margin-bottom: var(--space-3);
+        }
+        .card h3 {
+            font-size: var(--step-1);
+            margin: 0;
+        }
+        .animate-on-scroll {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-wrapper">
+        <div id="activity-container">
+
+            <!-- Slide 1: Title Slide -->
+            <div id="slide-1" class="screen active">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title">Welcome to the Noor Community Mentoring Program</h1>
+                </div>
+                <div class="animate-on-scroll">
+                    <h2 class="rubric">Building a supportive future, together.</h2>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn" onclick="nextSlide()"><i class="fas fa-play"></i> Start</button>
+                </div>
+            </div>
+
+            <!-- Slide 2: Community Identity -->
+            <div id="slide-2" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-users"></i> Who Are We?</h1>
+                </div>
+                <div class="slide-content">
+                    <p class="animate-on-scroll">The Noor Community is an educational space dedicated to liberation through learning. We believe in solidarity and social justice.</p>
+                    <p class="animate-on-scroll">Our goal is to create a safe environment where everyone can express themselves, develop their skills, and connect with others. We believe that learning and teaching are universal processes that empower us all.</p>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Slide 3: What is Mentoring? -->
+            <div id="slide-3" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-hands-helping"></i> What is Mentoring?</h1>
+                </div>
+                <div class="slide-content">
+                    <p class="animate-on-scroll">Mentoring is a collaborative relationship where an experienced person (the mentor) guides another person (the mentee) to help them develop skills and achieve goals.</p>
+                    <p class="animate-on-scroll">This program focuses on building a trusting relationship and empowering you to succeed in your chosen project. The mentor acts as a guide and supporter throughout your journey.</p>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Slide 4: What is Possible? -->
+            <div id="slide-4" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-lightbulb"></i> What Is Possible for You?</h1>
+                </div>
+                <div class="animate-on-scroll">
+                    <h2 class="rubric">Mentoring can help you achieve concrete, practical outcomes.</h2>
+                </div>
+                <div class="slide-content card-container">
+                    <div class="card animate-on-scroll">
+                        <div class="icon"><i class="fas fa-file-alt"></i></div>
+                        <h3>CV & LinkedIn</h3>
+                    </div>
+                    <div class="card animate-on-scroll">
+                        <div class="icon"><i class="fas fa-microphone"></i></div>
+                        <h3>Public Speaking</h3>
+                    </div>
+                    <div class="card animate-on-scroll">
+                        <div class="icon"><i class="fas fa-award"></i></div>
+                        <h3>Grant Proposals</h3>
+                    </div>
+                    <div class="card animate-on-scroll">
+                        <div class="icon"><i class="fas fa-graduation-cap"></i></div>
+                        <h3>University Applications</h3>
+                    </div>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Slide 5: Project Example 1: CV Development -->
+            <div id="slide-5" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-user-tie"></i> Project Example: Developing a CV</h1>
+                </div>
+                <div class="animate-on-scroll">
+                    <h2 class="rubric">"I needed a strong CV to apply for work."</h2>
+                </div>
+                <div class="slide-content">
+                    <div class="animate-on-scroll">
+                        <p><strong>The Process:</strong> A student named Laila wanted to create a professional CV. Her mentor guided her through identifying her key skills and experiences. They worked together to choose powerful action verbs and structure her information clearly. The mentor reviewed her drafts and offered feedback on how to make her CV stand out.</p>
+                    </div>
+                    <div class="animate-on-scroll">
+                        <p><strong>The Outcome:</strong> Laila now has a polished CV that clearly highlights her strengths. She feels confident using it to apply for new opportunities and has a better understanding of how to describe her skills to potential employers.</p>
+                    </div>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Slide 6: Project Example 2: Grant Proposal -->
+            <div id="slide-6" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-file-signature"></i> Project Example: Writing a Proposal</h1>
+                </div>
+                <div class="animate-on-scroll">
+                    <h2 class="rubric">"I had a great idea, but I didn't know how to start."</h2>
+                </div>
+                <div class="slide-content">
+                    <div class="animate-on-scroll">
+                        <p><strong>The Process:</strong> Omar wanted to write a grant proposal for a community project. His mentor helped him understand the different sections required in a proposal. They worked on breaking down his idea into specific objectives and a detailed budget. The mentor also helped him refine his writing so that the proposal was persuasive and clear.</p>
+                    </div>
+                    <div class="animate-on-scroll">
+                        <p><strong>The Outcome:</strong> Omar successfully completed a professional grant proposal. He learned how to structure complex documents and present his ideas logically. He now has a valuable asset to use for future funding applications.</p>
+                    </div>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Slide 7: Project Example 3: Public Speaking Skills -->
+            <div id="slide-7" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-podium-star"></i> Project Example: Public Speaking</h1>
+                </div>
+                <div class="animate-on-scroll">
+                    <h2 class="rubric">"I was nervous about giving presentations."</h2>
+                </div>
+                <div class="slide-content">
+                    <div class="animate-on-scroll">
+                        <p><strong>The Process:</strong> Mariam's goal was to improve her public speaking skills for university presentations. Her mentor helped her practice her delivery and organize her presentation content. The mentor provided a safe space for Mariam to practice, focusing on techniques for managing nervousness and speaking clearly. They used a recording tool to review her progress together.</p>
+                    </div>
+                    <div class="animate-on-scroll">
+                        <p><strong>The Outcome:</strong> Mariam successfully delivered her presentation to her class. She now feels significantly more confident in front of an audience and has a clear plan for preparing future talks.</p>
+                    </div>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Slide 8: The SMART Framework -->
+            <div id="slide-8" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-bullseye"></i> Create a Measurable Project</h1>
+                </div>
+                <div class="slide-content">
+                    <p class="animate-on-scroll">Successful projects require clear goals. To make sure your project is effective, we use the <strong>SMART</strong> framework.</p>
+                    <p class="animate-on-scroll">This framework ensures that your project has measurable outcomes and is realistic for you to complete in three months.</p>
+                    <ul class="slide-list smart">
+                        <li data-letter="S" class="animate-on-scroll">Specific</li>
+                        <li data-letter="M" class="animate-on-scroll">Measurable</li>
+                        <li data-letter="A" class="animate-on-scroll">Achievable</li>
+                        <li data-letter="R" class="animate-on-scroll">Relevant</li>
+                        <li data-letter="T" class="animate-on-scroll">Time-bound</li>
+                    </ul>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Slide 9: Example Project: CV Development -->
+            <div id="slide-9" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-check-circle"></i> Example: A SMART Goal</h1>
+                </div>
+                <div class="slide-content">
+                    <p class="animate-on-scroll">Let's take a common goal: "I want to improve my CV."</p>
+                    <p class="animate-on-scroll">To make this a SMART goal, you need to add specific actions and a deadline. For example:</p>
+                    <p class="animate-on-scroll"><strong>SMART Goal:</strong> "I will update my CV to include specific descriptions of my three most important skills and experiences, and I will complete this by the end of this month."</p>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Slide 10: The Project Journey: Step 1 (AI Tool) -->
+            <div id="slide-10" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-rocket"></i> Step 1: The AI Guide</h1>
+                </div>
+                <div class="animate-on-scroll">
+                    <h2 class="rubric">Refining your idea into a strong proposal.</h2>
+                </div>
+                <div class="slide-content">
+                    <p class="animate-on-scroll">Once you have an initial idea, you will use our AI guide tool. This tool will help you turn your idea into a detailed project plan that follows the SMART framework.</p>
+                    <p class="animate-on-scroll">The final result will be a complete proposal ready for submission.</p>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Slide 11: The Project Journey: Step 2 & 3 (Matching and First Meeting) -->
+            <div id="slide-11" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-user-friends"></i> Step 2 & 3: Matching & First Meeting</h1>
+                </div>
+                <div class="slide-content">
+                    <div class="animate-on-scroll">
+                        <h3>Step 2: Mentor Matching</h3>
+                        <p>After you submit your refined project proposal, our team will review it. We will then assign you a mentor who has specific experience and skills related to your project goal.</p>
+                    </div>
+                    <div class="animate-on-scroll">
+                        <h3>Step 3: The First Meeting</h3>
+                        <p>Your first meeting with your mentor focuses on planning and expectation setting. You will review the three-month project plan together and further segment it into weekly tasks.</p>
+                    </div>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Slide 12: Ongoing Mentorship and Tracking -->
+            <div id="slide-12" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-chart-line"></i> Ongoing Mentorship and Progress</h1>
+                </div>
+                <div class="slide-content">
+                    <p class="animate-on-scroll">You and your mentor will continue to meet weekly throughout the project duration. These sessions are 30 minutes long and focus on reflecting on the previous week's progress.</p>
+                    <p class="animate-on-scroll">To keep track of your work, you will use a shared spreadsheet. You should log your work each week so that both you and your mentor can remain aligned and focused on celebrating your progress.</p>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Slide 13: Time Commitment and Boundaries -->
+            <div id="slide-13" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-clock"></i> Time Commitment and Boundaries</h1>
+                </div>
+                <div class="slide-content">
+                    <ul class="slide-list">
+                        <li class="animate-on-scroll"><i class="fas fa-calendar-alt"></i> <strong>Project Duration:</strong> The project is designed to be completed in three months.</li>
+                        <li class="animate-on-scroll"><i class="fas fa-hourglass-half"></i> <strong>Mentor Time:</strong> Mentors allocate a maximum of 1 hour per week to each student.</li>
+                        <li class="animate-on-scroll"><i class="fas fa-plus-circle"></i> <strong>Contingency:</strong> If necessary, we can allow for an extra "contingency month".</li>
+                    </ul>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Slide 14: Handling Absences -->
+            <div id="slide-14" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-user-clock"></i> Handling Absences</h1>
+                </div>
+                <div class="slide-content">
+                    <ul class="slide-list">
+                        <li class="animate-on-scroll">If you miss a session, you can make it up at another time as arranged with your mentor.</li>
+                        <li class="animate-on-scroll">If you miss three sessions in a row without an acceptable excuse, your project will be placed on hold.</li>
+                        <li class="animate-on-scroll">When you are ready to re-engage, we can resume the project.</li>
+                    </ul>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Slide 15: Practical Exercise and Q&A -->
+            <div id="slide-15" class="screen">
+                <div class="animate-on-scroll">
+                    <h1 class="slide-title"><i class="fas fa-lightbulb"></i> Next Steps: Brainstorming</h1>
+                </div>
+                <div class="slide-content">
+                    <p class="animate-on-scroll">Now, let's discuss your ideas. Does anyone have a project in mind?</p>
+                    <p class="animate-on-scroll">We will spend the next 20 minutes using the AI guide tool to start developing your proposals.</p>
+                    <p class="animate-on-scroll">Please feel free to ask questions about the process or your project idea now.</p>
+                </div>
+                <div class="controls animate-on-scroll">
+                    <button class="activity-btn secondary" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="activity-btn" onclick="nextSlide()"><i class="fas fa-check"></i> Finish</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.screen');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                    const elementsToAnimate = slide.querySelectorAll('.animate-on-scroll');
+                    elementsToAnimate.forEach((el, j) => {
+                        el.style.opacity = '0';
+                        setTimeout(() => {
+                            el.classList.add('animate__animated', 'animate__fadeInUp');
+                            el.style.opacity = '1';
+                        }, j * 200);
+                    });
+                }
+            });
+            currentSlideIndex = index;
+        }
+
+        function nextSlide() {
+            if (currentSlideIndex < slides.length - 1) {
+                showSlide(currentSlideIndex + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlideIndex > 0) {
+                showSlide(currentSlideIndex - 1);
+            }
+        }
+
+        // Initialize presentation on load
+        document.addEventListener('DOMContentLoaded', () => {
+            showSlide(0);
+        });
+    </script>
+
+</body>
+</html>
+Sources
+help
+geeksforgeeks.org
+Google Search Suggestions
+Display of Search Suggestions is required when using Grounding with Google Search. Learn more
+animate.css cdn
+font awesome cdn
