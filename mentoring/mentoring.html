@@ -253,6 +253,85 @@
             color: var(--forest-shadow);
         }
 
+        .annotation-composer {
+            position: absolute;
+            width: min(340px, 82vw);
+            padding: var(--space-4);
+            background: var(--soft-white);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-sage);
+            box-shadow: var(--shadow-2);
+            z-index: 2050;
+            transform: translate(-50%, 0);
+        }
+        .annotation-composer[hidden] {
+            display: none;
+        }
+        .annotation-composer__label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: var(--space-2);
+            color: var(--forest-shadow);
+        }
+        .annotation-composer__input {
+            width: 100%;
+            min-height: 96px;
+            padding: var(--space-3);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-sage);
+            font: inherit;
+            resize: vertical;
+            background: color-mix(in srgb, var(--soft-white) 92%, white 8%);
+            color: var(--forest-shadow);
+        }
+        .annotation-composer__input:focus-visible {
+            outline: none;
+            box-shadow: var(--ring);
+            border-color: var(--secondary-sage);
+        }
+        .annotation-composer__actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--space-2);
+            margin-top: var(--space-3);
+        }
+        .annotation-composer__btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            font: inherit;
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-sm);
+            border: none;
+            cursor: pointer;
+            transition: background-color var(--dur-1) var(--ease-ambient), transform var(--dur-1) var(--ease-ambient);
+        }
+        .annotation-composer__btn:hover,
+        .annotation-composer__btn:focus-visible {
+            transform: translateY(-1px);
+        }
+        .annotation-composer__btn:active {
+            transform: scale(0.97);
+        }
+        .annotation-composer__btn--primary {
+            background: var(--secondary-sage);
+            color: white;
+        }
+        .annotation-composer__btn--primary:hover,
+        .annotation-composer__btn--primary:focus-visible {
+            background: var(--forest-shadow);
+        }
+        .annotation-composer__btn--secondary {
+            background: transparent;
+            color: var(--forest-shadow);
+            border: 1px solid var(--border-sage);
+        }
+        .annotation-composer__btn--secondary:hover,
+        .annotation-composer__btn--secondary:focus-visible {
+            background: var(--hover-sage);
+        }
+
         /* ------------------------------- Headings / text ----------------------------------*/
         h1 {
             font-family: var(--font-display); font-size: var(--step-4); letter-spacing: 0.2px;
@@ -376,32 +455,52 @@
         .presentation-menu__card .presentation-menu__hint {
             line-height: 1.5;
         }
-        #slide-map {
-            margin: 0;
-        }
+        #slide-map { margin: 0; }
         #slide-map-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: var(--space-3);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
             margin: 0;
             padding: 0;
             list-style: none;
         }
-        .slide-map-item {
-            min-width: 0;
+        .slide-map-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
         }
+        .slide-map-group__title {
+            margin: 0;
+            font-size: var(--step-0);
+            font-weight: 800;
+            color: var(--forest-shadow);
+            letter-spacing: 0.3px;
+        }
+        .slide-map-group__list {
+            display: grid;
+            gap: var(--space-2);
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        @container (min-width: 720px) {
+            .slide-map-group__list {
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            }
+        }
+        .slide-map-item { min-width: 0; }
         .slide-map-button {
             border: 1px solid rgba(122, 132, 113, 0.25);
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.88);
             border-radius: var(--radius-sm);
-            padding: var(--space-3) var(--space-4);
+            padding: var(--space-3);
             font-size: var(--step--1);
             font-weight: 600;
             color: var(--forest-shadow);
             cursor: pointer;
-            display: inline-flex;
+            display: grid;
+            grid-template-columns: auto 1fr;
             align-items: center;
-            justify-content: space-between;
             gap: var(--space-3);
             width: 100%;
             min-height: var(--target-min);
@@ -427,6 +526,37 @@
         .slide-map-item.is-active .slide-map-button:hover,
         .slide-map-item.is-active .slide-map-button:focus-visible {
             transform: translateY(-1px);
+        }
+        .slide-map-button__number {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 999px;
+            background: color-mix(in srgb, var(--secondary-sage) 25%, white 75%);
+            color: var(--forest-shadow);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+        }
+        .slide-map-button__label {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .slide-map-button__title {
+            font-size: var(--step--1);
+            font-weight: 700;
+            color: inherit;
+        }
+        .slide-map-button__subtitle {
+            font-size: 0.85rem;
+            color: var(--ink-muted);
+        }
+        .slide-map-item.is-active .slide-map-button__number {
+            background: color-mix(in srgb, var(--soft-white) 20%, var(--forest-shadow) 80%);
+            color: var(--soft-white);
         }
 
         /* ------------------------------- Buttons ----------------------------------*/
@@ -536,8 +666,15 @@
             input, textarea, select { background: #141713; border-color: rgba(184, 197, 166, 0.25); color: var(--ink); }
             .notes-dock-header { background: rgba(28, 31, 26, 0.78); border-color: rgba(184, 197, 166, 0.28); box-shadow: 0 12px 28px rgba(0,0,0,0.35); }
             .notes-dock-subtitle { color: color-mix(in srgb, var(--ink-muted) 85%, #fff 15%); }
+            .slide-map-group__title { color: color-mix(in srgb, var(--secondary-sage) 70%, #C7D3C0 30%); }
             .slide-map-button { background: rgba(28, 31, 26, 0.75); border-color: rgba(184, 197, 166, 0.28); color: var(--forest-shadow); }
+            .slide-map-button__number { background: color-mix(in srgb, var(--secondary-sage) 55%, #0F120E 45%); color: var(--soft-white); }
+            .slide-map-button__subtitle { color: color-mix(in srgb, var(--ink-muted) 80%, #fff 20%); }
             .slide-map-item.is-active .slide-map-button { background: linear-gradient(180deg, color-mix(in srgb, var(--secondary-sage) 85%, #0F120E 15%), var(--secondary-sage)); color: var(--soft-white); border-color: color-mix(in srgb, var(--secondary-sage) 85%, #0F120E 15%); }
+            .slide-map-item.is-active .slide-map-button__number { background: color-mix(in srgb, var(--soft-white) 15%, var(--forest-shadow) 85%); }
+            .textbox-color-picker { background: rgba(28, 31, 26, 0.75); border-color: rgba(184, 197, 166, 0.28); }
+            .textbox-color-picker__swatch { border-color: rgba(184, 197, 166, 0.28); }
+            .textbox-color-picker__swatch.is-selected { box-shadow: 0 0 0 3px rgba(20, 23, 19, 0.85), 0 0 0 5px rgba(184, 197, 166, 0.35); }
         }
 
         /* ------------------------------- Slide-specific styles ----------------------------------*/
@@ -864,18 +1001,42 @@
         }
         .textbox-actions {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--space-3);
-            gap: var(--space-3);
             flex-wrap: wrap;
+            gap: var(--space-3);
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-3);
         }
-        .textbox-actions select {
+        .textbox-color-picker {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
             padding: 6px 10px;
             border-radius: var(--radius-sm);
-            border: 1px solid rgba(122, 132, 113, 0.28);
-            background: rgba(255,255,255,0.7);
-            font-family: var(--font-body);
+            border: 1px solid rgba(122, 132, 113, 0.18);
+            background: rgba(255, 255, 255, 0.65);
+        }
+        .textbox-color-picker__swatch {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid rgba(62, 74, 58, 0.18);
+            background: var(--swatch-color);
+            cursor: pointer;
+            transition: transform var(--dur-1) var(--ease-ambient), box-shadow var(--dur-2) var(--ease-ambient), border-color var(--dur-2) var(--ease-ambient);
+        }
+        .textbox-color-picker__swatch:hover {
+            transform: translateY(-1px);
+            border-color: rgba(62, 74, 58, 0.32);
+            box-shadow: 0 6px 12px rgba(62, 74, 58, 0.16);
+        }
+        .textbox-color-picker__swatch:focus-visible {
+            outline: none;
+            box-shadow: var(--ring), 0 6px 12px rgba(62, 74, 58, 0.2);
+        }
+        .textbox-color-picker__swatch.is-selected {
+            border-color: rgba(62, 74, 58, 0.45);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.8), 0 0 0 5px rgba(62, 74, 58, 0.25);
         }
         .textbox-remove-btn {
             border: none;
@@ -1641,8 +1802,52 @@
         annotationPopover.appendChild(annotationBody);
         document.body.appendChild(annotationPopover);
 
+        const annotationComposer = document.createElement('form');
+        annotationComposer.className = 'annotation-composer';
+        annotationComposer.id = 'annotation-composer';
+        annotationComposer.hidden = true;
+        annotationComposer.setAttribute('aria-hidden', 'true');
+        annotationComposer.setAttribute('role', 'dialog');
+        annotationComposer.setAttribute('aria-modal', 'false');
+        annotationComposer.noValidate = true;
+
+        const annotationComposerLabel = document.createElement('label');
+        annotationComposerLabel.className = 'annotation-composer__label';
+        annotationComposerLabel.setAttribute('for', 'annotation-composer-input');
+        annotationComposerLabel.textContent = 'Add an annotation';
+        annotationComposerLabel.id = 'annotation-composer-label';
+        annotationComposer.setAttribute('aria-labelledby', 'annotation-composer-label');
+
+        const annotationComposerTextarea = document.createElement('textarea');
+        annotationComposerTextarea.id = 'annotation-composer-input';
+        annotationComposerTextarea.className = 'annotation-composer__input';
+        annotationComposerTextarea.rows = 4;
+        annotationComposerTextarea.placeholder = 'Type your note here…';
+
+        const annotationComposerActions = document.createElement('div');
+        annotationComposerActions.className = 'annotation-composer__actions';
+
+        const annotationComposerCancel = document.createElement('button');
+        annotationComposerCancel.type = 'button';
+        annotationComposerCancel.className = 'annotation-composer__btn annotation-composer__btn--secondary';
+        annotationComposerCancel.textContent = 'Cancel';
+
+        const annotationComposerSubmit = document.createElement('button');
+        annotationComposerSubmit.type = 'submit';
+        annotationComposerSubmit.className = 'annotation-composer__btn annotation-composer__btn--primary';
+        annotationComposerSubmit.textContent = 'Save note';
+
+        annotationComposerActions.appendChild(annotationComposerCancel);
+        annotationComposerActions.appendChild(annotationComposerSubmit);
+
+        annotationComposer.appendChild(annotationComposerLabel);
+        annotationComposer.appendChild(annotationComposerTextarea);
+        annotationComposer.appendChild(annotationComposerActions);
+        document.body.appendChild(annotationComposer);
+
         let pendingSelectionRange = null;
         let activeAnnotationTarget = null;
+        let composerActiveRange = null;
 
         if (motionQuery) {
             const updatePreference = (event) => {
@@ -1682,13 +1887,16 @@
             return element ? Boolean(element.closest('.highlight-annotation')) : false;
         }
 
-        function hideHighlightToolbar() {
+        function hideHighlightToolbar(options = {}) {
+            const { clearSelection = true } = options;
             if (highlightToolbar.hidden) {
                 return;
             }
             highlightToolbar.hidden = true;
             highlightToolbar.setAttribute('aria-hidden', 'true');
-            pendingSelectionRange = null;
+            if (clearSelection) {
+                pendingSelectionRange = null;
+            }
         }
 
         function positionHighlightToolbar(range) {
@@ -1721,6 +1929,42 @@
             positionHighlightToolbar(range);
             highlightToolbar.hidden = false;
             highlightToolbar.setAttribute('aria-hidden', 'false');
+        }
+
+        function positionAnnotationComposer(range) {
+            const rect = range.getBoundingClientRect();
+            const top = window.scrollY + rect.bottom + 12;
+            const left = window.scrollX + rect.left + rect.width / 2;
+            annotationComposer.style.top = `${Math.max(top, 0)}px`;
+            annotationComposer.style.left = `${left}px`;
+        }
+
+        function openAnnotationComposer(range) {
+            if (!range) {
+                return;
+            }
+            composerActiveRange = range.cloneRange();
+            positionAnnotationComposer(range);
+            annotationComposer.hidden = false;
+            annotationComposer.setAttribute('aria-hidden', 'false');
+            annotationComposerTextarea.value = '';
+            window.requestAnimationFrame(() => {
+                annotationComposerTextarea.focus({ preventScroll: true });
+            });
+        }
+
+        function closeAnnotationComposer({ restoreToolbar = false, clearRange = true } = {}) {
+            if (!annotationComposer.hidden) {
+                annotationComposer.hidden = true;
+                annotationComposer.setAttribute('aria-hidden', 'true');
+                annotationComposerTextarea.value = '';
+            }
+            if (clearRange) {
+                composerActiveRange = null;
+            }
+            if (restoreToolbar && pendingSelectionRange) {
+                showHighlightToolbar(pendingSelectionRange);
+            }
         }
 
         function updateHighlightToolbar() {
@@ -1825,14 +2069,33 @@
         highlightToolbarButton.addEventListener('click', () => {
             if (!pendingSelectionRange) {
                 hideHighlightToolbar();
+                closeAnnotationComposer();
                 return;
             }
-            const userAnnotation = window.prompt('Add an annotation for the highlighted text:');
-            if (!userAnnotation || !userAnnotation.trim()) {
+            const rangeToAnnotate = pendingSelectionRange.cloneRange();
+            hideHighlightToolbar({ clearSelection: false });
+            openAnnotationComposer(rangeToAnnotate);
+        });
+
+        annotationComposer.addEventListener('submit', (event) => {
+            event.preventDefault();
+            if (!composerActiveRange) {
+                closeAnnotationComposer();
                 hideHighlightToolbar();
                 return;
             }
-            applyAnnotation(pendingSelectionRange, userAnnotation);
+            const note = annotationComposerTextarea.value.trim();
+            if (!note) {
+                annotationComposerTextarea.focus({ preventScroll: true });
+                return;
+            }
+            const rangeToAnnotate = composerActiveRange.cloneRange();
+            closeAnnotationComposer();
+            applyAnnotation(rangeToAnnotate, note);
+        });
+
+        annotationComposerCancel.addEventListener('click', () => {
+            closeAnnotationComposer({ restoreToolbar: true });
         });
 
         annotationCloseButton.addEventListener('click', () => {
@@ -1843,12 +2106,20 @@
         });
 
         document.addEventListener('selectionchange', () => {
+            const activeElement = document.activeElement;
+            if (!annotationComposer.hidden && annotationComposer.contains(activeElement)) {
+                return;
+            }
+            closeAnnotationComposer();
             window.requestAnimationFrame(updateHighlightToolbar);
         });
 
         document.addEventListener('mousedown', (event) => {
-            if (!highlightToolbar.contains(event.target)) {
+            const isToolbar = highlightToolbar.contains(event.target);
+            const isComposer = annotationComposer.contains(event.target);
+            if (!isToolbar && !isComposer) {
                 hideHighlightToolbar();
+                closeAnnotationComposer();
             }
         });
 
@@ -1860,12 +2131,20 @@
                     hideAnnotationPopover();
                 }
             }
+            if (!annotationComposer.hidden) {
+                const isComposer = annotationComposer.contains(event.target);
+                if (!isComposer && !highlightToolbar.contains(event.target)) {
+                    closeAnnotationComposer();
+                    hideHighlightToolbar();
+                }
+            }
         });
 
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') {
                 hideAnnotationPopover();
                 hideHighlightToolbar();
+                closeAnnotationComposer();
             }
         });
 
@@ -1897,32 +2176,52 @@
         window.addEventListener('scroll', () => {
             hideHighlightToolbar();
             hideAnnotationPopover();
+            closeAnnotationComposer();
         }, true);
 
         window.addEventListener('resize', () => {
             hideHighlightToolbar();
             hideAnnotationPopover();
+            closeAnnotationComposer();
         });
 
         function generateNoteId() {
             return `note-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
         }
 
-        function createColorSelect(id, ariaLabel) {
-            const select = document.createElement('select');
-            if (id) {
-                select.id = id;
-            }
-            if (ariaLabel) {
-                select.setAttribute('aria-label', ariaLabel);
-            }
+        function createColorPicker(currentColor, onChange) {
+            const palette = document.createElement('div');
+            palette.className = 'textbox-color-picker';
+            palette.setAttribute('role', 'group');
+            palette.setAttribute('aria-label', 'Change text box colour');
+            const swatches = [];
+            const updateSelection = (selectedColor) => {
+                swatches.forEach(button => {
+                    const isActive = button.dataset.value === selectedColor;
+                    button.classList.toggle('is-selected', isActive);
+                    button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+                });
+            };
             textboxColorOptions.forEach(option => {
-                const opt = document.createElement('option');
-                opt.value = option.value;
-                opt.textContent = option.label;
-                select.appendChild(opt);
+                const swatchButton = document.createElement('button');
+                swatchButton.type = 'button';
+                swatchButton.className = 'textbox-color-picker__swatch';
+                swatchButton.dataset.value = option.value;
+                swatchButton.style.setProperty('--swatch-color', option.value);
+                swatchButton.setAttribute('aria-label', option.label);
+                swatchButton.title = option.label;
+                swatchButton.setAttribute('aria-pressed', 'false');
+                swatchButton.addEventListener('click', () => {
+                    if (typeof onChange === 'function') {
+                        onChange(option.value);
+                    }
+                    updateSelection(option.value);
+                });
+                palette.appendChild(swatchButton);
+                swatches.push(swatchButton);
             });
-            return select;
+            updateSelection(currentColor);
+            return palette;
         }
 
         function getSlideLabel(slide, index) {
@@ -1976,21 +2275,101 @@
             slideMapList.innerHTML = '';
             slideMapButtons.length = 0;
             slideMapList.setAttribute('role', 'list');
-            slides.forEach((slide, index) => {
+            const slideMeta = slides.map((slide, index) => ({ slide, index, id: slide.id || `slide-${index + 1}` }));
+            const slidesById = new Map(slideMeta.map(meta => [meta.id, meta]));
+            const usedIndices = new Set();
+
+            const sectionDefinitions = [
+                { title: 'Welcome & Community', slides: ['slide-1', 'slide-2', 'slide-3', 'slide-4', 'slide-5', 'slide-6'] },
+                { title: 'Project Inspirations', slides: ['slide-7', 'slide-8', 'slide-9', 'slide-10'] },
+                { title: 'Planning Your Path', slides: ['slide-11', 'slide-12', 'slide-13'] },
+                { title: 'Mentoring Journey', slides: ['slide-14', 'slide-15', 'slide-16', 'slide-17', 'slide-18', 'slide-19', 'slide-20'] },
+                { title: 'Next Steps & Notes', slides: ['slide-21', 'slide-22'] }
+            ];
+
+            const createSlideMapEntry = (slide, index) => {
                 const listItem = document.createElement('li');
                 listItem.className = 'slide-map-item';
+
                 const button = document.createElement('button');
                 button.type = 'button';
                 button.className = 'slide-map-button';
-                const slideLabel = getSlideLabel(slide, index);
-                button.textContent = slideLabel;
+                const slideNumber = index + 1;
+                const rawTitle = slide?.querySelector('.slide-title')?.textContent?.trim() || '';
+                const cleanTitle = rawTitle.replace(/\s+/g, ' ').trim();
+                const colonIndex = cleanTitle.indexOf(':');
+                const mainTitle = colonIndex > -1 ? cleanTitle.slice(0, colonIndex).trim() : cleanTitle;
+                const subtitle = colonIndex > -1 ? cleanTitle.slice(colonIndex + 1).trim() : '';
+
+                const numberSpan = document.createElement('span');
+                numberSpan.className = 'slide-map-button__number';
+                numberSpan.textContent = slideNumber.toString().padStart(2, '0');
+
+                const label = document.createElement('span');
+                label.className = 'slide-map-button__label';
+
+                const titleSpan = document.createElement('span');
+                titleSpan.className = 'slide-map-button__title';
+                titleSpan.textContent = mainTitle || `Slide ${slideNumber}`;
+                label.appendChild(titleSpan);
+
+                if (subtitle) {
+                    const subtitleSpan = document.createElement('span');
+                    subtitleSpan.className = 'slide-map-button__subtitle';
+                    subtitleSpan.textContent = subtitle;
+                    label.appendChild(subtitleSpan);
+                }
+
+                const ariaLabelParts = [`Slide ${slideNumber}`];
+                if (cleanTitle) {
+                    ariaLabelParts.push(cleanTitle);
+                }
+                button.setAttribute('aria-label', `Go to ${ariaLabelParts.join(': ')}`);
                 button.dataset.slideIndex = index;
-                button.setAttribute('aria-label', `Go to ${slideLabel}`);
+                button.appendChild(numberSpan);
+                button.appendChild(label);
                 button.addEventListener('click', () => showSlide(index));
+
                 listItem.appendChild(button);
-                slideMapList.appendChild(listItem);
-                slideMapButtons.push(button);
+                return { listItem, button };
+            };
+
+            const appendSection = (title, entries) => {
+                if (!entries.length) {
+                    return;
+                }
+                const sectionItem = document.createElement('li');
+                sectionItem.className = 'slide-map-group';
+
+                const sectionTitle = document.createElement('h3');
+                sectionTitle.className = 'slide-map-group__title';
+                sectionTitle.textContent = title;
+                sectionItem.appendChild(sectionTitle);
+
+                const sectionList = document.createElement('ol');
+                sectionList.className = 'slide-map-group__list';
+                sectionList.setAttribute('role', 'list');
+
+                entries.forEach(({ slide, index }) => {
+                    const { listItem, button } = createSlideMapEntry(slide, index);
+                    sectionList.appendChild(listItem);
+                    slideMapButtons.push(button);
+                    usedIndices.add(index);
+                });
+
+                sectionItem.appendChild(sectionList);
+                slideMapList.appendChild(sectionItem);
+            };
+
+            sectionDefinitions.forEach(section => {
+                const entries = (section.slides || [])
+                    .map(id => slidesById.get(id))
+                    .filter(Boolean);
+                appendSection(section.title, entries);
             });
+
+            const remainingEntries = slideMeta.filter(meta => !usedIndices.has(meta.index));
+            appendSection('Additional slides', remainingEntries);
 
             updateSlideMapIndicator(currentSlideIndex);
         }
@@ -2138,11 +2517,12 @@
             const actions = document.createElement('div');
             actions.className = 'textbox-actions';
 
-            const colorSelect = createColorSelect(null, 'Update text box colour');
-            colorSelect.value = note.color;
-            colorSelect.addEventListener('change', () => {
-                note.color = colorSelect.value;
-                wrapper.style.backgroundColor = note.color;
+            const colorPicker = createColorPicker(note.color, (newColor) => {
+                if (!newColor || note.color === newColor) {
+                    return;
+                }
+                note.color = newColor;
+                wrapper.style.backgroundColor = newColor;
                 persistNotes();
             });
 
@@ -2156,7 +2536,7 @@
                 renderSlideTextboxes(slideId);
             });
 
-            actions.appendChild(colorSelect);
+            actions.appendChild(colorPicker);
             actions.appendChild(removeButton);
 
             const content = document.createElement('div');
