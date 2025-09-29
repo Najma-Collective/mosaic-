@@ -106,6 +106,22 @@
             background: radial-gradient(800px 600px at 20% 0%, rgba(156,175,136,0.08) 0%, transparent 70%),
                         radial-gradient(700px 500px at 80% 100%, rgba(90,107,82,0.06) 0%, transparent 65%);
         }
+        .skip-link {
+            position: absolute;
+            top: var(--space-3);
+            left: 50%;
+            transform: translate(-50%, -150%);
+            background: var(--forest-shadow);
+            color: #fff;
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            z-index: 1000;
+            transition: transform var(--dur-1) var(--ease-ambient);
+        }
+        .skip-link:focus {
+            transform: translate(-50%, 0);
+        }
         #activity-shell {
             width: min(100%, var(--workspace-max));
             display: flex;
@@ -131,7 +147,7 @@
                         radial-gradient(800px 1000px at 50% 110%, rgba(122,132,113,0.08), transparent 70%);
             z-index: -1; pointer-events: none;
         }
-        .screen { display: none; } /* Hide screens initially */
+        .screen { display: none; scroll-margin-top: clamp(90px, 12vh, 140px); } /* Hide screens initially */
         .screen.active { display: block; } /* Show active screen */
 
         /* ------------------------------- Headings / text ----------------------------------*/
@@ -146,6 +162,146 @@
         h3 {
             font-family: var(--font-display); font-size: var(--step-2); color: var(--forest-shadow);
             margin: var(--space-6) 0 var(--space-3) 0;
+        }
+
+        .presentation-header {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background: linear-gradient(180deg, rgba(248, 246, 240, 0.92) 0%, rgba(248, 246, 240, 0.65) 85%, transparent 100%);
+            backdrop-filter: blur(6px);
+            padding: clamp(16px, 2vw, 24px);
+            margin: calc(var(--space-6) * -1) calc(clamp(24px, 3.2vw, 48px) * -1) var(--space-4);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            border-bottom: 1px solid rgba(122, 132, 113, 0.12);
+            box-shadow: 0 10px 25px rgba(62, 74, 58, 0.12);
+        }
+        .presentation-header .presentation-eyebrow {
+            font-size: var(--step--1);
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--primary-sage);
+            margin: 0 0 var(--space-3) 0;
+        }
+        .presentation-menu {
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(122, 132, 113, 0.16);
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 8px 22px rgba(62, 74, 58, 0.12);
+            overflow: hidden;
+        }
+        .presentation-menu[open] {
+            box-shadow: 0 18px 36px rgba(62, 74, 58, 0.18);
+        }
+        .presentation-menu__summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-3);
+            padding: var(--space-4);
+            list-style: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: var(--step-0);
+            color: var(--forest-shadow);
+        }
+        .presentation-menu__summary::-webkit-details-marker { display: none; }
+        .presentation-menu__summary:focus-visible {
+            outline: none;
+            box-shadow: var(--ring);
+        }
+        .presentation-menu__summary-icon {
+            font-size: var(--step-1);
+            color: var(--primary-sage);
+        }
+        .presentation-menu__summary-label {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        .presentation-menu__summary-hint {
+            font-size: var(--step--1);
+            color: var(--ink-muted);
+        }
+        .presentation-menu__content {
+            padding: 0 var(--space-4) var(--space-4);
+            display: grid;
+            gap: var(--space-5);
+        }
+        .presentation-menu__section {
+            display: grid;
+            gap: var(--space-3);
+        }
+        .presentation-menu__heading {
+            margin: 0;
+            font-size: var(--step--1);
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--primary-sage);
+        }
+        .presentation-menu__actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-3);
+        }
+        .presentation-menu__hint {
+            margin: 0;
+            font-size: var(--step--1);
+            color: var(--ink-muted);
+        }
+        #slide-map {
+            margin: 0;
+        }
+        #slide-map-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: var(--space-3);
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .slide-map-item {
+            min-width: 0;
+        }
+        .slide-map-button {
+            border: 1px solid rgba(122, 132, 113, 0.25);
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: var(--radius-sm);
+            padding: var(--space-3) var(--space-4);
+            font-size: var(--step--1);
+            font-weight: 600;
+            color: var(--forest-shadow);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-3);
+            width: 100%;
+            min-height: var(--target-min);
+            transition: transform var(--dur-1) var(--ease-ambient), box-shadow var(--dur-2) var(--ease-ambient), border-color var(--dur-2) var(--ease-ambient), background var(--dur-2) var(--ease-ambient);
+            white-space: normal;
+            overflow-wrap: anywhere;
+            text-align: left;
+        }
+        .slide-map-button:hover,
+        .slide-map-button:focus-visible {
+            outline: none;
+            transform: translateY(-1px);
+            border-color: var(--secondary-sage);
+            box-shadow: 0 6px 12px rgba(62, 74, 58, 0.15);
+            background: color-mix(in srgb, var(--soft-white) 94%, white 6%);
+        }
+        .slide-map-item.is-active .slide-map-button {
+            background: linear-gradient(180deg, color-mix(in srgb, var(--secondary-sage) 92%, white 8%), var(--secondary-sage));
+            color: var(--soft-white);
+            border-color: var(--secondary-sage);
+            box-shadow: 0 6px 12px rgba(62, 74, 58, 0.18);
+        }
+        .slide-map-item.is-active .slide-map-button:hover,
+        .slide-map-item.is-active .slide-map-button:focus-visible {
+            transform: translateY(-1px);
         }
 
         /* ------------------------------- Buttons ----------------------------------*/
@@ -200,9 +356,25 @@
         :root { accent-color: var(--primary-sage); }
 
         /* ------------------------------- Responsive / container queries ----------------------------------*/
-        @media (min-width: 768px) { #app-wrapper { padding-inline: var(--space-7); } .controls { grid-auto-flow: column; justify-content: center; } }
-        @media (min-width: 1024px) { #activity-container { box-shadow: var(--shadow-3); } h1 { letter-spacing: 0.3px; } }
-        @media (max-width: 767px) { #app-wrapper { padding: var(--space-4); } #activity-container { padding: 24px; } h1 { font-size: clamp(1.75rem, 5vw, 2rem); } h2.rubric { font-size: var(--step--1); margin-bottom: 20px; } }
+        @media (min-width: 768px) {
+            #app-wrapper { padding-inline: var(--space-7); }
+            .controls { grid-auto-flow: column; justify-content: center; }
+            .presentation-menu__content { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .presentation-menu__actions { justify-content: flex-start; }
+        }
+        @media (min-width: 1024px) {
+            #activity-container { box-shadow: var(--shadow-3); }
+            h1 { letter-spacing: 0.3px; }
+            .presentation-header { padding: clamp(20px, 2.4vw, 32px) clamp(28px, 3.2vw, 48px); margin: calc(var(--space-6) * -1) calc(clamp(28px, 3.2vw, 48px) * -1) var(--space-5); }
+            #slide-map-list { gap: var(--space-4); }
+        }
+        @media (max-width: 767px) {
+            #app-wrapper { padding: var(--space-4); }
+            #activity-container { padding: 24px; }
+            h1 { font-size: clamp(1.75rem, 5vw, 2rem); }
+            h2.rubric { font-size: var(--step--1); margin-bottom: 20px; }
+            .slide-map-button { padding-inline: var(--space-3); }
+        }
 
         /* ------------------------------- Accessibility / motion / scroll ----------------------------------*/
         :focus-visible { outline: none; box-shadow: var(--ring); }
@@ -227,11 +399,20 @@
                             linear-gradient(135deg, #191D18 0%, #1B1E19 100%);
             }
             #activity-container { background: color-mix(in srgb, #23261F 92%, #1B1E19 8%); border-color: rgba(184, 197, 166, 0.18); box-shadow: 0 12px 36px rgba(0,0,0,0.35); }
+            .presentation-header { background: linear-gradient(180deg, rgba(31, 33, 28, 0.92) 0%, rgba(31, 33, 28, 0.6) 85%, transparent 100%); border-bottom-color: rgba(184, 197, 166, 0.2); }
+            .presentation-menu { background: rgba(28, 31, 26, 0.88); border-color: rgba(184, 197, 166, 0.28); box-shadow: 0 16px 32px rgba(0,0,0,0.35); }
+            .presentation-menu__summary { color: var(--forest-shadow); }
+            .presentation-menu__summary-icon { color: color-mix(in srgb, var(--secondary-sage) 80%, #0F120E 20%); }
+            .presentation-menu__hint { color: color-mix(in srgb, var(--ink-muted) 85%, #fff 15%); }
             a { color: color-mix(in srgb, var(--secondary-sage) 80%, #C7D3C0 20%); }
             .mc-question { background: linear-gradient(180deg, #20241E 0%, #191D18 100%); border-color: rgba(184, 197, 166, 0.20); box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 10px 30px rgba(0,0,0,0.35); }
             .activity-btn { background: linear-gradient(180deg, color-mix(in srgb, var(--primary-sage) 80%, #0F120E 20%), var(--primary-sage)); box-shadow: 0 1px 0 rgba(255,255,255,0.08) inset, 0 8px 18px rgba(0,0,0,0.35); }
             .activity-btn:hover { background: linear-gradient(180deg, color-mix(in srgb, var(--forest-shadow) 80%, #0F120E 20%), var(--forest-shadow)); }
             input, textarea, select { background: #141713; border-color: rgba(184, 197, 166, 0.25); color: var(--ink); }
+            .notes-dock-header { background: rgba(28, 31, 26, 0.78); border-color: rgba(184, 197, 166, 0.28); box-shadow: 0 12px 28px rgba(0,0,0,0.35); }
+            .notes-dock-subtitle { color: color-mix(in srgb, var(--ink-muted) 85%, #fff 15%); }
+            .slide-map-button { background: rgba(28, 31, 26, 0.75); border-color: rgba(184, 197, 166, 0.28); color: var(--forest-shadow); }
+            .slide-map-item.is-active .slide-map-button { background: linear-gradient(180deg, color-mix(in srgb, var(--secondary-sage) 85%, #0F120E 15%), var(--secondary-sage)); color: var(--soft-white); border-color: color-mix(in srgb, var(--secondary-sage) 85%, #0F120E 15%); }
         }
 
         /* ------------------------------- Slide-specific styles ----------------------------------*/
@@ -438,61 +619,25 @@
             gap: var(--space-5);
             min-height: 0;
         }
-        #notes-io-controls {
-            margin: 0;
+        .notes-dock-header {
+            display: grid;
+            gap: var(--space-2);
+            padding: var(--space-4);
             border-radius: var(--radius);
             border: 1px solid rgba(122, 132, 113, 0.16);
-            background: color-mix(in srgb, var(--soft-white) 92%, white 8%);
+            background: color-mix(in srgb, var(--soft-white) 94%, white 6%);
             box-shadow: var(--shadow-1);
-            overflow: hidden;
         }
-        #notes-io-controls summary {
-            list-style: none;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: var(--space-3);
-            padding: var(--space-4);
-            cursor: pointer;
+        .notes-dock-title {
+            margin: 0;
             font-family: var(--font-display);
             font-size: var(--step-1);
             color: var(--forest-shadow);
-        }
-        #notes-io-controls summary:focus-visible {
-            outline: none;
-            box-shadow: var(--ring);
-            border-radius: var(--radius);
-        }
-        #notes-io-controls summary::-webkit-details-marker {
-            display: none;
-        }
-        #notes-io-controls .notes-io-title {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             gap: var(--space-2);
         }
-        #notes-io-controls .notes-io-icon {
-            font-size: 1.1rem;
-            color: var(--secondary-sage);
-            transition: transform var(--dur-2) var(--ease-ambient);
-        }
-        #notes-io-controls[open] .notes-io-icon {
-            transform: rotate(90deg);
-        }
-        #notes-io-controls .notes-io-content {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-3);
-            padding: 0 var(--space-4) var(--space-4);
-            border-top: 1px solid rgba(122, 132, 113, 0.16);
-        }
-        .notes-io-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--space-3);
-            margin-bottom: var(--space-3);
-        }
-        .notes-io-hint {
+        .notes-dock-subtitle {
             margin: 0;
             font-size: var(--step--1);
             color: var(--ink-muted);
@@ -656,11 +801,6 @@
                 overflow: auto;
                 padding-right: var(--space-1);
             }
-            #notes-io-controls {
-                position: sticky;
-                top: 0;
-                z-index: 1;
-            }
         }
         .animate-on-scroll {
             opacity: 0;
@@ -669,9 +809,41 @@
 </head>
 <body>
 
+    <a class="skip-link" href="#activity-container">Skip to presentation content</a>
+
     <div id="app-wrapper">
-        <div id="activity-shell">
+        <main id="activity-shell" role="main">
             <div id="activity-container">
+
+            <header class="presentation-header" id="presentation-header">
+                <p class="presentation-eyebrow">Noor Community Mentoring</p>
+                <details class="presentation-menu" id="notes-io-controls" open>
+                    <summary class="presentation-menu__summary">
+                        <span class="presentation-menu__summary-label">
+                            <i class="fas fa-seedling presentation-menu__summary-icon" aria-hidden="true"></i>
+                            Session tools
+                        </span>
+                        <span class="presentation-menu__summary-hint">Slide map &amp; notes backup</span>
+                    </summary>
+                    <div class="presentation-menu__content">
+                        <section class="presentation-menu__section" aria-labelledby="presentation-slide-map-heading">
+                            <h2 class="presentation-menu__heading" id="presentation-slide-map-heading">Slide map</h2>
+                            <nav id="slide-map" aria-label="Slide overview">
+                                <ul id="slide-map-list"></ul>
+                            </nav>
+                        </section>
+                        <section class="presentation-menu__section" aria-labelledby="presentation-notes-io-heading">
+                            <h2 class="presentation-menu__heading" id="presentation-notes-io-heading">Save or load notes</h2>
+                            <div class="presentation-menu__actions">
+                                <button type="button" class="activity-btn secondary" id="save-notes-btn"><i class="fas fa-file-arrow-down"></i> Save Notes (JSON)</button>
+                                <button type="button" class="activity-btn secondary" id="load-notes-btn"><i class="fas fa-file-arrow-up"></i> Load Notes (JSON)</button>
+                                <input type="file" id="notes-file-input" accept="application/json" hidden>
+                            </div>
+                            <p class="presentation-menu__hint">Download your current slide text boxes or import a saved copy.</p>
+                        </section>
+                    </div>
+                </details>
+            </header>
 
             <!-- Slide 1: Title Slide -->
             <div id="slide-1" class="screen active">
@@ -1275,23 +1447,14 @@
 
         </div>
         <aside id="notes-dock" aria-label="Collaborative slide notes workspace">
-            <details id="notes-io-controls" class="notes-io-controls" open>
-                <summary>
-                    <span class="notes-io-title"><i class="fas fa-note-sticky"></i> Slide Text Boxes</span>
-                    <i class="fas fa-ellipsis-vertical notes-io-icon" aria-hidden="true"></i>
-                </summary>
-                <div class="notes-io-content">
-                    <div class="notes-io-actions">
-                        <button type="button" class="activity-btn secondary" id="save-notes-btn"><i class="fas fa-file-arrow-down"></i> Save Notes (JSON)</button>
-                        <button type="button" class="activity-btn secondary" id="load-notes-btn"><i class="fas fa-file-arrow-up"></i> Load Notes (JSON)</button>
-                        <input type="file" id="notes-file-input" accept="application/json" hidden>
-                    </div>
-                </div>
-            </details>
+            <div class="notes-dock-header">
+                <p class="notes-dock-title"><i class="fas fa-note-sticky" aria-hidden="true"></i> Slide Text Boxes</p>
+                <p class="notes-dock-subtitle">Use the session tools foldout to save or load your notes at any time.</p>
+            </div>
             <div id="notes-panels" aria-live="polite"></div>
         </aside>
+    </main>
     </div>
-</div>
 
     <script>
         const localStorageKey = 'mentoring-slide-textboxes';
@@ -1309,6 +1472,25 @@
         const textboxContainers = {};
         const notesPanels = {};
         let notesPanelsHost = null;
+        const slideMapList = document.getElementById('slide-map-list');
+        const motionQuery = typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+        let prefersReducedMotion = motionQuery ? motionQuery.matches : false;
+        const slideMapButtons = [];
+
+        if (motionQuery) {
+            const updatePreference = (event) => {
+                prefersReducedMotion = event.matches;
+                const activeSlide = slides[currentSlideIndex];
+                if (activeSlide) {
+                    animateSlideContents(activeSlide);
+                }
+            };
+            if (typeof motionQuery.addEventListener === 'function') {
+                motionQuery.addEventListener('change', updatePreference);
+            } else if (typeof motionQuery.addListener === 'function') {
+                motionQuery.addListener(updatePreference);
+            }
+        }
 
         function generateNoteId() {
             return `note-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -1372,6 +1554,104 @@
                 window.localStorage.setItem(localStorageKey, JSON.stringify(slideNotes));
             } catch (error) {
                 console.warn('Unable to save slide notes.', error);
+            }
+        }
+
+        function buildSlideMap() {
+            if (!slideMapList) {
+                return;
+            }
+            slideMapList.innerHTML = '';
+            slideMapButtons.length = 0;
+            slideMapList.setAttribute('role', 'list');
+            slides.forEach((slide, index) => {
+                const listItem = document.createElement('li');
+                listItem.className = 'slide-map-item';
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'slide-map-button';
+                const slideLabel = getSlideLabel(slide, index);
+                button.textContent = slideLabel;
+                button.dataset.slideIndex = index;
+                button.setAttribute('aria-label', `Go to ${slideLabel}`);
+                button.addEventListener('click', () => showSlide(index));
+                listItem.appendChild(button);
+                slideMapList.appendChild(listItem);
+                slideMapButtons.push(button);
+            });
+
+            updateSlideMapIndicator(currentSlideIndex);
+        }
+
+        function updateSlideMapIndicator(index) {
+            if (!slideMapButtons.length) {
+                return;
+            }
+            slideMapButtons.forEach((button, buttonIndex) => {
+                const listItem = button.parentElement;
+                const isActive = buttonIndex === index;
+                if (listItem) {
+                    listItem.classList.toggle('is-active', isActive);
+                }
+                if (isActive) {
+                    button.setAttribute('aria-current', 'step');
+                    if (listItem && typeof listItem.scrollIntoView === 'function') {
+                        try {
+                            listItem.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'nearest', inline: 'nearest' });
+                        } catch (error) {
+                            if (!prefersReducedMotion) {
+                                listItem.scrollIntoView();
+                            }
+                        }
+                    }
+                } else {
+                    button.removeAttribute('aria-current');
+                }
+            });
+        }
+
+        function animateSlideContents(slide) {
+            const elementsToAnimate = slide.querySelectorAll('.animate-on-scroll');
+            elementsToAnimate.forEach((el, index) => {
+                if (prefersReducedMotion) {
+                    el.style.opacity = '1';
+                    el.classList.remove('animate__animated', 'animate__fadeInUp');
+                    return;
+                }
+                el.classList.remove('animate__animated', 'animate__fadeInUp');
+                el.style.opacity = '0';
+                void el.offsetWidth;
+                setTimeout(() => {
+                    el.classList.add('animate__animated', 'animate__fadeInUp');
+                    el.style.opacity = '1';
+                }, index * 160);
+            });
+        }
+
+        function handleKeyboardNavigation(event) {
+            if (event.defaultPrevented) {
+                return;
+            }
+            const target = event.target;
+            const isFormField = target && (
+                target.isContentEditable ||
+                ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'].includes(target.tagName)
+            );
+            if (isFormField) {
+                return;
+            }
+            if (event.key === 'ArrowRight' || event.key === 'PageDown') {
+                event.preventDefault();
+                nextSlide();
+            } else if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
+                event.preventDefault();
+                prevSlide();
+            } else if (event.key === 'Home') {
+                event.preventDefault();
+                showSlide(0);
+            } else if (event.key === 'End') {
+                event.preventDefault();
+                showSlide(slides.length - 1);
             }
         }
 
@@ -1636,24 +1916,15 @@
                 return;
             }
             slides.forEach((slide, i) => {
-                slide.classList.remove('active');
-                if (i === index) {
-                    slide.classList.add('active');
-                    const elementsToAnimate = slide.querySelectorAll('.animate-on-scroll');
-                    elementsToAnimate.forEach((el, j) => {
-                        el.style.opacity = '0';
-                        setTimeout(() => {
-                            el.classList.add('animate__animated', 'animate__fadeInUp');
-                            el.style.opacity = '1';
-                        }, j * 200);
-                    });
-                }
+                slide.classList.toggle('active', i === index);
             });
             currentSlideIndex = index;
             const activeSlide = slides[index];
             if (activeSlide) {
+                animateSlideContents(activeSlide);
                 activateNotesPanel(activeSlide.dataset.slideId);
             }
+            updateSlideMapIndicator(index);
         }
 
         function nextSlide() {
@@ -1691,8 +1962,14 @@
 
         // Initialize presentation on load
         document.addEventListener('DOMContentLoaded', () => {
+            buildSlideMap();
             initializeTextboxes();
             showSlide(0);
+            try {
+                document.addEventListener('keydown', handleKeyboardNavigation, { passive: false });
+            } catch (error) {
+                document.addEventListener('keydown', handleKeyboardNavigation);
+            }
 
             const notesPanel = document.getElementById('notes-io-controls');
             if (notesPanel) {
