@@ -440,16 +440,51 @@
         }
         #notes-io-controls {
             margin: 0;
-            padding: var(--space-4);
             border-radius: var(--radius);
             border: 1px solid rgba(122, 132, 113, 0.16);
             background: color-mix(in srgb, var(--soft-white) 92%, white 8%);
             box-shadow: var(--shadow-1);
+            overflow: hidden;
         }
-        #notes-io-controls h2 {
-            margin-top: 0;
+        #notes-io-controls summary {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-3);
+            padding: var(--space-4);
+            cursor: pointer;
             font-family: var(--font-display);
             font-size: var(--step-1);
+            color: var(--forest-shadow);
+        }
+        #notes-io-controls summary:focus-visible {
+            outline: none;
+            box-shadow: var(--ring);
+            border-radius: var(--radius);
+        }
+        #notes-io-controls summary::-webkit-details-marker {
+            display: none;
+        }
+        #notes-io-controls .notes-io-title {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        #notes-io-controls .notes-io-icon {
+            font-size: 1.1rem;
+            color: var(--secondary-sage);
+            transition: transform var(--dur-2) var(--ease-ambient);
+        }
+        #notes-io-controls[open] .notes-io-icon {
+            transform: rotate(90deg);
+        }
+        #notes-io-controls .notes-io-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+            padding: 0 var(--space-4) var(--space-4);
+            border-top: 1px solid rgba(122, 132, 113, 0.16);
         }
         .notes-io-actions {
             display: flex;
@@ -488,16 +523,6 @@
             font-size: var(--step-1);
             color: var(--forest-shadow);
         }
-        .notes-panel.empty .textbox-collection::before {
-            content: 'Add a text box to capture notes for this slide.';
-            font-size: var(--step--1);
-            color: var(--ink-muted);
-            display: block;
-            padding: var(--space-3);
-            border-radius: var(--radius-sm);
-            border: 1px dashed rgba(122, 132, 113, 0.2);
-            text-align: center;
-        }
         .textbox-toolbar {
             margin-top: var(--space-6);
             margin-bottom: var(--space-3);
@@ -506,21 +531,36 @@
             border: 1px solid rgba(122, 132, 113, 0.18);
             background: color-mix(in srgb, var(--soft-white) 94%, white 6%);
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+        .textbox-swatch-group {
+            display: flex;
             align-items: center;
             gap: var(--space-3);
         }
-        .textbox-toolbar label {
-            font-weight: 600;
-            color: var(--forest-shadow);
+        .textbox-swatch-group button {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2px solid rgba(62, 74, 58, 0.15);
+            background: var(--swatch-color);
+            cursor: pointer;
+            transition: transform var(--dur-1) var(--ease-ambient), box-shadow var(--dur-2) var(--ease-ambient), border-color var(--dur-2) var(--ease-ambient);
         }
-        .textbox-toolbar select {
-            min-height: var(--target-min);
-            padding: 8px 12px;
-            border-radius: var(--radius-sm);
-            border: 1px solid rgba(122, 132, 113, 0.28);
-            background: #fff;
-            font-family: var(--font-body);
+        .textbox-swatch-group button:hover {
+            transform: translateY(-1px);
+            border-color: rgba(62, 74, 58, 0.3);
+            box-shadow: 0 6px 12px rgba(62, 74, 58, 0.15);
+        }
+        .textbox-swatch-group button:focus-visible {
+            outline: none;
+            box-shadow: var(--ring), 0 6px 12px rgba(62, 74, 58, 0.18);
+        }
+        .textbox-toolbar .toolbar-caption {
+            margin: 0;
+            font-size: var(--step--1);
+            color: var(--ink-muted);
         }
         .notes-panel .textbox-toolbar {
             margin-top: 0;
@@ -582,15 +622,14 @@
         }
         @media (max-width: 767px) {
             .textbox-toolbar {
-                flex-direction: column;
                 align-items: stretch;
+            }
+            .textbox-swatch-group {
+                flex-wrap: wrap;
             }
             .textbox-actions {
                 flex-direction: column;
                 align-items: stretch;
-            }
-            .textbox-actions select, .textbox-toolbar select {
-                width: 100%;
             }
             .textbox-remove-btn {
                 justify-content: center;
@@ -1236,15 +1275,19 @@
 
         </div>
         <aside id="notes-dock" aria-label="Collaborative slide notes workspace">
-            <div id="notes-io-controls">
-                <h2><i class="fas fa-note-sticky"></i> Slide Text Boxes</h2>
-                <div class="notes-io-actions">
-                    <button type="button" class="activity-btn secondary" id="save-notes-btn"><i class="fas fa-file-arrow-down"></i> Save Notes (JSON)</button>
-                    <button type="button" class="activity-btn secondary" id="load-notes-btn"><i class="fas fa-file-arrow-up"></i> Load Notes (JSON)</button>
-                    <input type="file" id="notes-file-input" accept="application/json" hidden>
+            <details id="notes-io-controls" class="notes-io-controls" open>
+                <summary>
+                    <span class="notes-io-title"><i class="fas fa-note-sticky"></i> Slide Text Boxes</span>
+                    <i class="fas fa-ellipsis-vertical notes-io-icon" aria-hidden="true"></i>
+                </summary>
+                <div class="notes-io-content">
+                    <div class="notes-io-actions">
+                        <button type="button" class="activity-btn secondary" id="save-notes-btn"><i class="fas fa-file-arrow-down"></i> Save Notes (JSON)</button>
+                        <button type="button" class="activity-btn secondary" id="load-notes-btn"><i class="fas fa-file-arrow-up"></i> Load Notes (JSON)</button>
+                        <input type="file" id="notes-file-input" accept="application/json" hidden>
+                    </div>
                 </div>
-                <p class="notes-io-hint">Manage collaborative notes for each slide here, and save or reload your work when you're finished.</p>
-            </div>
+            </details>
             <div id="notes-panels" aria-live="polite"></div>
         </aside>
     </div>
@@ -1532,7 +1575,7 @@
                 panel.hidden = true;
 
                 const heading = document.createElement('h3');
-                heading.className = 'notes-panel-title';
+                heading.className = 'notes-panel-title visually-hidden';
                 const headingId = `notes-panel-title-${slideId}`;
                 heading.id = headingId;
                 heading.textContent = getSlideLabel(slide, index);
@@ -1541,31 +1584,35 @@
                 const toolbar = document.createElement('div');
                 toolbar.className = 'textbox-toolbar';
 
-                const label = document.createElement('label');
-                const selectId = `toolbar-color-${slideId}`;
-                label.setAttribute('for', selectId);
-                label.textContent = 'New text box colour';
+                const toolbarCaption = document.createElement('p');
+                toolbarCaption.className = 'toolbar-caption visually-hidden';
+                toolbarCaption.textContent = 'Add a new text box by choosing a colour.';
 
-                const colorSelect = createColorSelect(selectId, 'Colour for new text boxes');
+                const swatchGroup = document.createElement('div');
+                swatchGroup.className = 'textbox-swatch-group';
 
-                const addButton = document.createElement('button');
-                addButton.type = 'button';
-                addButton.className = 'activity-btn secondary';
-                addButton.innerHTML = '<i class="fas fa-plus"></i> Add Text Box';
-                addButton.addEventListener('click', () => {
-                    const newNote = { id: generateNoteId(), color: colorSelect.value, content: '' };
-                    slideNotes[slideId].push(newNote);
-                    persistNotes();
-                    renderSlideTextboxes(slideId);
-                    const latestTextbox = textboxContainers[slideId]?.lastElementChild?.querySelector('.textbox-content');
-                    if (latestTextbox) {
-                        latestTextbox.focus();
-                    }
+                textboxColorOptions.forEach(option => {
+                    const swatchButton = document.createElement('button');
+                    swatchButton.type = 'button';
+                    swatchButton.className = 'textbox-swatch';
+                    swatchButton.style.setProperty('--swatch-color', option.value);
+                    swatchButton.setAttribute('aria-label', `Add a ${option.label} text box`);
+                    swatchButton.title = option.label;
+                    swatchButton.addEventListener('click', () => {
+                        const newNote = { id: generateNoteId(), color: option.value, content: '' };
+                        slideNotes[slideId].push(newNote);
+                        persistNotes();
+                        renderSlideTextboxes(slideId);
+                        const latestTextbox = textboxContainers[slideId]?.lastElementChild?.querySelector('.textbox-content');
+                        if (latestTextbox) {
+                            latestTextbox.focus();
+                        }
+                    });
+                    swatchGroup.appendChild(swatchButton);
                 });
 
-                toolbar.appendChild(label);
-                toolbar.appendChild(colorSelect);
-                toolbar.appendChild(addButton);
+                toolbar.appendChild(toolbarCaption);
+                toolbar.appendChild(swatchGroup);
 
                 const collection = document.createElement('div');
                 collection.className = 'textbox-collection';
