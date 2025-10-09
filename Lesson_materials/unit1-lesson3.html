@@ -1629,11 +1629,15 @@
 
             zone.addEventListener('drop', (event) => {
                 event.preventDefault();
-                if (!draggedItem) {
+                const dropTarget = event.currentTarget;
+                if (!draggedItem || !dropTarget) {
                     return;
                 }
+
+                dropTarget.classList.remove('over');
+
                 const origin = draggedItem.parentElement;
-                moveTile(draggedItem, zone, origin);
+                moveTile(draggedItem, dropTarget, origin);
                 clearActiveTile();
             });
         };
@@ -1674,12 +1678,69 @@
         });
 
         document.querySelectorAll('.drop-zone, .word-bank').forEach(zone => {
+            if (zone.closest('.matching-icons, .matching-labels')) {
+                return;
+            }
             if (!zone.hasAttribute('tabindex')) {
                 zone.setAttribute('tabindex', '0');
             }
             registerZoneInteraction(zone);
             registerDragAndDrop(zone);
         });
+
+        const initializeLabelMatching = () => {
+            const labelBank = document.querySelector('.matching-labels');
+            const labels = document.querySelectorAll('.matching-labels .label-card');
+            const matchingDropZones = document.querySelectorAll('.matching-icons .drop-zone');
+
+            if (!labelBank || labels.length === 0 || matchingDropZones.length === 0) {
+                return;
+            }
+
+            const allTargets = new Set([labelBank, ...matchingDropZones]);
+
+            const registerMatchingDropTarget = (target) => {
+                target.addEventListener('dragover', (event) => {
+                    event.preventDefault();
+                    event.dataTransfer.dropEffect = 'move';
+                    target.classList.add('drag-over');
+                });
+
+                target.addEventListener('dragleave', () => {
+                    target.classList.remove('drag-over');
+                });
+
+                target.addEventListener('drop', (event) => {
+                    event.preventDefault();
+                    const labelId = event.dataTransfer.getData('text/plain');
+                    const label = document.getElementById(labelId);
+
+                    if (!label) {
+                        return;
+                    }
+
+                    target.classList.remove('drag-over');
+                    target.appendChild(label);
+                });
+            };
+
+            labels.forEach(label => {
+                label.addEventListener('dragstart', (event) => {
+                    event.dataTransfer.effectAllowed = 'move';
+                    event.dataTransfer.setData('text/plain', label.id);
+                    requestAnimationFrame(() => label.classList.add('dragging'));
+                });
+
+                label.addEventListener('dragend', () => {
+                    label.classList.remove('dragging');
+                    allTargets.forEach(target => target.classList.remove('drag-over'));
+                });
+            });
+
+            allTargets.forEach(registerMatchingDropTarget);
+        };
+
+        initializeLabelMatching();
 
         document.addEventListener('click', (event) => {
             if (activeTile && !event.target.closest('.word-tile, .drop-zone, .word-bank')) {
