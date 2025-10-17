@@ -406,22 +406,24 @@ const Activity = {
   async fetchImages() {
     const apiKey = 'xgmzSrq1PBV9ELvW4mSlyq6vAf0k6qDrrMd1zIpLrIheWepQ32zN4iJk';
     const imageElements = this.dom.activityContainer.querySelectorAll('img[data-query]');
-    
+
     for (const img of imageElements) {
         const query = img.dataset.query;
-        const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=1`;
-        
+        const keywords = query.trim().split(/\s+/).slice(0,3).join(' ');
+        const url = `https://api.bing.microsoft.com/v7.0/images/search?q=${encodeURIComponent(keywords)}&count=1&license=public&safeSearch=Strict`;
+
         try {
-            const response = await fetch(url, { headers: { Authorization: apiKey } });
-            if (!response.ok) throw new Error(`Pexels API error: ${response.status}`);
+            const response = await fetch(url, { headers: { "Ocp-Apim-Subscription-Key": apiKey } });
+            if (!response.ok) throw new Error(`Bing API error: ${response.status}`);
             const data = await response.json();
-            if (data.photos.length > 0) {
-                img.src = data.photos[0].src.large;
+            if (data.value && data.value.length > 0) {
+                img.src = data.value[0].contentUrl;
+                img.alt = data.value[0].name || `Decorative image for ${keywords}`;
             } else {
-                img.alt = `No image found for '${query}'`;
+                img.alt = `No image found for '${keywords}'`;
             }
         } catch (error) {
-            console.error(`Failed to fetch image for "${query}":`, error);
+            console.error(`Failed to fetch image for "${keywords}":`, error);
             img.alt = 'Image could not be loaded.';
         }
     }
