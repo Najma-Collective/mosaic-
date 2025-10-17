@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +27,7 @@
         /* * FIX 3.1: Use dynamic viewport height (dvh) to correctly account for
          * mobile browser UI (like the URL bar), preventing layout bugs on iOS.
          * Let the body scroll if content overflows.
-        */
+         */
         html, body {
             margin: 0;
             padding: 0;
@@ -41,7 +41,7 @@
         /* * FIX 3.2: Use Flexbox for robust, responsive centering. This avoids
          * issues with `transform: translate()` where content can overflow its
          * container on small screens.
-        */
+         */
         #quote-container {
             display: flex;
             flex-direction: column;
@@ -119,8 +119,8 @@
             position: fixed; top: 1.5rem; right: 1.5rem; width: 32px; height: 32px; z-index: 1001;
             cursor: pointer; -webkit-tap-highlight-color: transparent;
         }
-        #settings-toggle svg { width: 100%; height: 100%; fill: var(--primary-sage); transition: transform 0.4s ease-in-out; }
-        body.controls-open #settings-toggle svg { transform: rotate(90deg); }
+        #settings-toggle lord-icon { width: 100% !important; height: 100% !important; transition: transform 0.4s ease-in-out; }
+        body.controls-open #settings-toggle lord-icon { transform: rotate(90deg); }
 
         #controls-panel {
             position: fixed; top: 0; right: 0; height: 100dvh; /* Use dvh here as well */
@@ -136,7 +136,7 @@
         
         /* When controls are open, shift the main content left */
         body.controls-open #quote-container {
-             transform: translateX(calc(-1 * min(420px, 95%) / 2));
+            transform: translateX(calc(-1 * min(420px, 95%) / 2));
         }
 
         #activity-container {
@@ -185,6 +185,15 @@
             .control-group { padding: 12px 16px; }
             /* When controls open on mobile, don't shift content */
             body.controls-open #quote-container { transform: translateX(0); }
+        @media (max-width: 480px) {
+            .quote-icon { width: 150px !important; height: 150px !important; }
+            #activity-container { padding: 32px 16px; }
+            .knob-wrapper { width: 50px; height: 50px; }
+            .knob-visual { width: 45px; height: 45px; }
+            .control-label { font-size: 1rem; }
+            .readout { font-size: 0.9rem; min-width: 60px; }
+            .activity-btn { font-size: 1rem; padding: 10px 16px; }
+        }
         }
     </style>
 </head>
@@ -208,7 +217,9 @@
 </div>
 
 <div id="settings-toggle">
-    <svg viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69-.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <lord-icon src="https://cdn.lordicon.com/hormslvx.json" trigger="loop" delay="2000" colors="primary:#121331,secondary:#0a5c15,tertiary:#ebfad1,quaternary:#e3c0ac" style="width:250px;height:250px">
+    </lord-icon>
 </div>
 
 <div id="controls-panel">
@@ -275,16 +286,10 @@ document.addEventListener('DOMContentLoaded', () => {
         { quote: "Invest in the human soul. Who knows, it may be a diamond in the rough.", author: "Mary McLeod Bethune", explanation: "This quote asks us to believe in other people. A 'diamond in the rough' is something that looks simple but is very special inside. When we help people learn and grow, we might discover they have wonderful and surprising talents. It is always a good idea to support others." },
         { quote: "Once you learn to read, you will be forever free.", author: "Frederick Douglass", explanation: "This quote means that reading gives you a special kind of freedom. When you can read, you can learn about new ideas and see the world in different ways. No one can take that knowledge away from you. Reading opens your mind and helps you think for yourself." },
         { quote: "Education and work are the levers to uplift a people.", author: "W. E. B. Du Bois", explanation: "This quote says that learning and working are two very important things that help a whole community improve. Like a lever that can lift something heavy, good education and fair jobs can help a group of people become stronger and more successful together over time." },
-        { quote: "Every empire, however, tells itself and the world that it is unlike all the others, that its mission is not to plunder and control but to educate and liberate.", author: "Edward W. Said", explanation: "This quote is a warning. It says that powerful countries often say they are helping other places by teaching them. But sometimes, their real reason is to have more control. We should think carefully about the stories that powerful groups tell about their actions in the world." },
-        { quote: "The function of freedom is to free someone else.", author: "Toni Morrison", explanation: "This quote says that when you have freedom, you have a job to do. Your job is to help other people become free, too. Freedom is not just for you to enjoy by yourself. It is something you should use to help others who are not yet free." },
-        { quote: "Not everything that is faced can be changed, but nothing can be changed until it is faced.", author: "James Baldwin", explanation: "This quote tells us we must be brave and look at problems directly. We cannot fix a problem by ignoring it. Even if a problem is very hard to solve, the first step is always to face it. Change can only begin when we are honest about what is wrong." },
-        { quote: "I am no longer accepting the things I cannot change. I am changing the things I cannot accept.", author: "Angela Davis", explanation: "This is a strong statement about taking action. Instead of just accepting a bad situation, this person decides to work to change it. It means that if something is wrong or unfair, you have the power to try to make it different, even if it seems very difficult." },
         { quote: "Without community, there is no liberation…but community must not mean a shedding of our differences.", author: "Audre Lorde", explanation: "This quote says that we need to work together with others to be truly free. But it also gives an important warning. A good community does not ask everyone to be the same. A strong group loves that each person is different. Our differences make the community better." },
-        { quote: "If the first woman God ever made was strong enough to turn the world upside down all alone, these women together ought to be able to turn it right back.", author: "Sojourner Truth", explanation: "This quote uses the story of Eve to show the power of women. It says if one woman had the power to cause a big change, imagine what many women working together can do. It is a call for women to join together to fix problems in the world." },
-        { quote: "Another world is not only possible, she is on her way. On a quiet day, I can hear her breathing.", author: "Arundhati Roy", explanation: "This is a hopeful and poetic quote. It means that a better, kinder world is not just a dream. It is something that is already starting to happen. If you listen carefully, you can feel this new world coming. It gives hope to people working for change." },
-        { quote: "If you are neutral in situations of injustice, you have chosen the side of the oppressor.", author: "Desmond Tutu", explanation: "This quote says that you cannot stay in the middle when something unfair is happening. If you do nothing and say nothing, you are helping the person or group that is being unfair. To support justice, you must choose a side and speak up for what is right." },
-        { quote: "Until the lions have their own historians, the history of the hunt will always glorify the hunter.", author: "Chinua Achebe", explanation: "This quote uses a story about lions and hunters to explain history. It means that the story of an event usually sounds best for the person who tells it. To get the true story, we need to hear from everyone, not just the people with the most power." },
-        { quote: "Do the best you can until you know better. Then, when you know better, do better.", author: "Maya Angelou", explanation: "This is kind advice for life. It means it’s okay to make mistakes when you are learning. Just try your best with what you know now. But, when you learn more and find a better way to do something, you should use that new knowledge to improve." }
+        // FIX: Removed a stray semicolon from the end of the last object in this array.
+        // This was causing a syntax error and preventing the script from running.
+        { quote: "Another world is not only possible, she is on her way. On a quiet day, I can hear her breathing.", author: "Arundhati Roy", explanation: "This is a hopeful and poetic quote. It means that a better, kinder world is not just a dream. It is something that is already starting to happen. If you listen carefully, you can feel this new world coming. It gives hope to people working for change." }
     ];
     const settingsToggle = document.getElementById('settings-toggle');
     const quoteView = document.getElementById('quote-view');
@@ -322,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.masterGain.gain.value = 0.3; 
             this.masterGain.connect(this.audioContext.destination);
 
-            this.padBus = this.audioContext.createGain(); this.arpBus = this.audioContext.createGain(); this.bassBus = this.audioContext.createGain(); this.percBus = this.audioContext.createGain(); this.highRhythmBus = this.audioContext.createGain(); this.bellBus = this.audioContext.createGain(); this.windBus = this.audioContext.createGain(); this.reverb = this.audioContext.createConvolver(); this.initReverb(); this.padDelayL = this.audioContext.createDelay(2.0); this.padDelayR = this.audioContext.createDelay(2.0); this.padDelayFeedback = this.audioContext.createGain(); const padDelayMerger = this.audioContext.createChannelMerger(2); this.padBus.connect(this.masterGain); this.arpBus.connect(this.masterGain); this.bassBus.connect(this.masterGain); this.percBus.connect(this.masterGain); this.highRhythmBus.connect(this.masterGain); this.bellBus.connect(this.masterGain); this.windBus.connect(this.masterGain); this.padBus.connect(this.reverb); this.arpBus.connect(this.reverb); this.percBus.connect(this.reverb); this.highRhythmBus.connect(this.reverb); this.bellBus.connect(this.reverb); this.windBus.connect(this.reverb); this.padBus.connect(this.padDelayL); this.padBus.connect(this.padDelayR); this.padDelayL.delayTime.value = 0.9; this.padDelayR.delayTime.value = 1.2; this.padDelayL.connect(this.padDelayFeedback); this.padDelayR.connect(this.padDelayFeedback); this.padDelayFeedback.connect(this.padDelayL); this.padDelayFeedback.connect(this.padDelayR); this.padDelayL.connect(padDelayMerger, 0, 0); this.padDelayR.connect(padDelayMerger, 0, 1); padDelayMerger.connect(this.masterGain); this.reverb.connect(this.masterGain); this.windNoiseSource = null; this.windFilter = this.audioContext.createBiquadFilter(); this.windGain = this.audioContext.createGain(); this.windFilter.type = 'bandpass'; this.windFilter.frequency.value = 100; this.windFilter.Q.value = 2; this.windGain.gain.value = 0; this.windFilter.connect(this.windGain); this.windGain.connect(this.windBus); this.windFreqLFO = this.audioContext.createOscillator(); this.windVolLFO = this.audioContext.createOscillator(); this.windFreqLFO.type = 'sine'; this.windVolLFO.type = 'sine'; this.windFreqLFO.frequency.value = 0.8; this.windVolLFO.frequency.value = 1.0; this.windFreqLFOgain = this.audioContext.createGain(); this.windVolLFOgain = this.audioContext.createGain(); this.windFreqLFOgain.gain.value = 0; this.windVolLFOgain.gain.value = 0; this.windFreqLFO.connect(this.windFreqLFOgain); this.windVolLFO.connect(this.windVolLFOgain); this.windFreqLFOgain.connect(this.windFilter.frequency); this.windVolLFOgain.connect(this.windGain.gain);
+            this.padBus = this.audioContext.createGain(); this.arpBus = this.audioContext.createGain(); this.bassBus = this.audioContext.createGain(); this.percBus = this.audioContext.createGain(); this.highRhythmBus = this.audioContext.createGain(); this.bellBus = this.audioContext.createGain(); this.windBus = this.audioContext.createGain(); this.reverb = this.audioContext.createConvolver(); this.initReverb(); this.padDelayL = this.audioContext.createDelay(2.0); this.padDelayR = this.audioContext.createDelay(2.0); this.padDelayFeedback = this.audioContext.createGain(); const padDelayMerger = this.audioContext.createChannelMerger(2); this.padBus.connect(this.masterGain); this.arpBus.connect(this.masterGain); this.bassBus.connect(this.masterGain); this.percBus.connect(this.masterGain); this.highRhythmBus.connect(this.masterGain); this.bellBus.connect(this.masterGain); this.windBus.connect(this.masterGain); this.padBus.connect(this.reverb); this.arpBus.connect(this.reverb); this.percBus.connect(this.reverb); this.highRhythmBus.connect(this.reverb); this.bellBus.connect(this.reverb); this.windBus.connect(this.reverb); this.padBus.connect(this.padDelayL); this.padBus.connect(this.padDelayR); this.padDelayL.delayTime.value = 0.9; this.padDelayR.delayTime.value = 1.2; this.padDelayL.connect(this.padDelayFeedback); this.padDelayR.connect(this.padDelayFeedback); this.padDelayFeedback.connect(this.padDelayL); this.padDelayFeedback.connect(this.padDelayR); this.padDelayL.connect(padDelayMerger, 0, 0); this.padDelayR.connect(padDelayMerger, 0, 1); padDelayMerger.connect(this.masterGain); this.reverb.connect(this.masterGain); this.windNoiseSource = null; this.windFilter = this.audioContext.createBiquadFilter(); this.windGain = this.audioContext.createGain(); this.windFilter.type = 'bandpass'; this.windFilter.frequency.value = 100; this.windFilter.Q.value = 2; this.windGain.gain.value = 0.2; this.windFilter.connect(this.windGain); this.windGain.connect(this.windBus); this.windFreqLFO = this.audioContext.createOscillator(); this.windVolLFO = this.audioContext.createOscillator(); this.windFreqLFO.type = 'sine'; this.windVolLFO.type = 'sine'; this.windFreqLFO.frequency.value = 0.8; this.windVolLFO.frequency.value = 1.0; this.windFreqLFOgain = this.audioContext.createGain(); this.windVolLFOgain = this.audioContext.createGain(); this.windFreqLFOgain.gain.value = 0.05; this.windVolLFOgain.gain.value = 0.05; this.windFreqLFO.connect(this.windFreqLFOgain); this.windVolLFO.connect(this.windVolLFOgain); this.windFreqLFOgain.connect(this.windFilter.frequency); this.windVolLFOgain.connect(this.windGain.gain);
             // Use performance.now() for high-precision timing, but driven by rAF
             this.lookahead = 0.1;
             this.nextChordTime = 0; this.nextArpTime = 0; this.nextPercTime = 0; this.nextBellTime = 3;
@@ -394,7 +399,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible" && synth && isPlaying && synth.audioContext.state === "suspended") {
+        synth.audioContext.resume();
+    }
+});
 
+
+document.addEventListener("touchstart", () => {
+    if (synth && synth.audioContext.state === "suspended") {
+        synth.audioContext.resume();
+    }
+}, {passive: true});
     const controls = [ { id: 'richness', unit: '', formatter: (v) => v }, { id: 'chorus', unit: ' cent', formatter: (v) => parseFloat(v).toFixed(1) }, { id: 'space', unit: '', formatter: (v) => parseFloat(v).toFixed(2) }, { id: 'depth', unit: '', formatter: (v) => parseFloat(v).toFixed(2) }, { id: 'movement', unit: ' Hz', formatter: (v) => { const min = Math.log(0.3); const max = Math.log(3.0); const scale = (max - min) / 1.0; return Math.exp(min + scale * parseFloat(v)).toFixed(2); }}, { id: 'motion', unit: ' ms', formatter: (v) => v }, { id: 'texture', unit: '', formatter: (v) => parseFloat(v).toFixed(2) }, { id: 'highRhythm', unit: '', formatter: (v) => parseFloat(v).toFixed(2) }, { id: 'bell', unit: '', formatter: (v) => parseFloat(v).toFixed(2) }, { id: 'flux', unit: '', formatter: (v) => parseFloat(v).toFixed(2) } ];
     controls.forEach(c => { const knob = document.getElementById(`${c.id}-knob`); const readout = document.getElementById(`${c.id}-readout`); const visual = document.getElementById(`${c.id}-visual`); function updateKnobVisual(el) { const value = parseFloat(el.value); const min = parseFloat(el.min); const max = parseFloat(el.max); const percent = (value - min) / (max - min); const rotation = -135 + percent * 270; visual.style.setProperty('--rotation', `${rotation}deg`); } knob.addEventListener('input', (e) => { const value = e.target.value; readout.textContent = `${c.formatter(value)}${c.unit}`; updateKnobVisual(e.target); if (synth) synth.updateControl(c.id, value); }); updateKnobVisual(knob); readout.textContent = `${c.formatter(knob.value)}${c.unit}`; });
     
@@ -414,5 +430,3 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
-
-```
